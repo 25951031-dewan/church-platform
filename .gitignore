@@ -24,3 +24,7 @@ yarn-error.log
 /public/dist/hot
 # Keep public/dist/ in git (built locally, no Node on server)
 .env.*.local
+
+# macOS metadata
+.DS_Store
+**/.DS_Store
