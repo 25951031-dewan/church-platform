@@ -1,4 +1,5 @@
 *
+!plugins.json
 !private/
 !public/
 !.gitignore

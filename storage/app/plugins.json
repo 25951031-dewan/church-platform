@@ -1,0 +1,4 @@
+{
+    "Auth": { "enabled": true, "version": "1.0.0" },
+    "Settings": { "enabled": true, "version": "1.0.0" }
+}
