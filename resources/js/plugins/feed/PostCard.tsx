@@ -1,5 +1,9 @@
 import React, { useState, Suspense, lazy } from 'react';
 import SafeHtml from '../../components/shared/SafeHtml';
+import PrayerCard from './PrayerCard';
+import BlessingCard from './BlessingCard';
+import BibleStudyCard from './BibleStudyCard';
+import PollCard from './PollCard';
 
 const CommentThread = lazy(() => import('./CommentThread'));
 
@@ -7,9 +11,15 @@ const EMOJIS = ['👍', '❤️', '🙏', '✝️', '🕊️'];
 
 interface Author { id: number; name: string; avatar?: string }
 interface Post {
-    id: number; body: string; author: Author;
-    church?: { name: string }; reactions_count: number;
-    comments_count: number; created_at: string;
+    id: number;
+    body: string | null;
+    type: 'post' | 'prayer' | 'blessing' | 'poll' | 'bible_study';
+    meta?: Record<string, any>;
+    author: Author | null;
+    church?: { name: string };
+    reactions_count: number;
+    comments_count: number;
+    created_at: string;
 }
 
 export default function PostCard({ post, onReact }: { post: Post; onReact: (id: number, emoji: string) => void }) {
@@ -18,17 +28,32 @@ export default function PostCard({ post, onReact }: { post: Post; onReact: (id: 
     return (
         <div style={{ background: '#fff', borderRadius: 12, padding: '1rem', marginBottom: '1rem', boxShadow: '0 1px 4px rgba(0,0,0,.08)' }}>
             <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.75rem', alignItems: 'center' }}>
-                <img src={post.author.avatar ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author.name)}`}
+                <img src={post.author?.avatar ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author?.name ?? 'Anonymous')}`}
                     style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }} alt="" />
                 <div>
-                    <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{post.author.name}</div>
+                    <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{post.author?.name ?? 'Anonymous'}</div>
                     <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
                         {new Date(post.created_at).toLocaleDateString()}{post.church && ` · ${post.church.name}`}
                     </div>
                 </div>
             </div>
 
-            <SafeHtml html={post.body} style={{ fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '0.75rem' }} />
+            {/* Type-specific body rendering */}
+            {post.type === 'prayer' && post.meta && (
+                <PrayerCard postId={post.id} body={post.body} meta={post.meta as any} isAuthor={false} />
+            )}
+            {post.type === 'blessing' && (
+                <BlessingCard body={post.body} meta={(post.meta ?? {}) as any} />
+            )}
+            {post.type === 'bible_study' && post.meta && (
+                <BibleStudyCard body={post.body} meta={post.meta as any} />
+            )}
+            {post.type === 'poll' && post.meta && (
+                <PollCard postId={post.id} meta={post.meta as any} />
+            )}
+            {(!post.type || post.type === 'post') && (
+                <SafeHtml html={post.body ?? ''} style={{ fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '0.75rem' }} />
+            )}
 
             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
                 {EMOJIS.map(e => (
