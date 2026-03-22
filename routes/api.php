@@ -2,10 +2,16 @@
 
 use App\Http\Controllers\Api\Admin\PageBuilderController;
 use App\Http\Controllers\Api\Admin\SettingsController;
+use App\Http\Controllers\Api\SduiController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.v1.')->group(function () {
+    // Server-Driven UI endpoints (public)
+    Route::prefix('sdui')->name('sdui.')->group(function () {
+        Route::get('home', [SduiController::class, 'home'])->name('home');
+        Route::get('church/{id}', [SduiController::class, 'church'])->name('church');
+    });
     // Public captcha config (site key only — secret never exposed)
     Route::get('captcha/config', function () {
         $row = DB::table('settings')->where('key', 'captcha')->first();
