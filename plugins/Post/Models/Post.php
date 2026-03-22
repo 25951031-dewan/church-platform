@@ -70,4 +70,9 @@ class Post extends Model
         return $this->morphMany(\Plugins\Comment\Models\Comment::class, 'commentable')
                     ->whereNull('parent_id')->latest();
     }
+
+    public function reactions(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(\Plugins\Reaction\Models\Reaction::class, 'reactable');
+    }
 }
