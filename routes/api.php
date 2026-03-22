@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\CacheController;
+use App\Http\Controllers\Api\Admin\MediaController;
 use App\Http\Controllers\Api\Admin\PageBuilderController;
 use App\Http\Controllers\Api\Admin\SettingsController;
+use App\Http\Controllers\Api\Admin\SubSettingsController;
 use App\Http\Controllers\Api\SduiController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -22,8 +25,21 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     })->name('captcha.config');
     // Admin routes
     Route::prefix('admin')->name('admin.')->group(function () {
+        // Platform settings (mode, directory, feature toggles)
         Route::get('settings', [SettingsController::class, 'show'])->name('settings.show');
         Route::patch('settings', [SettingsController::class, 'update'])->name('settings.update');
+
+        // Sub-settings by group: general | email | appearance | seo | cache | auth | storage | api
+        Route::get('settings/{group}', [SubSettingsController::class, 'show'])->name('settings.group.show');
+        Route::patch('settings/{group}', [SubSettingsController::class, 'update'])->name('settings.group.update');
+
+        // Cache management
+        Route::post('cache/clear', [CacheController::class, 'clear'])->name('cache.clear');
+
+        // Media manager
+        Route::get('media', [MediaController::class, 'index'])->name('media.index');
+        Route::post('media', [MediaController::class, 'store'])->name('media.store');
+        Route::post('media/bulk-delete', [MediaController::class, 'bulkDelete'])->name('media.bulk-delete');
 
         // Pages + page builder
         Route::get('pages', [PageBuilderController::class, 'index'])->name('pages.index');
