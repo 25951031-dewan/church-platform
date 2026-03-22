@@ -13,7 +13,6 @@ return new class extends Migration {
             $table->timestamps();
 
             $table->unique(['reactable_type', 'reactable_id', 'user_id']);
-            $table->index(['reactable_type', 'reactable_id']);
         });
     }
     public function down(): void { Schema::dropIfExists('reactions'); }
