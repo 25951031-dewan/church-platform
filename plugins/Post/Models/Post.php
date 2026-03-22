@@ -5,6 +5,7 @@ namespace Plugins\Post\Models;
 use App\Models\Church;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,7 +14,12 @@ use Plugins\Community\Models\Community;
 
 class Post extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
+
+    protected static function newFactory(): \Database\Factories\PostFactory
+    {
+        return \Database\Factories\PostFactory::new();
+    }
 
     protected $table = 'social_posts';
 

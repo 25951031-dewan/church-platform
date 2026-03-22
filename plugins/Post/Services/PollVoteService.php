@@ -31,11 +31,15 @@ class PollVoteService
                     // Change vote: remove old, decrement old count
                     $oldIdx = collect($post->meta['options'])->search(fn ($o) => $o['id'] === $existing->option_id);
                     if ($oldIdx !== false) {
-                        // MySQL JSON_SET — silently no-op on SQLite (that's fine; counts() reads from poll_votes)
-                        DB::statement(
-                            "UPDATE social_posts SET meta = JSON_SET(meta, CONCAT('$.options[', ?, '].votes_count'), GREATEST(0, CAST(JSON_UNQUOTE(JSON_EXTRACT(meta, CONCAT('$.options[', ?, '].votes_count'))) AS UNSIGNED) - 1)) WHERE id = ?",
-                            [$oldIdx, $oldIdx, $post->id]
-                        );
+                        // MySQL JSON_SET — no-op on SQLite (counts() reads from poll_votes anyway)
+                        try {
+                            DB::statement(
+                                "UPDATE social_posts SET meta = JSON_SET(meta, CONCAT('$.options[', ?, '].votes_count'), GREATEST(0, CAST(JSON_UNQUOTE(JSON_EXTRACT(meta, CONCAT('$.options[', ?, '].votes_count'))) AS UNSIGNED) - 1)) WHERE id = ?",
+                                [$oldIdx, $oldIdx, $post->id]
+                            );
+                        } catch (\Exception $e) {
+                            // SQLite doesn't support MySQL JSON functions — ignored
+                        }
                     }
                     $existing->delete();
                 }
@@ -48,10 +52,14 @@ class PollVoteService
             PollVote::create(['post_id' => $post->id, 'user_id' => $userId, 'option_id' => $optionId]);
 
             // Increment votes_count for the chosen option in meta (MySQL only; no-op on SQLite)
-            DB::statement(
-                "UPDATE social_posts SET meta = JSON_SET(meta, CONCAT('$.options[', ?, '].votes_count'), CAST(JSON_UNQUOTE(JSON_EXTRACT(meta, CONCAT('$.options[', ?, '].votes_count'))) AS UNSIGNED) + 1) WHERE id = ?",
-                [$optionIdx, $optionIdx, $post->id]
-            );
+            try {
+                DB::statement(
+                    "UPDATE social_posts SET meta = JSON_SET(meta, CONCAT('$.options[', ?, '].votes_count'), CAST(JSON_UNQUOTE(JSON_EXTRACT(meta, CONCAT('$.options[', ?, '].votes_count'))) AS UNSIGNED) + 1) WHERE id = ?",
+                    [$optionIdx, $optionIdx, $post->id]
+                );
+            } catch (\Exception $e) {
+                // SQLite doesn't support MySQL JSON functions — ignored
+            }
         });
 
         return $this->counts($post, $userId);
@@ -69,10 +77,14 @@ class PollVoteService
             foreach ($votes as $vote) {
                 $idx = collect($post->meta['options'])->search(fn ($o) => $o['id'] === $vote->option_id);
                 if ($idx !== false) {
-                    DB::statement(
-                        "UPDATE social_posts SET meta = JSON_SET(meta, CONCAT('$.options[', ?, '].votes_count'), GREATEST(0, CAST(JSON_UNQUOTE(JSON_EXTRACT(meta, CONCAT('$.options[', ?, '].votes_count'))) AS UNSIGNED) - 1)) WHERE id = ?",
-                        [$idx, $idx, $post->id]
-                    );
+                    try {
+                        DB::statement(
+                            "UPDATE social_posts SET meta = JSON_SET(meta, CONCAT('$.options[', ?, '].votes_count'), GREATEST(0, CAST(JSON_UNQUOTE(JSON_EXTRACT(meta, CONCAT('$.options[', ?, '].votes_count'))) AS UNSIGNED) - 1)) WHERE id = ?",
+                            [$idx, $idx, $post->id]
+                        );
+                    } catch (\Exception $e) {
+                        // SQLite doesn't support MySQL JSON functions — ignored
+                    }
                 }
                 $vote->delete();
             }

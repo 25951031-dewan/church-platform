@@ -66,10 +66,15 @@ class PostController extends Controller
 
         // Cross-post to additional targets
         if (! empty($data['cross_post_targets'])) {
-            $this->crossPost($post, $data['cross_post_targets'], $request->user()->id);
+            $this->performCrossPost($post, $data['cross_post_targets'], $request->user()->id);
         }
 
-        return response()->json($post->load('author', 'community', 'church'), 201);
+        $post->load('author', 'community', 'church');
+        $response = $post->toArray();
+        if ($post->is_anonymous) {
+            $response['author'] = null;
+        }
+        return response()->json($response, 201);
     }
 
     /**
@@ -77,32 +82,30 @@ class PostController extends Controller
      * Cross-post an existing post to additional communities/churches.
      * Body: { targets: [{ community_id? }, { church_id? }] }
      */
-    public function crossPost(Request|Post $requestOrPost, array $targets = [], int $userId = 0): JsonResponse|null
+    public function crossPost(Request $request, int $id): JsonResponse
     {
-        // Called directly as a route action
-        if ($requestOrPost instanceof Request) {
-            $request = $requestOrPost;
-            $post    = Post::published()->findOrFail($request->route('id'));
+        $post = Post::published()->findOrFail($id);
 
-            if ($post->user_id !== $request->user()->id) {
-                abort(403, 'You can only cross-post your own posts.');
-            }
-
-            $targets = $request->validate([
-                'targets'                      => ['required', 'array', 'min:1', 'max:10'],
-                'targets.*.community_id'       => ['nullable', 'integer', 'exists:communities,id'],
-                'targets.*.church_id'          => ['nullable', 'integer', 'exists:churches,id'],
-            ])['targets'];
-
-            $userId = $request->user()->id;
-        } else {
-            $post = $requestOrPost;
-        }
+        $targets = $request->validate([
+            'targets'                      => ['required', 'array', 'min:1', 'max:10'],
+            'targets.*.community_id'       => ['nullable', 'integer', 'exists:communities,id'],
+            'targets.*.church_id'          => ['nullable', 'integer', 'exists:churches,id'],
+        ])['targets'];
 
         if ($post->type === 'poll') {
             abort(422, 'Poll posts cannot be reshared.');
         }
 
+        $created = $this->performCrossPost($post, $targets, $request->user()->id);
+
+        return response()->json(['shared_to' => count($created)]);
+    }
+
+    /**
+     * Internal helper: create reshare posts for the given targets.
+     */
+    private function performCrossPost(Post $post, array $targets, int $userId): array
+    {
         $created = [];
 
         DB::transaction(function () use ($post, $targets, $userId, &$created) {
@@ -110,14 +113,11 @@ class PostController extends Controller
                 $communityId = $target['community_id'] ?? null;
                 $churchId    = $target['church_id'] ?? null;
 
-                if (! $communityId && ! $churchId) {
-                    continue;
-                }
-
                 // Avoid duplicate reshares to the same target
                 $alreadyShared = Post::where('parent_id', $post->id)
                     ->where('community_id', $communityId)
                     ->where('church_id', $churchId)
+                    ->where('user_id', $userId)
                     ->exists();
 
                 if ($alreadyShared) {
@@ -144,11 +144,6 @@ class PostController extends Controller
             }
         });
 
-        // When called as a route action, return JSON
-        if ($requestOrPost instanceof Request) {
-            return response()->json(['shared_to' => count($created)]);
-        }
-
-        return null;
+        return $created;
     }
 }
