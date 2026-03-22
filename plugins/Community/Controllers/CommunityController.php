@@ -4,6 +4,7 @@ namespace Plugins\Community\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Plugins\Community\Models\Community;
 use Plugins\Community\Models\CommunityMember;
 
@@ -59,16 +60,20 @@ class CommunityController extends Controller
     /** @group Communities */
     public function join(Request $request, int $id): JsonResponse
     {
-        $community = Community::regularGroups()->active()->findOrFail($id);
-        abort_if($community->isFull(), 422, 'Community is full.');
+        $status = DB::transaction(function () use ($id, $request) {
+            $community = Community::regularGroups()->active()->lockForUpdate()->findOrFail($id);
+            abort_if($community->isFull(), 422, 'Community is full.');
 
-        $existing = CommunityMember::where(['community_id' => $id, 'user_id' => $request->user()->id])->first();
-        abort_if($existing, 422, 'Already a member.');
+            $existing = CommunityMember::where(['community_id' => $id, 'user_id' => $request->user()->id])->first();
+            abort_if($existing, 422, 'Already a member.');
 
-        $status = $community->requires_approval ? 'pending' : 'approved';
-        CommunityMember::create(['community_id' => $id, 'user_id' => $request->user()->id, 'role' => 'member', 'status' => $status]);
+            $memberStatus = $community->requires_approval ? 'pending' : 'approved';
+            CommunityMember::create(['community_id' => $id, 'user_id' => $request->user()->id, 'role' => 'member', 'status' => $memberStatus]);
 
-        if ($status === 'approved') { $community->increment('members_count'); }
+            if ($memberStatus === 'approved') { $community->increment('members_count'); }
+
+            return $memberStatus;
+        });
 
         return response()->json(['status' => $status], 201);
     }

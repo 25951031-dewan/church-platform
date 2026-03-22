@@ -24,8 +24,9 @@ export default function FeedPage() {
     useEffect(() => { load(1); }, []);
 
     const react = async (postId: number, emoji: string) => {
-        await axios.post('/api/v1/reactions', { reactable_type: 'post', reactable_id: postId, emoji });
-        setPosts(ps => ps.map(p => p.id === postId ? { ...p, reactions_count: p.reactions_count + 1 } : p));
+        const { data } = await axios.post('/api/v1/reactions', { reactable_type: 'post', reactable_id: postId, emoji });
+        const delta = data.reacted ? 1 : -1;
+        setPosts(ps => ps.map(p => p.id === postId ? { ...p, reactions_count: Math.max(0, p.reactions_count + delta) } : p));
     };
 
     return (
