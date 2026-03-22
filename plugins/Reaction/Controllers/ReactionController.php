@@ -9,7 +9,7 @@ use Plugins\Reaction\Models\Reaction;
 
 class ReactionController extends Controller
 {
-    private const ALLOWED = ['👍','❤️','🙏','😂','😮','😢'];
+    private const ALLOWED = ['👍', '❤️', '🙏', '✝️', '🕊️'];
 
     /**
      * Toggle a reaction (creates or removes).

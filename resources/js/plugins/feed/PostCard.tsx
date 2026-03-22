@@ -3,7 +3,7 @@ import SafeHtml from '../../components/shared/SafeHtml';
 
 const CommentThread = lazy(() => import('./CommentThread'));
 
-const EMOJIS = ['👍', '❤️', '🙏', '😂', '😮', '😢'];
+const EMOJIS = ['👍', '❤️', '🙏', '✝️', '🕊️'];
 
 interface Author { id: number; name: string; avatar?: string }
 interface Post {
