@@ -18,7 +18,16 @@ class SettingsController extends Controller
     ) {}
 
     /**
-     * GET /api/v1/admin/settings
+     * Get platform settings.
+     *
+     * @group Admin / Settings
+     *
+     * @response 200 {
+     *   "platform_mode": "single",
+     *   "show_church_directory": false,
+     *   "default_church_id": null,
+     *   "feature_toggles": { "events": true, "sermons": true }
+     * }
      */
     public function show(): JsonResponse
     {
@@ -33,7 +42,16 @@ class SettingsController extends Controller
     }
 
     /**
-     * PATCH /api/v1/admin/settings
+     * Update platform settings.
+     *
+     * @group Admin / Settings
+     *
+     * @bodyParam platform_mode string optional Enum: single, multi. Example: multi
+     * @bodyParam show_church_directory boolean optional Show public church directory. Example: true
+     * @bodyParam default_church_id integer optional ID of the default church. Example: 1
+     * @bodyParam feature_toggles object optional Map of feature slug => enabled bool. Example: {"events":true,"sermons":false}
+     *
+     * @response 200 scenario="Updated" {"platform_mode":"multi","show_church_directory":true,"default_church_id":null,"feature_toggles":{"events":true}}
      */
     public function update(Request $request): JsonResponse
     {

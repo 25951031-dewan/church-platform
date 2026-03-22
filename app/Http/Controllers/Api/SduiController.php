@@ -27,8 +27,21 @@ class SduiController extends Controller
     ) {}
 
     /**
-     * GET /api/v1/sdui/home
-     * Returns the homepage SDUI layout with component types + data URIs.
+     * Get homepage SDUI layout.
+     *
+     * Returns a JSON component tree describing the homepage.
+     * The client maps each `type` string to a React component.
+     *
+     * @group SDUI
+     *
+     * @response 200 {
+     *   "version": 1,
+     *   "type": "screen",
+     *   "key": "home",
+     *   "theme": { "primary_color": "#2563eb", "logo": null },
+     *   "navigation": [{ "label": "Home", "path": "/" }],
+     *   "components": [{ "type": "HeroBanner", "dataUri": "/api/v1/settings/hero" }]
+     * }
      */
     public function home(): JsonResponse
     {
@@ -58,8 +71,24 @@ class SduiController extends Controller
     }
 
     /**
-     * GET /api/v1/sdui/church/{id}
-     * Returns the SDUI layout for a specific church page.
+     * Get church SDUI layout.
+     *
+     * Returns a JSON component tree for a specific church page,
+     * with per-church theme overrides and feature-toggle-filtered components.
+     *
+     * @group SDUI
+     *
+     * @urlParam id integer required The church ID. Example: 1
+     *
+     * @response 200 {
+     *   "version": 1,
+     *   "type": "screen",
+     *   "key": "church.1",
+     *   "theme": { "primary_color": "#2563eb" },
+     *   "navigation": [],
+     *   "components": [{ "type": "ChurchHeroBanner", "props": { "name": "Grace Church" } }]
+     * }
+     * @response 404 scenario="Not found" {"message": "No query results for model [App\\Models\\Church]"}
      */
     public function church(int $id): JsonResponse
     {
