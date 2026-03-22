@@ -55,13 +55,25 @@ class Post extends Model
         return $this->hasMany(Post::class, 'parent_id');
     }
 
-    public function scopePublished(Builder $query): Builder
+    public function scopePublished($query)
     {
-        return $query->where('status', 'published');
+        return $query->where('status', 'published')
+            ->where(fn ($q) => $q->whereNull('published_at')->orWhere('published_at', '<=', now()));
     }
 
     public function isReshare(): bool
     {
         return $this->parent_id !== null;
+    }
+
+    public function comments(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(\Plugins\Comment\Models\Comment::class, 'commentable')
+                    ->whereNull('parent_id')->latest();
+    }
+
+    public function reactions(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(\Plugins\Reaction\Models\Reaction::class, 'reactable');
     }
 }

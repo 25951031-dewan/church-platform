@@ -1,0 +1,1 @@
+{ "name": "Feed", "slug": "feed", "version": "1.0.0", "description": "Paginated post feed for home, community and church contexts", "requires": ["post"] }

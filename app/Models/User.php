@@ -21,6 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
+        'cover_image',
+        'bio',
+        'location',
+        'website',
     ];
 
     /**
@@ -44,5 +49,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function churchMemberships()
+    {
+        return $this->hasMany(\App\Models\ChurchMember::class);
+    }
+
+    public function communities()
+    {
+        return $this->hasMany(\Plugins\Community\Models\CommunityMember::class);
     }
 }

@@ -7,4 +7,7 @@ return [
     Plugins\Community\CommunityServiceProvider::class,
     Plugins\Post\PostServiceProvider::class,
     Plugins\Faq\FaqServiceProvider::class,
+    Plugins\Comment\CommentServiceProvider::class,
+    Plugins\Reaction\ReactionServiceProvider::class,
+    Plugins\Feed\FeedServiceProvider::class,
 ];

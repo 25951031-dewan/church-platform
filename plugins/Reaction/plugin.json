@@ -1,0 +1,15 @@
+{
+    "name": "Reactions",
+    "slug": "reaction",
+    "version": "1.0.0",
+    "description": "Reactions on posts and comments — Like, Love, Pray, Bless, Peace.",
+    "author": "Church Platform",
+    "icon": "heart",
+    "category": "Feature",
+    "requires": [],
+    "optional": ["Notification"],
+    "settings_page": false,
+    "can_disable": true,
+    "can_remove": true,
+    "enabled_by_default": true
+}

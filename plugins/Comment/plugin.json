@@ -1,0 +1,7 @@
+{
+    "name": "Comment",
+    "slug": "comment",
+    "version": "1.0.0",
+    "description": "Threaded comments on posts",
+    "requires": ["post"]
+}
