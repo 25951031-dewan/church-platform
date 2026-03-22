@@ -9,4 +9,5 @@ return [
     Plugins\Faq\FaqServiceProvider::class,
     Plugins\Comment\CommentServiceProvider::class,
     Plugins\Reaction\ReactionServiceProvider::class,
+    Plugins\Feed\FeedServiceProvider::class,
 ];

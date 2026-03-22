@@ -55,9 +55,10 @@ class Post extends Model
         return $this->hasMany(Post::class, 'parent_id');
     }
 
-    public function scopePublished(Builder $query): Builder
+    public function scopePublished($query)
     {
-        return $query->where('status', 'published');
+        return $query->where('status', 'published')
+            ->where(fn ($q) => $q->whereNull('published_at')->orWhere('published_at', '<=', now()));
     }
 
     public function isReshare(): bool
