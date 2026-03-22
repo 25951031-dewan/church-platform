@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\ResolvePlatformMode;
+use App\Http\Middleware\TrackPageView;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->appendToGroup('api', ResolvePlatformMode::class);
+        $middleware->appendToGroup('web', TrackPageView::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
