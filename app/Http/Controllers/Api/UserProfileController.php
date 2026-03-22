@@ -37,11 +37,13 @@ class UserProfileController extends Controller
             'bio'         => ['sometimes', 'nullable', 'string', 'max:500'],
             'location'    => ['sometimes', 'nullable', 'string', 'max:100'],
             'website'     => ['sometimes', 'nullable', 'url', 'max:255'],
-            'avatar'      => ['sometimes', 'nullable', 'string', 'max:2048'],
-            'cover_image' => ['sometimes', 'nullable', 'string', 'max:2048'],
+            'avatar'      => ['sometimes', 'nullable', 'url', 'max:2048'],
+            'cover_image' => ['sometimes', 'nullable', 'url', 'max:2048'],
         ]);
 
         $request->user()->update($validated);
-        return response()->json($request->user()->fresh());
+        return response()->json(
+            User::select('id','name','avatar','cover_image','bio','location','website','created_at')->findOrFail($request->user()->id)
+        );
     }
 }
