@@ -7,7 +7,8 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->morphs('commentable');
+            $table->string('commentable_type');
+            $table->unsignedBigInteger('commentable_id');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('parent_id')->nullable()->constrained('comments')->cascadeOnDelete();
             $table->text('body');

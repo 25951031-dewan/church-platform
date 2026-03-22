@@ -12,6 +12,11 @@ class Comment extends Model
 
     protected $fillable = ['commentable_type', 'commentable_id', 'user_id', 'parent_id', 'body'];
 
+    protected $casts = [
+        'replies_count'   => 'integer',
+        'reactions_count' => 'integer',
+    ];
+
     public function commentable(): MorphTo  { return $this->morphTo(); }
     public function author(): BelongsTo    { return $this->belongsTo(User::class, 'user_id'); }
     public function parent(): BelongsTo    { return $this->belongsTo(Comment::class, 'parent_id'); }
