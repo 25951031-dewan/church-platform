@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\SettingsController;
 use Illuminate\Support\Facades\Route;
 
-// API v1 routes will be registered here by plugins and core modules.
 Route::prefix('v1')->name('api.v1.')->group(function () {
-    //
+    // Admin settings
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('settings', [SettingsController::class, 'show'])->name('settings.show');
+        Route::patch('settings', [SettingsController::class, 'update'])->name('settings.update');
+    });
 });
