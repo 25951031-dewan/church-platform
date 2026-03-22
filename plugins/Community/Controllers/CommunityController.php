@@ -43,6 +43,7 @@ class CommunityController extends Controller
         ]));
 
         CommunityMember::create(['community_id' => $community->id, 'user_id' => $request->user()->id, 'role' => 'admin', 'status' => 'approved']);
+        $community->increment('members_count');
 
         return response()->json($community->load('creator:id,name,avatar'), 201);
     }
@@ -78,7 +79,9 @@ class CommunityController extends Controller
         $member = CommunityMember::where(['community_id' => $id, 'user_id' => $request->user()->id])->firstOrFail();
         abort_if($member->role === 'admin', 422, 'Admin cannot leave. Transfer ownership first.');
         $member->delete();
-        Community::where('id', $id)->decrement('members_count');
+        if ($member->status === 'approved') {
+            Community::where('id', $id)->decrement('members_count');
+        }
         return response()->json(['message' => 'Left community.']);
     }
 }
