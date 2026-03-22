@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Plugins\Comment\Models\Comment;
 use Plugins\Post\Models\Post;
 
@@ -33,7 +34,12 @@ class CommentController extends Controller
         $validated = $request->validate([
             'post_id'   => ['required', 'integer', 'exists:social_posts,id'],
             'body'      => ['required', 'string', 'max:2000'],
-            'parent_id' => ['nullable', 'integer', 'exists:comments,id'],
+            'parent_id' => [
+                'nullable', 'integer',
+                Rule::exists('comments', 'id')
+                    ->where('commentable_type', Post::class)
+                    ->where('commentable_id', $request->input('post_id')),
+            ],
         ]);
 
         $comment = DB::transaction(function () use ($validated, $request) {
@@ -61,7 +67,15 @@ class CommentController extends Controller
     {
         $comment = Comment::findOrFail($id);
         abort_if($comment->user_id !== $request->user()->id, 403);
-        $comment->delete();
+
+        DB::transaction(function () use ($comment) {
+            $comment->delete();
+            DB::table('social_posts')->where('id', $comment->commentable_id)->decrement('comments_count');
+            if ($comment->parent_id) {
+                Comment::where('id', $comment->parent_id)->decrement('replies_count');
+            }
+        });
+
         return response()->json(['message' => 'Deleted.']);
     }
 }
