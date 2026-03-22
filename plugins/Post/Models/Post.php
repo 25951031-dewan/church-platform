@@ -76,4 +76,21 @@ class Post extends Model
     {
         return $this->morphMany(\Plugins\Reaction\Models\Reaction::class, 'reactable');
     }
+
+    const TYPES = ['post', 'prayer', 'blessing', 'poll', 'bible_study'];
+
+    public function pollVotes(): HasMany
+    {
+        return $this->hasMany(PollVote::class);
+    }
+
+    public function isPoll(): bool
+    {
+        return $this->type === 'poll';
+    }
+
+    public function isPrayerAnswered(): bool
+    {
+        return $this->type === 'prayer' && ($this->meta['answered'] ?? false);
+    }
 }
