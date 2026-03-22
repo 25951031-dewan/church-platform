@@ -31,24 +31,28 @@ class FeedController extends Controller
             }
         }
 
+        $query->when($request->type, fn ($q) => $q->where('type', $request->type));
+
         return response()->json($query->paginate(15));
     }
 
     /** @group Feed @urlParam communityId integer required Example: 1 */
-    public function community(int $communityId): JsonResponse
+    public function community(Request $request, int $communityId): JsonResponse
     {
         return response()->json(
             Post::published()->where('community_id', $communityId)
+                ->when($request->type, fn ($q) => $q->where('type', $request->type))
                 ->with(['author:id,name,avatar'])->withCount(['comments','reactions'])
                 ->latest('published_at')->paginate(15)
         );
     }
 
     /** @group Feed @urlParam churchId integer required Example: 1 */
-    public function church(int $churchId): JsonResponse
+    public function church(Request $request, int $churchId): JsonResponse
     {
         return response()->json(
             Post::published()->where('church_id', $churchId)
+                ->when($request->type, fn ($q) => $q->where('type', $request->type))
                 ->with(['author:id,name,avatar'])->withCount(['comments','reactions'])
                 ->latest('published_at')->paginate(15)
         );
