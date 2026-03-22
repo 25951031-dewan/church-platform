@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'platform.mode' => ResolvePlatformMode::class,
+            'captcha'       => \App\Http\Middleware\VerifyCaptcha::class,
         ]);
 
         $middleware->appendToGroup('api', ResolvePlatformMode::class);
