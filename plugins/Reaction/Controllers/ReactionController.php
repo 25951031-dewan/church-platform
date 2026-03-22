@@ -34,13 +34,17 @@ class ReactionController extends Controller
         $existing = Reaction::where(['reactable_type' => $type, 'reactable_id' => $id, 'user_id' => $request->user()->id])->first();
 
         if ($existing) {
-            $existing->delete();
-            DB::table($table)->where('id', $id)->decrement('reactions_count');
+            DB::transaction(function () use ($existing, $table, $id) {
+                $existing->delete();
+                DB::table($table)->where('id', $id)->decrement('reactions_count');
+            });
             return response()->json(['reacted' => false]);
         }
 
-        Reaction::create(['reactable_type' => $type, 'reactable_id' => $id, 'user_id' => $request->user()->id, 'emoji' => $validated['emoji'] ?? '👍']);
-        DB::table($table)->where('id', $id)->increment('reactions_count');
+        DB::transaction(function () use ($type, $id, $request, $validated, $table) {
+            Reaction::create(['reactable_type' => $type, 'reactable_id' => $id, 'user_id' => $request->user()->id, 'emoji' => $validated['emoji'] ?? '👍']);
+            DB::table($table)->where('id', $id)->increment('reactions_count');
+        });
 
         return response()->json(['reacted' => true], 201);
     }
