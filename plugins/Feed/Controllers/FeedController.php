@@ -24,7 +24,7 @@ class FeedController extends Controller
 
         if ($user) {
             $communityIds = DB::table('community_members')->where('user_id', $user->id)->where('status', 'approved')->pluck('community_id');
-            $churchIds    = DB::table('church_members')->where('user_id', $user->id)->pluck('church_id');
+            $churchIds    = DB::table('church_members')->where('user_id', $user->id)->where('type', 'member')->pluck('church_id');
 
             if ($communityIds->isNotEmpty() || $churchIds->isNotEmpty()) {
                 $query->where(fn ($q) => $q->whereIn('community_id', $communityIds)->orWhereIn('church_id', $churchIds));
