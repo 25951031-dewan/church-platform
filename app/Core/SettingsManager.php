@@ -65,20 +65,32 @@ class SettingsManager
 
     public function flush(): void
     {
-        Cache::forget(self::CACHE_KEY);
+        // Flush all settings-tagged cache entries (theme, menu, platform mode)
+        try {
+            Cache::tags(['settings'])->flush();
+        } catch (\BadMethodCallException) {
+            Cache::forget(self::CACHE_KEY);
+        }
+
         PlatformModeService::flush();
         $this->data = $this->load();
     }
 
     private function load(): array
     {
-        return Cache::remember(self::CACHE_KEY, self::CACHE_TTL, function () {
+        $loader = function () {
             return DB::table('settings')
                 ->get()
                 ->keyBy('key')
                 ->map(fn ($row) => $this->castValue($row->value))
                 ->toArray();
-        });
+        };
+
+        try {
+            return Cache::tags(['settings'])->remember(self::CACHE_KEY, self::CACHE_TTL, $loader);
+        } catch (\BadMethodCallException) {
+            return Cache::remember(self::CACHE_KEY, self::CACHE_TTL, $loader);
+        }
     }
 
     private function castValue(mixed $value): mixed

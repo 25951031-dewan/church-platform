@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Core\MenuBuilder;
 use App\Core\SettingsManager;
+use App\Core\ThemeManager;
 use App\Services\PlatformModeService;
 use Illuminate\Support\ServiceProvider;
 
@@ -12,6 +14,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(SettingsManager::class);
         $this->app->singleton(PlatformModeService::class);
+        $this->app->singleton(ThemeManager::class);
+        $this->app->singleton(MenuBuilder::class);
     }
 
     /**
