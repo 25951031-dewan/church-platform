@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Admin\PageBuilderController;
 use App\Http\Controllers\Api\Admin\SettingsController;
 use App\Http\Controllers\Api\SduiController;
+use App\Http\Controllers\Api\UserProfileController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,10 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             'turnstile_site_key' => $row?->turnstile_site_key ?? null,
         ]);
     })->name('captcha.config');
+    // Profile routes
+    Route::get('users/{id}',  [UserProfileController::class, 'show']);
+    Route::patch('profile',   [UserProfileController::class, 'update'])->middleware('auth:sanctum');
+
     // Admin routes
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('settings', [SettingsController::class, 'show'])->name('settings.show');
