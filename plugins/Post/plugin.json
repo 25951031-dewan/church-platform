@@ -1,0 +1,7 @@
+{
+    "name": "Post",
+    "description": "Social posts with cross-posting to communities and churches via parent_id reshare mechanism.",
+    "version": "1.0.0",
+    "author": "Church Platform",
+    "requires": ["Community"]
+}
