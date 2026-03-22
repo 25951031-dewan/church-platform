@@ -26,6 +26,10 @@ class ReactionController extends Controller
             'emoji'          => ['sometimes', 'string', 'in:' . implode(',', self::ALLOWED)],
         ]);
 
+        // Validate reactable_id exists in the correct table
+        $table = $validated['reactable_type'] === 'post' ? 'social_posts' : 'comments';
+        abort_unless(\Illuminate\Support\Facades\DB::table($table)->where('id', $validated['reactable_id'])->exists(), 422, 'Invalid reactable_id.');
+
         $map   = ['post' => \Plugins\Post\Models\Post::class, 'comment' => \Plugins\Comment\Models\Comment::class];
         $type  = $map[$validated['reactable_type']];
         $id    = $validated['reactable_id'];
