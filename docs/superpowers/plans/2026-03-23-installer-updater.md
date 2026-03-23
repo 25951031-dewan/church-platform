@@ -1451,7 +1451,8 @@ class UpdaterController extends Controller
         endpoint cannot be triggered by anyone who doesn't have a valid signed token
         (signed middleware verifies the Laravel URL signature).
     --}}
-    <button id="updateBtn" data-url="{{ URL::signedRoute('update.run') }}"
+    {{-- temporarySignedRoute expires in 10 min — prevents replay of a destructive action --}}
+    <button id="updateBtn" data-url="{{ URL::temporarySignedRoute('update.run', now()->addMinutes(10)) }}"
         class="w-full py-2.5 rounded-xl font-semibold text-sm bg-blue-600 text-white hover:bg-blue-700 transition-colors">
         Update Now to v{{ $versionInfo['latest'] }}
     </button>
