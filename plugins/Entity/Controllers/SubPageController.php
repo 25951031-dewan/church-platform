@@ -34,28 +34,28 @@ class SubPageController extends Controller
         abort_unless($parent->isAdmin($request->user()->id), 403, 'Only page admins may create sub-pages.');
 
         $data = $request->validate([
-            'name'        => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:2000',
-            'website'     => 'nullable|url',
-            'address'     => 'nullable|string|max:500',
-            'phone'       => 'nullable|string|max:50',
+            'website' => 'nullable|url',
+            'address' => 'nullable|string|max:500',
+            'phone' => 'nullable|string|max:50',
         ]);
 
         $slug = $this->uniqueSlug(Str::slug($data['name']));
 
         $subPage = ChurchEntity::create(array_merge($data, [
-            'type'             => 'page',
-            'owner_id'         => $request->user()->id,
-            'slug'             => $slug,
+            'type' => 'page',
+            'owner_id' => $request->user()->id,
+            'slug' => $slug,
             'parent_entity_id' => $parent->id,
         ]));
 
         // Auto-add creator as admin member of the sub-page
         EntityMember::create([
             'entity_id' => $subPage->id,
-            'user_id'   => $request->user()->id,
-            'role'      => 'admin',
-            'status'    => 'approved',
+            'user_id' => $request->user()->id,
+            'role' => 'admin',
+            'status' => 'approved',
         ]);
 
         $subPage->increment('members_count');
@@ -66,11 +66,11 @@ class SubPageController extends Controller
     private function uniqueSlug(string $base): string
     {
         $slug = $base;
-        $i    = 1;
+        $i = 1;
         while (ChurchEntity::where('slug', $slug)->exists()) {
-            $slug = $base . '-' . $i++;
+            $slug = $base.'-'.$i++;
         }
 
-        return $slug ?: 'page-' . uniqid();
+        return $slug ?: 'page-'.uniqid();
     }
 }
