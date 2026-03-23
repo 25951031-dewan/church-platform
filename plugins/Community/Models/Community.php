@@ -4,6 +4,7 @@ namespace Plugins\Community\Models;
 
 use App\Models\Church;
 use App\Models\User;
+use Database\Factories\CommunityFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,9 +16,9 @@ class Community extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected static function newFactory(): \Database\Factories\CommunityFactory
+    protected static function newFactory(): CommunityFactory
     {
-        return \Database\Factories\CommunityFactory::new();
+        return CommunityFactory::new();
     }
 
     protected $fillable = [
@@ -29,13 +30,13 @@ class Community extends Model
     ];
 
     protected $casts = [
-        'is_counsel_group'      => 'boolean',
-        'requires_approval'     => 'boolean',
-        'is_anonymous_posting'  => 'boolean',
-        'privacy_closed'        => 'boolean',
-        'counsellor_ids'        => 'array',
-        'members_count'         => 'integer',
-        'posts_count'           => 'integer',
+        'is_counsel_group' => 'boolean',
+        'requires_approval' => 'boolean',
+        'is_anonymous_posting' => 'boolean',
+        'privacy_closed' => 'boolean',
+        'counsellor_ids' => 'array',
+        'members_count' => 'integer',
+        'posts_count' => 'integer',
     ];
 
     public function church(): BelongsTo

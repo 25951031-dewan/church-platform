@@ -37,20 +37,20 @@ class CounselGroupController extends Controller
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'name'                 => ['required', 'string', 'max:255'],
-            'description'          => ['nullable', 'string'],
-            'church_id'            => ['nullable', 'integer', 'exists:churches,id'],
-            'requires_approval'    => ['boolean'],
-            'counsellor_ids'       => ['nullable', 'array'],
-            'counsellor_ids.*'     => ['integer', 'exists:users,id'],
-            'max_members'          => ['nullable', 'integer', 'min:2'],
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'church_id' => ['nullable', 'integer', 'exists:churches,id'],
+            'requires_approval' => ['boolean'],
+            'counsellor_ids' => ['nullable', 'array'],
+            'counsellor_ids.*' => ['integer', 'exists:users,id'],
+            'max_members' => ['nullable', 'integer', 'min:2'],
             'is_anonymous_posting' => ['boolean'],
         ]);
 
-        $data['slug']             = Str::slug($data['name']).'-'.Str::random(6);
+        $data['slug'] = Str::slug($data['name']).'-'.Str::random(6);
         $data['is_counsel_group'] = true;
-        $data['privacy']          = 'private';
-        $data['created_by']       = $request->user()?->id;
+        $data['privacy'] = 'private';
+        $data['created_by'] = $request->user()?->id;
 
         $group = Community::create($data);
 
@@ -58,9 +58,9 @@ class CounselGroupController extends Controller
         if ($request->user()) {
             CommunityMember::create([
                 'community_id' => $group->id,
-                'user_id'      => $request->user()->id,
-                'role'         => 'admin',
-                'status'       => 'approved',
+                'user_id' => $request->user()->id,
+                'role' => 'admin',
+                'status' => 'approved',
             ]);
         }
 
@@ -80,7 +80,7 @@ class CounselGroupController extends Controller
 
         $existing = CommunityMember::where([
             'community_id' => $counselGroup->id,
-            'user_id'      => $request->user()->id,
+            'user_id' => $request->user()->id,
         ])->first();
 
         if ($existing) {
@@ -89,9 +89,9 @@ class CounselGroupController extends Controller
 
         $member = CommunityMember::create([
             'community_id' => $counselGroup->id,
-            'user_id'      => $request->user()->id,
-            'role'         => 'member',
-            'status'       => $counselGroup->requires_approval ? 'pending' : 'approved',
+            'user_id' => $request->user()->id,
+            'role' => 'member',
+            'status' => $counselGroup->requires_approval ? 'pending' : 'approved',
         ]);
 
         if ($member->isApproved()) {
@@ -116,8 +116,8 @@ class CounselGroupController extends Controller
 
         $membership = CommunityMember::where([
             'community_id' => $counselGroup->id,
-            'user_id'      => $userId,
-            'status'       => 'pending',
+            'user_id' => $userId,
+            'status' => 'pending',
         ])->firstOrFail();
 
         $membership->update(['status' => 'approved']);

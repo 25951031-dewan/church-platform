@@ -1,4 +1,5 @@
 <?php
+
 namespace Plugins\Community\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -18,7 +19,7 @@ class CommunityController extends Controller
         $communities = Community::regularGroups()->active()
             ->with('creator:id,name,avatar')
             ->withCount('approvedMembers')
-            ->when($request->search,    fn ($q) => $q->where('name', 'like', "%{$request->search}%"))
+            ->when($request->search, fn ($q) => $q->where('name', 'like', "%{$request->search}%"))
             ->when($request->church_id, fn ($q) => $q->where('church_id', $request->church_id))
             ->latest()->paginate(20);
 
@@ -29,6 +30,7 @@ class CommunityController extends Controller
 
             $communities->getCollection()->transform(function ($c) use ($myMemberships) {
                 $c->my_status = $myMemberships->get($c->id);
+
                 return $c;
             });
         }
@@ -38,6 +40,7 @@ class CommunityController extends Controller
 
     /**
      * @group Communities
+     *
      * @bodyParam name        string  required Example: "Sunday Youth"
      * @bodyParam description string  optional
      * @bodyParam privacy     string  optional public|private
@@ -46,15 +49,15 @@ class CommunityController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'name'        => ['required', 'string', 'max:100'],
+            'name' => ['required', 'string', 'max:100'],
             'description' => ['nullable', 'string', 'max:1000'],
-            'privacy'     => ['sometimes', 'in:public,private,closed'],
-            'church_id'   => ['nullable', 'integer', 'exists:churches,id'],
+            'privacy' => ['sometimes', 'in:public,private,closed'],
+            'church_id' => ['nullable', 'integer', 'exists:churches,id'],
         ]);
 
         $isClosed = ($validated['privacy'] ?? 'public') === 'closed';
         $validated['requires_approval'] = $isClosed;
-        $validated['privacy_closed']    = $isClosed ? '1' : '0';
+        $validated['privacy_closed'] = $isClosed ? '1' : '0';
         if ($isClosed) {
             $validated['privacy'] = 'private';
         }
@@ -90,7 +93,9 @@ class CommunityController extends Controller
             $memberStatus = $community->requires_approval ? 'pending' : 'approved';
             CommunityMember::create(['community_id' => $id, 'user_id' => $request->user()->id, 'role' => 'member', 'status' => $memberStatus]);
 
-            if ($memberStatus === 'approved') { $community->increment('members_count'); }
+            if ($memberStatus === 'approved') {
+                $community->increment('members_count');
+            }
 
             return $memberStatus;
         });
@@ -107,6 +112,7 @@ class CommunityController extends Controller
         if ($member->status === 'approved') {
             Community::where('id', $id)->decrement('members_count');
         }
+
         return response()->json(['message' => 'Left community.']);
     }
 }
