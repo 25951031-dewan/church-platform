@@ -3,14 +3,17 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Plugins\Community\Models\CommunityMember;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    /** @use HasFactory<UserFactory> */
+    use HasFactory, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -53,11 +56,11 @@ class User extends Authenticatable
 
     public function churchMemberships()
     {
-        return $this->hasMany(\App\Models\ChurchMember::class);
+        return $this->hasMany(ChurchMember::class);
     }
 
     public function communities()
     {
-        return $this->hasMany(\Plugins\Community\Models\CommunityMember::class);
+        return $this->hasMany(CommunityMember::class);
     }
 }
