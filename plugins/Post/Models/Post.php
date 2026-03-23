@@ -4,21 +4,24 @@ namespace Plugins\Post\Models;
 
 use App\Models\Church;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
+use Database\Factories\PostFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Plugins\Comment\Models\Comment;
 use Plugins\Community\Models\Community;
+use Plugins\Reaction\Models\Reaction;
 
 class Post extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected static function newFactory(): \Database\Factories\PostFactory
+    protected static function newFactory(): PostFactory
     {
-        return \Database\Factories\PostFactory::new();
+        return PostFactory::new();
     }
 
     protected $table = 'social_posts';
@@ -31,14 +34,14 @@ class Post extends Model
     ];
 
     protected $casts = [
-        'media'         => 'array',
-        'meta'          => 'array',
-        'is_anonymous'  => 'boolean',
-        'published_at'  => 'datetime',
-        'shares_count'  => 'integer',
-        'is_pinned'     => 'boolean',
-        // is_approved intentionally NOT cast — nullable tri-state: null=pending, true=approved, false=rejected
-        'approved_by'   => 'integer',
+        'media' => 'array',
+        'meta' => 'array',
+        'is_anonymous' => 'boolean',
+        'published_at' => 'datetime',
+        'shares_count' => 'integer',
+        'is_pinned' => 'boolean',
+        'is_approved' => 'boolean',
+        'approved_by' => 'integer',
     ];
 
     public function author(): BelongsTo
@@ -77,15 +80,15 @@ class Post extends Model
         return $this->parent_id !== null;
     }
 
-    public function comments(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    public function comments(): MorphMany
     {
-        return $this->morphMany(\Plugins\Comment\Models\Comment::class, 'commentable')
-                    ->whereNull('parent_id')->latest();
+        return $this->morphMany(Comment::class, 'commentable')
+            ->whereNull('parent_id')->latest();
     }
 
-    public function reactions(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    public function reactions(): MorphMany
     {
-        return $this->morphMany(\Plugins\Reaction\Models\Reaction::class, 'reactable');
+        return $this->morphMany(Reaction::class, 'reactable');
     }
 
     const TYPES = ['post', 'prayer', 'blessing', 'poll', 'bible_study'];
