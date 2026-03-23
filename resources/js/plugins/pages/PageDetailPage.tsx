@@ -25,6 +25,12 @@ export function PageDetailPage() {
     },
   })
 
+  const { data: subPages } = useQuery({
+    queryKey: ['page-sub-pages', page?.id],
+    queryFn:  () => axios.get(`/api/v1/pages/${page!.id}/sub-pages`).then(r => r.data.data ?? []),
+    enabled: !!page,
+  })
+
   if (isLoading) {
     return (
       <div className="max-w-3xl mx-auto">
@@ -122,6 +128,34 @@ export function PageDetailPage() {
           {page.address && <span className="flex items-center gap-2">📍 {page.address}</span>}
           {page.phone   && <span className="flex items-center gap-2">📞 {page.phone}</span>}
         </div>
+      )}
+
+      {/* Sub-pages (Ministry Hub) */}
+      {subPages && subPages.length > 0 && (
+          <div className="px-6 py-6 border-t border-gray-100">
+              <h2 className="text-base font-semibold text-gray-900 mb-4">Ministries</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {subPages.map((sp: { id: number; name: string; slug: string; profile_image?: string; approved_members_count?: number }) => (
+                      <button
+                          key={sp.id}
+                          onClick={() => navigate(`/pages/${sp.slug}`)}
+                          className="flex flex-col items-center gap-2 p-3 rounded-xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50 transition-colors text-left"
+                      >
+                          <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center overflow-hidden">
+                              {sp.profile_image ? (
+                                  <img src={sp.profile_image} alt={sp.name} className="w-full h-full object-cover" />
+                              ) : (
+                                  <span className="text-xl font-bold text-blue-600">{sp.name[0]}</span>
+                              )}
+                          </div>
+                          <span className="text-xs font-medium text-gray-800 text-center leading-tight">{sp.name}</span>
+                          {sp.approved_members_count !== undefined && (
+                              <span className="text-xs text-gray-400">{sp.approved_members_count} members</span>
+                          )}
+                      </button>
+                  ))}
+              </div>
+          </div>
       )}
 
       {/* Posts placeholder — Sprint 7 will add entity-scoped feed */}
