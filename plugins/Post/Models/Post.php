@@ -25,16 +25,19 @@ class Post extends Model
 
     protected $fillable = [
         'user_id', 'church_id', 'community_id', 'parent_id',
+        'entity_id', 'posted_as', 'actor_entity_id', 'is_approved', 'is_pinned',
         'type', 'body', 'media', 'meta',
         'is_anonymous', 'status', 'published_at',
     ];
 
     protected $casts = [
-        'media'         => 'array',
-        'meta'          => 'array',
-        'is_anonymous'  => 'boolean',
-        'published_at'  => 'datetime',
-        'shares_count'  => 'integer',
+        'media'        => 'array',
+        'meta'         => 'array',
+        'is_anonymous' => 'boolean',
+        'is_approved'  => 'boolean',
+        'is_pinned'    => 'boolean',
+        'published_at' => 'datetime',
+        'shares_count' => 'integer',
     ];
 
     public function author(): BelongsTo
@@ -50,6 +53,16 @@ class Post extends Model
     public function community(): BelongsTo
     {
         return $this->belongsTo(Community::class);
+    }
+
+    public function entity(): BelongsTo
+    {
+        return $this->belongsTo(\Plugins\Entity\Models\ChurchEntity::class, 'entity_id');
+    }
+
+    public function entityActor(): BelongsTo
+    {
+        return $this->belongsTo(\Plugins\Entity\Models\ChurchEntity::class, 'actor_entity_id');
     }
 
     public function parent(): BelongsTo
