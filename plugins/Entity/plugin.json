@@ -1,0 +1,14 @@
+{
+  "name": "Entity",
+  "slug": "entity",
+  "version": "1.0.0",
+  "description": "Church pages and communities — ministry pages, campuses, departments.",
+  "author": "Church Platform",
+  "icon": "flag",
+  "category": "Feature",
+  "requires": [],
+  "settings_page": false,
+  "can_disable": false,
+  "can_remove": false,
+  "enabled_by_default": true
+}
