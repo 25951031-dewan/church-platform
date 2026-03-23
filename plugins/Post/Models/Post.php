@@ -27,6 +27,7 @@ class Post extends Model
         'user_id', 'church_id', 'community_id', 'parent_id',
         'type', 'body', 'media', 'meta',
         'is_anonymous', 'status', 'published_at',
+        'is_pinned', 'is_approved', 'approved_by',
     ];
 
     protected $casts = [
@@ -35,6 +36,9 @@ class Post extends Model
         'is_anonymous'  => 'boolean',
         'published_at'  => 'datetime',
         'shares_count'  => 'integer',
+        'is_pinned'     => 'boolean',
+        // is_approved intentionally NOT cast — nullable tri-state: null=pending, true=approved, false=rejected
+        'approved_by'   => 'integer',
     ];
 
     public function author(): BelongsTo

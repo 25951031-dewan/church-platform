@@ -18,8 +18,9 @@ class ChurchEntityFactory extends Factory
             'owner_id'    => User::factory(),
             'name'        => ucwords($name),
             'slug'        => Str::slug($name) . '-' . $this->faker->randomNumber(4),
-            'description' => $this->faker->sentence(),
-            'is_active'   => true,
+            'description'               => $this->faker->sentence(),
+            'is_active'                 => true,
+            'verification_requested_at' => null,
         ];
     }
 
