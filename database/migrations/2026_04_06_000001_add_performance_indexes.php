@@ -9,6 +9,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (DB::getDriverName() !== 'mysql') {
+            return;
+        }
+
         // social_posts indexes
         if (Schema::hasTable('social_posts')) {
             Schema::table('social_posts', function (Blueprint $table) {

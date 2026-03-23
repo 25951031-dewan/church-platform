@@ -10,4 +10,5 @@ return [
     Plugins\Comment\CommentServiceProvider::class,
     Plugins\Reaction\ReactionServiceProvider::class,
     Plugins\Feed\FeedServiceProvider::class,
+    Plugins\Event\EventServiceProvider::class,
 ];
