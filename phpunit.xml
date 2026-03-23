@@ -18,7 +18,6 @@
         </include>
     </source>
     <php>
-        <env name="APP_BASE_PATH" value="/Users/siku/Documents/GitHub/church-platform/.worktrees/sprint-5" force="true"/>
         <env name="APP_ENV" value="testing" force="true"/>
         <env name="APP_KEY" value="base64:73ONEIIF3AeUalDxIl7KfNUfBwfV5uWBdFW3fLhFQpc=" force="true"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file" force="true"/>
