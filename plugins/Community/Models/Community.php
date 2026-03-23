@@ -27,6 +27,7 @@ class Community extends Model
         'members_count', 'posts_count',
         'is_counsel_group', 'requires_approval',
         'counsellor_ids', 'max_members', 'is_anonymous_posting',
+        'community_type',
     ];
 
     protected $casts = [
@@ -93,6 +94,19 @@ class Community extends Model
     public function isClosed(): bool
     {
         return (bool) $this->privacy_closed;
+    }
+
+    /** Human-readable label for the community type. */
+    public function communityTypeLabel(): ?string
+    {
+        return match ($this->community_type) {
+            'small_group' => 'Small Group',
+            'prayer_circle' => 'Prayer Circle',
+            'bible_study' => 'Bible Study',
+            'ministry_team' => 'Ministry Team',
+            'choir' => 'Choir',
+            default => null,
+        };
     }
 
     public function isAdmin(int $userId): bool

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Plugins\Community\Models\Community;
 use Plugins\Community\Models\CommunityMember;
 
@@ -53,7 +54,10 @@ class CommunityController extends Controller
             'description' => ['nullable', 'string', 'max:1000'],
             'privacy' => ['sometimes', 'in:public,private,closed'],
             'church_id' => ['nullable', 'integer', 'exists:churches,id'],
+            'community_type' => ['nullable', 'in:small_group,prayer_circle,bible_study,ministry_team,choir'],
         ]);
+
+        $validated['slug'] = Str::slug($validated['name']).'-'.Str::random(6);
 
         $isClosed = ($validated['privacy'] ?? 'public') === 'closed';
         $validated['requires_approval'] = $isClosed;
