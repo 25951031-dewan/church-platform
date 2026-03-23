@@ -5,6 +5,7 @@ namespace Plugins\Installer\Services;
 use App\Models\Church;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
@@ -62,7 +63,10 @@ class InstallerService
 
         $tmp = $this->envPath.'.tmp.'.uniqid();
         file_put_contents($tmp, implode("\n", $updated)."\n");
-        rename($tmp, $this->envPath);
+        if (! rename($tmp, $this->envPath)) {
+            @unlink($tmp);
+            throw new \RuntimeException("Failed to atomically write {$this->envPath}");
+        }
     }
 
     private function formatEnvLine(string $key, mixed $value): string
@@ -82,14 +86,14 @@ class InstallerService
         $bootstrapCache = $this->basePath.'/bootstrap/cache';
         if (! is_dir($bootstrapCache)) {
             mkdir($bootstrapCache, 0775, true);
+            chmod($bootstrapCache, 0775);
         }
-        chmod($bootstrapCache, 0775);
 
         foreach ($this->storageDirs() as $dir) {
             if (! is_dir($dir)) {
                 mkdir($dir, 0775, true);
+                chmod($dir, 0775);
             }
-            chmod($dir, 0775);
         }
     }
 
@@ -199,9 +203,17 @@ HTACCESS);
 
     public function testConnection(array $config): bool
     {
+        $required = ['host', 'port', 'database', 'username', 'password'];
+        foreach ($required as $key) {
+            if (! array_key_exists($key, $config)) {
+                return false;
+            }
+        }
         try {
-            $dsn = "mysql:host={$config['host']};port={$config['port']};dbname={$config['database']}";
-            new \PDO($dsn, $config['username'], $config['password']);
+            $dsn = 'mysql:host='.$config['host']
+                 .';port='.(int) $config['port']
+                 .';dbname='.$config['database'];
+            new \PDO($dsn, $config['username'], $config['password'] ?? '');
 
             return true;
         } catch (\PDOException) {
@@ -232,7 +244,7 @@ HTACCESS);
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'password' => Hash::make($data['password']),
         ]);
         $user->assignRole('admin');
 
@@ -257,7 +269,7 @@ HTACCESS);
     public function lockInstaller(): void
     {
         // MUST be called before warmCaches() so installer routes are absent from route cache.
-        file_put_contents(storage_path('installed.lock'), now()->toIso8601String());
+        file_put_contents($this->storagePath.'/installed.lock', now()->toIso8601String());
     }
 
     public function warmCaches(): void
