@@ -322,9 +322,219 @@ Standard Laravel front-controller rewrite (identical to Laravel 11 skeleton defa
 
 ---
 
-## Out of Scope
+## Out of Scope (installer only)
 
 - `npm install` / `npm run build` — Vite assets assumed pre-built in `public/build/`
 - Multi-database support (Postgres, SQLite) — MySQL only; changeable in `.env` post-install
 - Email/SMTP configuration — set in `.env` post-install
-- Re-installer / upgrade wizard — separate concern
+
+---
+
+---
+
+# Platform Update System — Design Spec
+**Appended:** 2026-03-23
+
+---
+
+## Overview
+
+A self-contained update system that lets administrators update the platform to the latest version with one click from the browser (`/update`) or via terminal (`php artisan church:update`). Zero manual shell work. Both paths share a single `UpdaterService`.
+
+The update sequence puts the site into maintenance mode, pulls new code, runs migrations, warms caches, then brings the site back up — all with real-time progress output.
+
+---
+
+## Architecture
+
+```
+plugins/Installer/
+  Controllers/
+    UpdaterController.php          ← GET /update (dashboard) + POST /update/run (trigger)
+  Services/
+    UpdaterService.php             ← all update logic, shared by web + CLI
+  Commands/
+    UpdateCommand.php              ← php artisan church:update
+  resources/views/installer/
+    update.blade.php               ← admin update dashboard (version info + button)
+    update-stream.blade.php        ← SSE progress log view
+```
+
+Lives inside the same `InstallerPlugin` — no new plugin needed.
+
+---
+
+## Routes
+
+| Method | URI | Middleware | Action |
+|--------|-----|-----------|--------|
+| GET | `/update` | `web`, `auth`, `role:admin` | Show version dashboard |
+| POST | `/update/run` | `web`, `auth`, `role:admin` | Trigger update, stream SSE output |
+
+> **Auth guard:** Uses `auth` (web session) + Spatie `role:admin` middleware. Unlike `/install`, these routes are always registered (the installer lock does not affect them). They are only accessible when `APP_INSTALLED=true` and the user is an authenticated admin.
+
+---
+
+## Version Tracking
+
+`config/version.php`:
+```php
+return [
+    'current' => env('APP_VERSION', '1.0.0'),
+    'releases_api' => 'https://api.github.com/repos/YOUR_ORG/church-platform/releases/latest',
+];
+```
+
+`UpdaterService::checkForUpdate(): array` fetches the GitHub releases API (HTTP GET, cached for 1 hour via Laravel Cache) and returns:
+```php
+['current' => '1.0.0', 'latest' => '1.2.0', 'update_available' => true, 'release_url' => '...']
+```
+
+The dashboard (`GET /update`) shows current vs latest version and an "Update Now" button if `update_available` is true.
+
+---
+
+## Update Source — Git Primary, ZIP Fallback
+
+`UpdaterService::pullLatestCode(): void`
+
+1. Check if `.git/` directory exists in `base_path()`
+2. **Git path (primary):**
+   ```
+   Process::run(['/usr/bin/git', 'pull', 'origin', 'main', '--ff-only'])
+   ```
+   Uses absolute `/usr/bin/git` path (reliable in web-server environments where PATH is minimal).
+3. **ZIP fallback** (if no `.git/`):
+   - Download release ZIP from GitHub releases API
+   - Extract to a temp directory
+   - Copy files over (excluding `.env`, `storage/`, `public/build/`)
+   - Clean up temp directory
+
+---
+
+## Update Sequence (Ordered)
+
+Both web and CLI follow this exact sequence via `UpdaterService`:
+
+```
+1. checkConcurrency()        — abort if storage/updating.lock exists
+2. writeLock()               — create storage/updating.lock
+3. maintenanceOn()           — Artisan::call('down')
+4. pullLatestCode()          — git pull OR zip download
+5. composerInstall()         — Process::run([PHP_BINARY, '../composer.phar', 'install', '--no-dev', '--optimize-autoloader'])
+6. runMigrations()           — Process::run([PHP_BINARY, 'artisan', 'migrate', '--force'])
+7. warmCaches()              — Artisan::call('config:cache') + Artisan::call('route:cache')
+8. maintenanceOff()          — Artisan::call('up')
+9. releaseLock()             — unlink storage/updating.lock
+10. writeNewVersion()        — update APP_VERSION in .env via updateEnv()
+```
+
+If any step throws, the catch block calls `maintenanceOff()` + `releaseLock()` and re-throws so the error surfaces in the stream.
+
+---
+
+## Real-Time Progress — SSE Stream
+
+`POST /update/run` returns a `StreamedResponse` with `Content-Type: text/event-stream`. Each step emits an event line:
+
+```
+data: {"step": "pullLatestCode", "status": "running", "message": "Pulling latest code…"}\n\n
+data: {"step": "pullLatestCode", "status": "done",    "message": "✅ Code updated"}\n\n
+data: {"step": "runMigrations",  "status": "running", "message": "Running migrations…"}\n\n
+...
+data: {"step": "complete",       "status": "done",    "message": "🎉 Update complete — v1.2.0"}\n\n
+```
+
+The `update.blade.php` page opens an `EventSource('/update/run')` on button click, appending each message line to a log `<div>`. On `complete` event, shows a "Reload Page" button.
+
+On error:
+```
+data: {"step": "...", "status": "error", "message": "❌ Migration failed: ..."}\n\n
+```
+The page shows the error inline; site is already brought back up by the catch block.
+
+---
+
+## Artisan Command — `php artisan church:update`
+
+```
+$ php artisan church:update
+
+Church Platform Updater
+  Current version: 1.0.0
+  Latest version:  1.2.0  ← update available
+
+  Checking for concurrent update...  ✅
+  Enabling maintenance mode...       ✅
+  Pulling latest code...             ✅ (git pull)
+  Installing dependencies...         ✅
+  Running migrations...              ✅
+  Warming caches...                  ✅
+  Disabling maintenance mode...      ✅
+  Version updated to 1.2.0           ✅
+
+  🎉 Update complete!
+```
+
+If already on latest: `Already on latest version (1.2.0). No update needed.`
+If `updating.lock` exists: `Update already in progress. If stuck, delete storage/updating.lock.`
+
+---
+
+## UpdaterService — Method List
+
+```php
+class UpdaterService
+{
+    public function checkForUpdate(): array          // GitHub API version compare (cached 1hr)
+    public function checkConcurrency(): void         // throws if updating.lock exists
+    public function writeLock(): void                // create storage/updating.lock
+    public function releaseLock(): void              // unlink storage/updating.lock (in finally block)
+    public function maintenanceOn(): void            // Artisan::call('down')
+    public function maintenanceOff(): void           // Artisan::call('up')
+    public function pullLatestCode(): string         // git pull or zip; returns method used
+    public function composerInstall(): void          // Process::run([PHP_BINARY, ...])
+    public function runMigrations(): void            // Process::run([PHP_BINARY, 'artisan', 'migrate', '--force'])
+    public function warmCaches(): void               // config:cache + route:cache
+    public function writeNewVersion(string $v): void // updateEnv(['APP_VERSION' => $v])
+}
+```
+
+`UpdaterService` re-uses `InstallerService::updateEnv()` for `.env` writes — no duplication.
+
+---
+
+## Security
+
+| Concern | Mitigation |
+|---------|-----------|
+| Unauthorised trigger | `auth` + `role:admin` middleware on all `/update` routes |
+| Concurrent updates | `updating.lock` file; checked before any destructive action |
+| CSRF | POST `/update/run` under `web` middleware; form includes `@csrf` |
+| `.env` exposure | Same `public/.htaccess` block from installer |
+| Git credentials in logs | `Process::run()` output piped to SSE stream only, never written to log files |
+| Downtime window | Maintenance mode wraps the entire update; users see Laravel's maintenance page |
+| Rollback | Out of scope — git revert is the recovery path for failed updates |
+
+---
+
+## UI — Update Dashboard (`GET /update`)
+
+```
+┌─────────────────────────────────────────────────────┐
+│  Church Platform — System Update                    │
+│                                                     │
+│  Current version   1.0.0                           │
+│  Latest version    1.2.0  🟢 Update available      │
+│                                                     │
+│  ⚠ This will put the site in maintenance mode      │
+│    for approximately 30–60 seconds.                 │
+│                                                     │
+│  [ Update Now ]                                     │
+│                                                     │
+│  ──── Update Log ─────────────────────────────────  │
+│  (log lines stream here on click)                  │
+└─────────────────────────────────────────────────────┘
+```
+
+Tailwind CDN — no build step. Uses the same `layout.blade.php` as the installer.
