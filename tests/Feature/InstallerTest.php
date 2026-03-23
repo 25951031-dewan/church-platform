@@ -112,3 +112,13 @@ test('POST /install/step3 validates admin fields', function () {
          ->post('/install/step3', [])
          ->assertSessionHasErrors(['admin_name', 'admin_email', 'admin_password']);
 });
+
+test('church:install exits early when already installed', function () {
+    file_put_contents(storage_path('installed.lock'), now()->toIso8601String());
+
+    $this->artisan('church:install')
+         ->expectsOutputToContain('Already installed')
+         ->assertExitCode(1);
+
+    unlink(storage_path('installed.lock'));
+});
