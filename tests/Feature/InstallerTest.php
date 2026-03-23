@@ -80,3 +80,35 @@ test('seedRoles creates admin church_leader and member roles', function () {
     expect(Role::where('name', 'church_leader')->exists())->toBeTrue();
     expect(Role::where('name', 'member')->exists())->toBeTrue();
 });
+
+test('GET /install/step1 shows requirements checklist', function () {
+    if (file_exists(storage_path('installed.lock'))) unlink(storage_path('installed.lock'));
+    $this->get('/install/step1')->assertStatus(200)->assertSee('Requirements');
+});
+
+test('POST /install/step1 redirects to step2', function () {
+    if (file_exists(storage_path('installed.lock'))) unlink(storage_path('installed.lock'));
+    // withoutMiddleware bypasses VerifyCsrfToken — installer web routes require CSRF
+    $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class)
+         ->post('/install/step1')
+         ->assertRedirect('/install/step2');
+});
+
+test('POST /install/step2 validates required db fields', function () {
+    if (file_exists(storage_path('installed.lock'))) unlink(storage_path('installed.lock'));
+    $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class)
+         ->post('/install/step2', [])
+         ->assertSessionHasErrors(['db_host', 'db_database', 'db_username']);
+});
+
+test('GET /install/step3 shows admin form', function () {
+    if (file_exists(storage_path('installed.lock'))) unlink(storage_path('installed.lock'));
+    $this->get('/install/step3')->assertStatus(200)->assertSee('Admin');
+});
+
+test('POST /install/step3 validates admin fields', function () {
+    if (file_exists(storage_path('installed.lock'))) unlink(storage_path('installed.lock'));
+    $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class)
+         ->post('/install/step3', [])
+         ->assertSessionHasErrors(['admin_name', 'admin_email', 'admin_password']);
+});
