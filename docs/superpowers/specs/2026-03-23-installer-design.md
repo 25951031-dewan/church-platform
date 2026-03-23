@@ -141,7 +141,7 @@ APP_KEY=base64:...generated...      ← written by key:generate
    DB_PASSWORD=secret
    ```
 4. Run `Artisan::call('config:clear')`
-5. Run `php artisan migrate --force` via `Process::run()` (spawns fresh PHP process that reads the newly-written `.env`)
+5. Run `Process::run([PHP_BINARY, 'artisan', 'migrate', '--force'])` — `PHP_BINARY` ensures the same interpreter version runs migrations as is serving the current request
 6. Redirect to `GET /install/step3`
 
 ---
@@ -213,7 +213,8 @@ class InstallerService
         // raw PDO, never logs credentials
 
     public function runMigrations(): void
-        // Process::run(['php', 'artisan', 'migrate', '--force'])
+        // Process::run([PHP_BINARY, 'artisan', 'migrate', '--force'])
+        // PHP_BINARY ensures the same PHP version runs migrations as is serving the web request
 
     // Step 3 — finalise
     public function seedRoles(): void
