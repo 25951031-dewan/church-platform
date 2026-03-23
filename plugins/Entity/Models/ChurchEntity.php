@@ -6,6 +6,8 @@ use App\Models\User;
 use Database\Factories\ChurchEntityFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
@@ -52,26 +54,36 @@ class ChurchEntity extends Model
     }
 
     // Relations
-    public function owner()
+    public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function members()
+    public function members(): HasMany
     {
         return $this->hasMany(EntityMember::class, 'entity_id');
     }
 
-    public function approvedMembers()
+    public function approvedMembers(): HasMany
     {
         return $this->hasMany(EntityMember::class, 'entity_id')->where('status', 'approved');
     }
 
-    public function admins()
+    public function admins(): HasMany
     {
         return $this->hasMany(EntityMember::class, 'entity_id')
             ->whereIn('role', ['admin', 'moderator'])
             ->where('status', 'approved');
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(ChurchEntity::class, 'parent_entity_id');
+    }
+
+    public function subPages(): HasMany
+    {
+        return $this->hasMany(ChurchEntity::class, 'parent_entity_id');
     }
 
     // Helpers

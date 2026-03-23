@@ -6,7 +6,16 @@ interface Community {
     id: number; name: string; description?: string;
     members_count: number; privacy: string; privacy_closed: boolean; cover_image?: string;
     my_status?: 'approved' | 'pending' | null;
+    community_type?: string;
 }
+
+const TYPE_BADGES: Record<string, { label: string; color: string }> = {
+    small_group:   { label: 'Small Group',   color: '#6366f1' },
+    prayer_circle: { label: 'Prayer Circle', color: '#8b5cf6' },
+    bible_study:   { label: 'Bible Study',   color: '#0ea5e9' },
+    ministry_team: { label: 'Ministry Team', color: '#10b981' },
+    choir:         { label: 'Choir',         color: '#f59e0b' },
+};
 
 export default function CommunityPage() {
     const navigate    = useNavigate();
@@ -60,6 +69,20 @@ export default function CommunityPage() {
                                     {c.members_count} members · {c.privacy_closed ? 'Closed' : c.privacy}
                                 </div>
                                 {c.description && <p style={{ fontSize: '0.8rem', color: '#475569', marginBottom: '0.5rem' }}>{c.description}</p>}
+                                {c.community_type && TYPE_BADGES[c.community_type] && (
+                                    <span style={{
+                                        display: 'inline-block',
+                                        fontSize: '0.7rem',
+                                        fontWeight: 600,
+                                        padding: '0.1rem 0.5rem',
+                                        borderRadius: 99,
+                                        background: TYPE_BADGES[c.community_type].color + '1a',
+                                        color: TYPE_BADGES[c.community_type].color,
+                                        marginBottom: '0.4rem',
+                                    }}>
+                                        {TYPE_BADGES[c.community_type].label}
+                                    </span>
+                                )}
                             </div>
                         </div>
                         <div style={{ padding: '0 0.75rem 0.75rem' }}>

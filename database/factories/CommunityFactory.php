@@ -12,24 +12,25 @@ class CommunityFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'              => $this->faker->words(3, true),
-            'slug'              => $this->faker->unique()->slug(),
-            'description'       => $this->faker->sentence(),
-            'privacy'           => 'public',
-            'privacy_closed'    => '0',
-            'status'            => 'active',
-            'is_counsel_group'  => false,
+            'name' => $this->faker->words(3, true),
+            'slug' => $this->faker->unique()->slug(),
+            'description' => $this->faker->sentence(),
+            'privacy' => 'public',
+            'privacy_closed' => '0',
+            'status' => 'active',
+            'is_counsel_group' => false,
             'requires_approval' => false,
-            'members_count'     => 0,
-            'posts_count'       => 0,
+            'members_count' => 0,
+            'posts_count' => 0,
+            'community_type' => null,
         ];
     }
 
     public function closed(): static
     {
         return $this->state([
-            'privacy'           => 'private',
-            'privacy_closed'    => '1',
+            'privacy' => 'private',
+            'privacy_closed' => '1',
             'requires_approval' => true,
         ]);
     }

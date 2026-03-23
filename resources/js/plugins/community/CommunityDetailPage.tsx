@@ -8,6 +8,14 @@ interface Member {
     user: { id: number; name: string; avatar?: string };
 }
 
+const TYPE_BADGES: Record<string, { label: string; color: string }> = {
+    small_group:   { label: 'Small Group',   color: '#6366f1' },
+    prayer_circle: { label: 'Prayer Circle', color: '#8b5cf6' },
+    bible_study:   { label: 'Bible Study',   color: '#0ea5e9' },
+    ministry_team: { label: 'Ministry Team', color: '#10b981' },
+    choir:         { label: 'Choir',         color: '#f59e0b' },
+};
+
 export default function CommunityDetailPage() {
     const { id }   = useParams<{ id: string }>();
     const navigate = useNavigate();
@@ -74,6 +82,14 @@ export default function CommunityDetailPage() {
                     {community.approved_members_count ?? community.members_count} members
                     {' · '}{community.privacy_closed ? 'Closed' : community.privacy}
                 </p>
+                {community.community_type && TYPE_BADGES[community.community_type] && (
+                    <span className="inline-block text-xs font-semibold px-2 py-0.5 rounded-full mt-1" style={{
+                        background: TYPE_BADGES[community.community_type].color + '1a',
+                        color: TYPE_BADGES[community.community_type].color,
+                    }}>
+                        {TYPE_BADGES[community.community_type].label}
+                    </span>
+                )}
                 {community.description && <p className="text-gray-700 mt-2 text-sm leading-relaxed">{community.description}</p>}
             </div>
 
