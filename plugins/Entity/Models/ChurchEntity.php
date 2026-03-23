@@ -1,6 +1,9 @@
 <?php
+
 namespace Plugins\Entity\Models;
 
+use App\Models\User;
+use Database\Factories\ChurchEntityFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -21,26 +24,37 @@ class ChurchEntity extends Model
     ];
 
     protected $casts = [
-        'social_links'     => 'array',
-        'action_button'    => 'array',
-        'meta'             => 'array',
-        'is_verified'      => 'boolean',
-        'allow_posts'      => 'boolean',
+        'social_links' => 'array',
+        'action_button' => 'array',
+        'meta' => 'array',
+        'is_verified' => 'boolean',
+        'allow_posts' => 'boolean',
         'require_approval' => 'boolean',
-        'is_active'        => 'boolean',
-        'members_count'    => 'integer',
-        'posts_count'      => 'integer',
+        'is_active' => 'boolean',
+        'members_count' => 'integer',
+        'posts_count' => 'integer',
     ];
 
     // Scopes
-    public function scopePages($query)       { return $query->where('type', 'page'); }
-    public function scopeCommunities($query) { return $query->where('type', 'community'); }
-    public function scopeActive($query)      { return $query->where('is_active', true); }
+    public function scopePages($query)
+    {
+        return $query->where('type', 'page');
+    }
+
+    public function scopeCommunities($query)
+    {
+        return $query->where('type', 'community');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 
     // Relations
     public function owner()
     {
-        return $this->belongsTo(\App\Models\User::class, 'owner_id');
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     public function members()
@@ -56,8 +70,8 @@ class ChurchEntity extends Model
     public function admins()
     {
         return $this->hasMany(EntityMember::class, 'entity_id')
-                    ->whereIn('role', ['admin', 'moderator'])
-                    ->where('status', 'approved');
+            ->whereIn('role', ['admin', 'moderator'])
+            ->where('status', 'approved');
     }
 
     // Helpers
@@ -69,22 +83,22 @@ class ChurchEntity extends Model
     public function isMember(int $userId): bool
     {
         return $this->members()
-                    ->where('user_id', $userId)
-                    ->where('status', 'approved')
-                    ->exists();
+            ->where('user_id', $userId)
+            ->where('status', 'approved')
+            ->exists();
     }
 
     public function isAdmin(int $userId): bool
     {
         return $this->members()
-                    ->where('user_id', $userId)
-                    ->whereIn('role', ['admin', 'moderator'])
-                    ->where('status', 'approved')
-                    ->exists();
+            ->where('user_id', $userId)
+            ->whereIn('role', ['admin', 'moderator'])
+            ->where('status', 'approved')
+            ->exists();
     }
 
     protected static function newFactory()
     {
-        return \Database\Factories\ChurchEntityFactory::new();
+        return ChurchEntityFactory::new();
     }
 }

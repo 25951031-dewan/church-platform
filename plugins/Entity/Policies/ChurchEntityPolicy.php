@@ -1,4 +1,5 @@
 <?php
+
 namespace Plugins\Entity\Policies;
 
 use App\Models\User;
