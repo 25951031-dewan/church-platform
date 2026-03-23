@@ -2,12 +2,19 @@
 
 use App\Http\Controllers\Api\Admin\PageBuilderController;
 use App\Http\Controllers\Api\Admin\SettingsController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\SduiController;
 use App\Http\Controllers\Api\UserProfileController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.v1.')->group(function () {
+    // Auth
+    Route::post('login',  [AuthController::class, 'login'])->name('auth.login');
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('user',    [AuthController::class, 'user'])->name('auth.user');
+        Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
+    });
     // Server-Driven UI endpoints (public)
     Route::prefix('sdui')->name('sdui.')->group(function () {
         Route::get('home', [SduiController::class, 'home'])->name('home');
