@@ -1,0 +1,14 @@
+{
+  "name": "Event",
+  "slug": "event",
+  "version": "1.0.0",
+  "description": "Church events with RSVP, recurring support, online/hybrid, and discussion threads.",
+  "author": "Church Platform",
+  "icon": "calendar",
+  "category": "Feature",
+  "requires": [],
+  "settings_page": false,
+  "can_disable": true,
+  "can_remove": true,
+  "enabled_by_default": true
+}
