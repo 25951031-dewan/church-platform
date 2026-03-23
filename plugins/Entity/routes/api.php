@@ -4,17 +4,21 @@ use Illuminate\Support\Facades\Route;
 use Plugins\Entity\Controllers\PageController;
 use Plugins\Entity\Controllers\PageFollowController;
 use Plugins\Entity\Controllers\PageMemberController;
+use Plugins\Entity\Controllers\SubPageController;
 
 Route::prefix('v1')->name('api.v1.pages.')->group(function () {
     // Public
     Route::get('/pages', [PageController::class, 'index'])->name('index');
     Route::get('/pages/{slug}', [PageController::class, 'show'])->name('show');
     Route::get('/pages/{id}/members', [PageMemberController::class, 'index'])->name('members.index');
+    Route::get('/pages/{id}/sub-pages', [SubPageController::class, 'index'])->name('sub-pages.index');
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/pages', [PageController::class, 'store'])->name('store');
         Route::put('/pages/{id}', [PageController::class, 'update'])->name('update');
         Route::delete('/pages/{id}', [PageController::class, 'destroy'])->name('destroy');
+
+        Route::post('/pages/{id}/sub-pages', [SubPageController::class, 'store'])->name('sub-pages.store');
 
         Route::post('/pages/{id}/follow', [PageFollowController::class, 'store'])->name('follow.store');
         Route::delete('/pages/{id}/follow', [PageFollowController::class, 'destroy'])->name('follow.destroy');
