@@ -5,7 +5,7 @@ namespace Plugins\Post\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Plugins\Community\Models\CommunityMember;
+use Plugins\Community\Models\Community;
 use Plugins\Post\Models\Post;
 
 class PostModerationController extends Controller
@@ -18,7 +18,8 @@ class PostModerationController extends Controller
     {
         $post = Post::published()->whereNotNull('community_id')->findOrFail($id);
 
-        abort_unless($this->isCommunityAdmin($request->user()->id, $post->community_id), 403);
+        $community = Community::findOrFail($post->community_id);
+        abort_unless($community->isAdmin($request->user()->id), 403);
 
         $post->update(['is_pinned' => ! $post->is_pinned]);
 
@@ -33,7 +34,8 @@ class PostModerationController extends Controller
     {
         $post = Post::whereNotNull('community_id')->findOrFail($id);
 
-        abort_unless($this->isCommunityAdmin($request->user()->id, $post->community_id), 403);
+        $community = Community::findOrFail($post->community_id);
+        abort_unless($community->isAdmin($request->user()->id), 403);
 
         $post->update([
             'is_approved' => true,
@@ -46,12 +48,4 @@ class PostModerationController extends Controller
         ]);
     }
 
-    private function isCommunityAdmin(int $userId, int $communityId): bool
-    {
-        return CommunityMember::where('community_id', $communityId)
-            ->where('user_id', $userId)
-            ->where('role', 'admin')
-            ->where('status', 'approved')
-            ->exists();
-    }
 }
