@@ -1,4 +1,5 @@
 <?php
+
 namespace Plugins\Post\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -27,6 +28,7 @@ class PollVoteController extends Controller
         }
 
         $counts = $this->service->vote($post, $request->user()->id, $data['option_id']);
+
         return response()->json($counts, 201);
     }
 
@@ -37,14 +39,16 @@ class PollVoteController extends Controller
         abort_if($post->type !== 'poll', 422, 'Not a poll.');
 
         $this->service->removeVote($post, $request->user()->id);
+
         return response()->json(['message' => 'Vote removed']);
     }
 
     /** GET /api/v1/posts/{id}/votes */
     public function counts(Request $request, int $id): JsonResponse
     {
-        $post   = Post::published()->findOrFail($id);
+        $post = Post::published()->findOrFail($id);
         $userId = $request->user()?->id;
+
         return response()->json($this->service->counts($post, $userId));
     }
 }

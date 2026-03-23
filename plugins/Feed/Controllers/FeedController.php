@@ -1,4 +1,5 @@
 <?php
+
 namespace Plugins\Feed\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -13,11 +14,12 @@ class FeedController extends Controller
     /**
      * Home feed — posts from communities/churches the authenticated user follows.
      * Falls back to all published posts when the user has no memberships.
+     *
      * @group Feed
      */
     public function home(Request $request): JsonResponse
     {
-        $user  = $request->user();
+        $user = $request->user();
         $query = Post::published()
             ->with(['author:id,name,avatar', 'church:id,name,logo'])
             ->withCount(['comments', 'reactions'])
@@ -25,8 +27,8 @@ class FeedController extends Controller
 
         if ($user) {
             $communityIds = DB::table('community_members')->where('user_id', $user->id)->where('status', 'approved')->pluck('community_id');
-            $churchIds    = DB::table('church_members')->where('user_id', $user->id)->where('type', 'member')->pluck('church_id');
-            $entityIds    = DB::table('entity_members')->where('user_id', $user->id)->where('status', 'approved')->pluck('entity_id');
+            $churchIds = DB::table('church_members')->where('user_id', $user->id)->where('type', 'member')->pluck('church_id');
+            $entityIds = DB::table('entity_members')->where('user_id', $user->id)->where('status', 'approved')->pluck('entity_id');
 
             if ($communityIds->isNotEmpty() || $churchIds->isNotEmpty() || $entityIds->isNotEmpty()) {
                 $query->where(fn ($q) => $q
@@ -48,7 +50,7 @@ class FeedController extends Controller
         return response()->json(
             Post::published()->where('community_id', $communityId)
                 ->when($request->type, fn ($q) => $q->where('type', $request->type))
-                ->with(['author:id,name,avatar'])->withCount(['comments','reactions'])
+                ->with(['author:id,name,avatar'])->withCount(['comments', 'reactions'])
                 ->latest('published_at')->paginate(15)
         );
     }
@@ -59,7 +61,7 @@ class FeedController extends Controller
         return response()->json(
             Post::published()->where('church_id', $churchId)
                 ->when($request->type, fn ($q) => $q->where('type', $request->type))
-                ->with(['author:id,name,avatar'])->withCount(['comments','reactions'])
+                ->with(['author:id,name,avatar'])->withCount(['comments', 'reactions'])
                 ->latest('published_at')->paginate(15)
         );
     }

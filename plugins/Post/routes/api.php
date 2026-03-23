@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Plugins\Post\Controllers\PollVoteController;
 use Plugins\Post\Controllers\PostController;
 use Plugins\Post\Controllers\PrayerAnswerController;
-use Plugins\Post\Controllers\PollVoteController;
 
 Route::prefix('v1')->group(function () {
     Route::name('api.v1.posts.')->group(function () {

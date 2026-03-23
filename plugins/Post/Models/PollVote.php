@@ -1,4 +1,5 @@
 <?php
+
 namespace Plugins\Post\Models;
 
 use App\Models\User;
