@@ -11,6 +11,13 @@ test('can list sub-pages of a parent page', function () {
         'parent_entity_id' => $parent->id,
     ]);
 
+    // Isolation: sub-pages of another parent must not leak in
+    $otherParent = ChurchEntity::factory()->create(['type' => 'page']);
+    ChurchEntity::factory()->count(2)->create([
+        'type' => 'page',
+        'parent_entity_id' => $otherParent->id,
+    ]);
+
     $this->getJson("/api/v1/pages/{$parent->id}/sub-pages")
         ->assertOk()
         ->assertJsonCount(3, 'data');

@@ -54,22 +54,22 @@ class ChurchEntity extends Model
     }
 
     // Relations
-    public function owner()
+    public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function members()
+    public function members(): HasMany
     {
         return $this->hasMany(EntityMember::class, 'entity_id');
     }
 
-    public function approvedMembers()
+    public function approvedMembers(): HasMany
     {
         return $this->hasMany(EntityMember::class, 'entity_id')->where('status', 'approved');
     }
 
-    public function admins()
+    public function admins(): HasMany
     {
         return $this->hasMany(EntityMember::class, 'entity_id')
             ->whereIn('role', ['admin', 'moderator'])
