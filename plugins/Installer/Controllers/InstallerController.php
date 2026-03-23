@@ -102,6 +102,7 @@ class InstallerController extends Controller
         $this->service->updateEnv([
             'APP_INSTALLED' => 'true',
             'SESSION_DRIVER' => 'database',
+            'SESSION_CONNECTION' => 'mysql',
             'CACHE_STORE' => 'database',
             'QUEUE_CONNECTION' => 'sync',
         ]);
