@@ -82,6 +82,6 @@ test('community admin can approve a post', function () {
         ->assertOk()
         ->assertJsonPath('is_approved', true);
 
-    expect($post->fresh()->is_approved)->toBeTrue();
+    expect($post->fresh()->is_approved)->toBe(1);
     expect($post->fresh()->approved_by)->toBe($admin->id);
 });

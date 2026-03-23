@@ -40,7 +40,6 @@ class Post extends Model
         'published_at' => 'datetime',
         'shares_count' => 'integer',
         'is_pinned' => 'boolean',
-        'is_approved' => 'boolean',
         'approved_by' => 'integer',
     ];
 
