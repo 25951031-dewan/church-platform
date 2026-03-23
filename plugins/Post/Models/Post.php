@@ -30,10 +30,11 @@ class Post extends Model
     ];
 
     protected $casts = [
-        'media'        => 'array',
-        'meta'         => 'array',
-        'is_anonymous' => 'boolean',
-        'published_at' => 'datetime',
+        'media'         => 'array',
+        'meta'          => 'array',
+        'is_anonymous'  => 'boolean',
+        'published_at'  => 'datetime',
+        'shares_count'  => 'integer',
     ];
 
     public function author(): BelongsTo

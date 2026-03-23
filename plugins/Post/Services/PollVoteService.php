@@ -22,7 +22,7 @@ class PollVoteService
             $allowMultiple = $post->meta['allow_multiple'] ?? false;
 
             if (! $allowMultiple) {
-                $existing = PollVote::where('post_id', $post->id)->where('user_id', $userId)->first();
+                $existing = PollVote::where('post_id', $post->id)->where('user_id', $userId)->lockForUpdate()->first();
 
                 if ($existing) {
                     if ($existing->option_id === $optionId) {
