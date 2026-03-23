@@ -12,4 +12,5 @@ return [
     Plugins\Feed\FeedServiceProvider::class,
     Plugins\Event\EventServiceProvider::class,
     Plugins\Entity\EntityServiceProvider::class,
+    Plugins\Installer\InstallerServiceProvider::class,
 ];

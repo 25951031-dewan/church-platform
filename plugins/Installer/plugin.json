@@ -1,0 +1,14 @@
+{
+  "name": "Installer",
+  "slug": "installer",
+  "version": "1.0.0",
+  "description": "3-step web installer and admin update dashboard for the Church Platform.",
+  "author": "Church Platform",
+  "icon": "download",
+  "category": "Core",
+  "requires": [],
+  "settings_page": false,
+  "can_disable": false,
+  "can_remove": false,
+  "enabled_by_default": true
+}
