@@ -31,3 +31,4 @@ yarn-error.log
 
 # Git worktrees
 .worktrees/
+/.htaccess
