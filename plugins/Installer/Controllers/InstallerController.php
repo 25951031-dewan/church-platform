@@ -111,7 +111,8 @@ class InstallerController extends Controller
         $this->service->lockInstaller();
         $this->service->warmCaches();
 
-        return redirect('/install/complete');
+        // Render view before route cache takes effect (prevents 404 on `/install/complete`)
+        return view('installer::installer.complete');
     }
 
     public function complete(): View
