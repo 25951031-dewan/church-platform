@@ -5,6 +5,7 @@ namespace Plugins\Post\Models;
 use App\Models\Church;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,7 +14,12 @@ use Plugins\Community\Models\Community;
 
 class Post extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
+
+    protected static function newFactory(): \Database\Factories\PostFactory
+    {
+        return \Database\Factories\PostFactory::new();
+    }
 
     protected $table = 'social_posts';
 
@@ -24,10 +30,11 @@ class Post extends Model
     ];
 
     protected $casts = [
-        'media'        => 'array',
-        'meta'         => 'array',
-        'is_anonymous' => 'boolean',
-        'published_at' => 'datetime',
+        'media'         => 'array',
+        'meta'          => 'array',
+        'is_anonymous'  => 'boolean',
+        'published_at'  => 'datetime',
+        'shares_count'  => 'integer',
     ];
 
     public function author(): BelongsTo
@@ -75,5 +82,22 @@ class Post extends Model
     public function reactions(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
         return $this->morphMany(\Plugins\Reaction\Models\Reaction::class, 'reactable');
+    }
+
+    const TYPES = ['post', 'prayer', 'blessing', 'poll', 'bible_study'];
+
+    public function pollVotes(): HasMany
+    {
+        return $this->hasMany(PollVote::class);
+    }
+
+    public function isPoll(): bool
+    {
+        return $this->type === 'poll';
+    }
+
+    public function isPrayerAnswered(): bool
+    {
+        return $this->type === 'prayer' && ($this->meta['answered'] ?? false);
     }
 }
