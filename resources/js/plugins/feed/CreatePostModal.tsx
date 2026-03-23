@@ -20,8 +20,18 @@ export default function CreatePostModal({ onClose, onCreated }: Props) {
     const [options, setOptions] = useState(['', '']);
     const [endsAt, setEndsAt] = useState('');
     const [allowMultiple, setAllowMultiple] = useState(false);
+    const [postedAs, setPostedAs]     = useState<'user' | 'entity'>('user');
+    const [entityId, setEntityId]     = useState<number | null>(null);
+    const [adminPages, setAdminPages] = useState<Array<{ id: number; name: string }>>([]);
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
+
+    React.useEffect(() => {
+        fetch('/api/v1/pages?mine=1')
+            .then(r => r.json())
+            .then(d => setAdminPages(d.data ?? []))
+            .catch(() => {});
+    }, []);
 
     async function submit() {
         setSubmitting(true);
@@ -34,7 +44,14 @@ export default function CreatePostModal({ onClose, onCreated }: Props) {
         try {
             const res = await fetch('/api/v1/posts', {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type, body: body || null, meta }),
+                body: JSON.stringify({
+                    type, body: body || null, meta,
+                    ...(postedAs === 'entity' && entityId ? {
+                        posted_as: 'entity',
+                        entity_id: entityId,
+                        actor_entity_id: entityId,
+                    } : {}),
+                }),
             });
             if (!res.ok) throw new Error((await res.json()).message ?? 'Failed');
             onCreated();
@@ -110,6 +127,23 @@ export default function CreatePostModal({ onClose, onCreated }: Props) {
                                 Allow multiple choices
                             </label>
                         </div>
+                    </div>
+                )}
+
+                {adminPages.length > 0 && (
+                    <div style={{ marginTop: '0.75rem' }}>
+                        <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#374151', display: 'block', marginBottom: 4 }}>Post as</label>
+                        <select
+                            value={postedAs === 'entity' ? String(entityId) : 'user'}
+                            onChange={e => {
+                                if (e.target.value === 'user') { setPostedAs('user'); setEntityId(null); }
+                                else { setPostedAs('entity'); setEntityId(Number(e.target.value)); }
+                            }}
+                            style={{ width: '100%', padding: '0.5rem', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: '0.9rem' }}
+                        >
+                            <option value="user">Myself</option>
+                            {adminPages.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                        </select>
                     </div>
                 )}
 
