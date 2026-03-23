@@ -98,7 +98,7 @@ test('POST /install/step2 validates required db fields', function () {
     if (file_exists(storage_path('installed.lock'))) unlink(storage_path('installed.lock'));
     $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class)
          ->post('/install/step2', [])
-         ->assertSessionHasErrors(['db_host', 'db_database', 'db_username']);
+         ->assertSessionHasErrors(['db_host', 'db_port', 'db_database', 'db_username']);
 });
 
 test('GET /install/step3 shows admin form', function () {
