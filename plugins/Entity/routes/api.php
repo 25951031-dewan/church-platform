@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use Plugins\Entity\Controllers\PageController;
 use Plugins\Entity\Controllers\PageFollowController;
+use Plugins\Entity\Controllers\PageInsightsController;
 use Plugins\Entity\Controllers\PageMemberController;
+use Plugins\Entity\Controllers\PageVerificationController;
 use Plugins\Entity\Controllers\SubPageController;
 
 Route::prefix('v1')->name('api.v1.pages.')->group(function () {
@@ -25,5 +27,8 @@ Route::prefix('v1')->name('api.v1.pages.')->group(function () {
 
         Route::put('/pages/{id}/members/{userId}/role', [PageMemberController::class, 'updateRole'])->name('members.role');
         Route::delete('/pages/{id}/members/{userId}', [PageMemberController::class, 'destroy'])->name('members.destroy');
+
+        Route::get('/pages/{id}/insights', [PageInsightsController::class, 'show'])->name('insights.show');
+        Route::post('/pages/{id}/verify', [PageVerificationController::class, 'store'])->name('verify.store');
     });
 });

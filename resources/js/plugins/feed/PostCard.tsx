@@ -20,6 +20,7 @@ interface Post {
     reactions_count: number;
     comments_count: number;
     created_at: string;
+    is_pinned?: boolean;
 }
 
 export default function PostCard({ post, onReact }: { post: Post; onReact: (id: number, emoji: string) => void }) {
@@ -27,6 +28,11 @@ export default function PostCard({ post, onReact }: { post: Post; onReact: (id: 
 
     return (
         <div style={{ background: '#fff', borderRadius: 12, padding: '1rem', marginBottom: '1rem', boxShadow: '0 1px 4px rgba(0,0,0,.08)' }}>
+            {post.is_pinned && (
+                <div style={{ fontSize: '0.72rem', fontWeight: 600, color: '#6366f1', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                    📌 Pinned
+                </div>
+            )}
             <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.75rem', alignItems: 'center' }}>
                 <img src={post.author?.avatar ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author?.name ?? 'Anonymous')}`}
                     style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }} alt="" />

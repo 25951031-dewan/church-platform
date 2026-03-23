@@ -31,6 +31,18 @@ export function PageDetailPage() {
     enabled: !!page,
   })
 
+  const { data: insights } = useQuery({
+    queryKey: ['page-insights', page?.id],
+    queryFn:  () => axios.get(`/api/v1/pages/${page!.id}/insights`).then(r => r.data),
+    enabled:  !!page,
+    retry:    false,
+  })
+
+  const verifyMutation = useMutation({
+    mutationFn: () => axios.post(`/api/v1/pages/${page!.id}/verify`),
+    onSuccess:  () => qc.invalidateQueries({ queryKey: ['page-insights', page!.id] }),
+  })
+
   if (isLoading) {
     return (
       <div className="max-w-3xl mx-auto">
@@ -155,6 +167,41 @@ export function PageDetailPage() {
                       </button>
                   ))}
               </div>
+          </div>
+      )}
+
+      {/* Admin Insights Panel — only visible to page admins (non-admins get 403, query returns undefined) */}
+      {insights && (
+          <div className="px-6 py-5 border-t border-gray-100 bg-indigo-50 rounded-b-xl">
+              <h2 className="text-sm font-semibold text-indigo-800 mb-3">Page Insights</h2>
+              <div className="grid grid-cols-3 gap-3 text-center mb-4">
+                  <div>
+                      <p className="text-xl font-bold text-indigo-700">{insights.members_count}</p>
+                      <p className="text-xs text-indigo-500">Members</p>
+                  </div>
+                  <div>
+                      <p className="text-xl font-bold text-indigo-700">{insights.sub_pages_count}</p>
+                      <p className="text-xs text-indigo-500">Ministries</p>
+                  </div>
+                  <div>
+                      <p className="text-xl font-bold text-indigo-700">{insights.posts_count}</p>
+                      <p className="text-xs text-indigo-500">Posts</p>
+                  </div>
+              </div>
+
+              {insights.is_verified ? (
+                  <p className="text-xs text-indigo-600 font-medium">✅ Page is verified</p>
+              ) : insights.verification_requested ? (
+                  <p className="text-xs text-amber-600 font-medium">⏳ Verification request pending review</p>
+              ) : (
+                  <button
+                      onClick={() => verifyMutation.mutate()}
+                      disabled={verifyMutation.isPending}
+                      className="text-xs font-medium bg-indigo-600 text-white px-3 py-1.5 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60"
+                  >
+                      {verifyMutation.isPending ? 'Requesting…' : 'Request Verification'}
+                  </button>
+              )}
           </div>
       )}
 

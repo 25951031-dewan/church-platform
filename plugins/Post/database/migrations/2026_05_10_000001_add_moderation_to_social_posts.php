@@ -9,14 +9,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('social_posts', function (Blueprint $table) {
-            $table->index('type');
+            $table->boolean('is_pinned')->default(false)->after('status');
+            $table->boolean('is_approved')->nullable()->after('is_pinned');
+            $table->unsignedBigInteger('approved_by')->nullable()->after('is_approved');
         });
     }
 
     public function down(): void
     {
         Schema::table('social_posts', function (Blueprint $table) {
-            $table->dropIndex(['type']);
+            $table->dropColumn(['is_pinned', 'is_approved', 'approved_by']);
         });
     }
 };

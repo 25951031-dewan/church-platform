@@ -23,6 +23,7 @@ class ChurchEntity extends Model
         'social_links', 'action_button', 'is_verified', 'privacy',
         'allow_posts', 'require_approval', 'parent_entity_id',
         'members_count', 'posts_count', 'meta', 'is_active',
+        'verification_requested_at',
     ];
 
     protected $casts = [
@@ -35,6 +36,7 @@ class ChurchEntity extends Model
         'is_active' => 'boolean',
         'members_count' => 'integer',
         'posts_count' => 'integer',
+        'verification_requested_at' => 'datetime',
     ];
 
     // Scopes
