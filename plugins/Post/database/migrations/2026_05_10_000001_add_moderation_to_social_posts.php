@@ -9,8 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('social_posts', function (Blueprint $table) {
-            $table->boolean('is_pinned')->default(false)->after('status');
-            $table->boolean('is_approved')->nullable()->after('is_pinned');
+            // is_pinned and is_approved already added by 2026_05_01 (entity fields migration)
             $table->unsignedBigInteger('approved_by')->nullable()->after('is_approved');
         });
     }
@@ -18,7 +17,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('social_posts', function (Blueprint $table) {
-            $table->dropColumn(['is_pinned', 'is_approved', 'approved_by']);
+            $table->dropColumn(['approved_by']);
         });
     }
 };

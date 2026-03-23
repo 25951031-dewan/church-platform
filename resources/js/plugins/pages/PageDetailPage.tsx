@@ -3,6 +3,40 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 
+function PageFeed({ page }: { page: any }) {
+  const { data: feedData, isLoading: feedLoading } = useQuery({
+    queryKey: ['page-feed', page?.id],
+    queryFn: () => axios.get(`/api/v1/feed/page/${page.id}`).then(r => r.data),
+    enabled: !!page?.id,
+  })
+
+  return (
+    <div className="px-6 pt-2 pb-6 border-t border-gray-100">
+      <h2 className="text-base font-semibold text-gray-900 mb-4">Posts</h2>
+      {feedLoading && <p className="text-sm text-gray-400 text-center py-8">Loading posts…</p>}
+      {!feedLoading && feedData?.data?.length === 0 && (
+        <p className="text-sm text-gray-400 text-center py-8">No posts yet.</p>
+      )}
+      {feedData?.data?.map((post: any) => (
+        <div key={post.id} className="mb-4 p-4 bg-gray-50 rounded-xl">
+          <div className="flex items-center gap-2 mb-2">
+            <img
+              src={post.entity_actor?.profile_image ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(page.name)}`}
+              className="w-8 h-8 rounded-lg object-cover"
+              alt=""
+            />
+            <div>
+              <p className="text-sm font-semibold text-gray-900">{page.name}</p>
+              <p className="text-xs text-gray-400">{new Date(post.created_at).toLocaleDateString()}</p>
+            </div>
+          </div>
+          {post.body && <p className="text-sm text-gray-700 leading-relaxed">{post.body}</p>}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export function PageDetailPage() {
   const { slug }   = useParams<{ slug: string }>()
   const navigate   = useNavigate()
@@ -172,7 +206,7 @@ export function PageDetailPage() {
 
       {/* Admin Insights Panel — only visible to page admins (non-admins get 403, query returns undefined) */}
       {insights && (
-          <div className="px-6 py-5 border-t border-gray-100 bg-indigo-50 rounded-b-xl">
+          <div className="px-6 py-5 border-t border-gray-100 bg-indigo-50">
               <h2 className="text-sm font-semibold text-indigo-800 mb-3">Page Insights</h2>
               <div className="grid grid-cols-3 gap-3 text-center mb-4">
                   <div>
@@ -205,10 +239,8 @@ export function PageDetailPage() {
           </div>
       )}
 
-      {/* Posts placeholder — Sprint 7 will add entity-scoped feed */}
-      <div className="px-6 py-8 border-t border-gray-100 text-center text-gray-400 text-sm">
-        Posts from this page will appear here in Sprint 7.
-      </div>
+      {/* Entity-scoped feed */}
+      <PageFeed page={page} />
     </div>
   )
 }

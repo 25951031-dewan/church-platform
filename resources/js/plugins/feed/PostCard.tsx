@@ -16,6 +16,8 @@ interface Post {
     type: 'post' | 'prayer' | 'blessing' | 'poll' | 'bible_study';
     meta?: Record<string, any>;
     author: Author | null;
+    entity_actor?: { id: number; name: string; profile_image?: string } | null;
+    posted_as: 'user' | 'entity';
     church?: { name: string };
     reactions_count: number;
     comments_count: number;
@@ -26,6 +28,13 @@ interface Post {
 export default function PostCard({ post, onReact }: { post: Post; onReact: (id: number, emoji: string) => void }) {
     const [showComments, setShowComments] = useState(false);
 
+    const displayName   = post.posted_as === 'entity' && post.entity_actor
+        ? post.entity_actor.name
+        : (post.author?.name ?? 'Anonymous');
+    const displayAvatar = post.posted_as === 'entity' && post.entity_actor
+        ? (post.entity_actor.profile_image ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(post.entity_actor.name)}`)
+        : (post.author?.avatar ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author?.name ?? 'Anonymous')}`);
+
     return (
         <div style={{ background: '#fff', borderRadius: 12, padding: '1rem', marginBottom: '1rem', boxShadow: '0 1px 4px rgba(0,0,0,.08)' }}>
             {post.is_pinned && (
@@ -34,10 +43,15 @@ export default function PostCard({ post, onReact }: { post: Post; onReact: (id: 
                 </div>
             )}
             <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.75rem', alignItems: 'center' }}>
-                <img src={post.author?.avatar ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author?.name ?? 'Anonymous')}`}
-                    style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }} alt="" />
+                <img src={displayAvatar}
+                    style={{ width: 40, height: 40, borderRadius: post.posted_as === 'entity' ? 8 : '50%', objectFit: 'cover' }} alt="" />
                 <div>
-                    <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{post.author?.name ?? 'Anonymous'}</div>
+                    <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>
+                        {displayName}
+                        {post.posted_as === 'entity' && (
+                            <span style={{ fontSize: '0.7rem', color: '#3b82f6', marginLeft: 6, fontWeight: 500 }}>Page</span>
+                        )}
+                    </div>
                     <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
                         {new Date(post.created_at).toLocaleDateString()}{post.church && ` · ${post.church.name}`}
                     </div>

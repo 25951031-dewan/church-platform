@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Plugins\Entity\Models\ChurchEntity;
 use Plugins\Post\Models\Post;
 
 class PostController extends Controller
@@ -24,6 +25,9 @@ class PostController extends Controller
             'church_id' => ['nullable', 'integer', 'exists:churches,id'],
             'community_id' => ['nullable', 'integer', 'exists:communities,id'],
             'is_anonymous' => ['boolean'],
+            'entity_id' => ['nullable', 'integer', 'exists:church_entities,id'],
+            'posted_as' => ['nullable', 'in:user,entity'],
+            'actor_entity_id' => ['nullable', 'integer', 'exists:church_entities,id'],
             'cross_post_targets' => ['nullable', 'array'],
             'cross_post_targets.*.community_id' => ['nullable', 'integer', 'exists:communities,id'],
             'cross_post_targets.*.church_id' => ['nullable', 'integer', 'exists:churches,id'],
@@ -49,6 +53,17 @@ class PostController extends Controller
             $data['meta']['allow_multiple'] = $data['meta']['allow_multiple'] ?? false;
         }
         $data['type'] = $data['type'] ?? 'post';
+
+        // Guard: entity admin required when posted_as=entity
+        if (($data['posted_as'] ?? 'user') === 'entity') {
+            $entityId = $data['actor_entity_id'] ?? $data['entity_id'] ?? null;
+            abort_unless($entityId, 422, 'actor_entity_id required when posted_as=entity');
+            $entity = ChurchEntity::findOrFail($entityId);
+            abort_unless($entity->isAdmin($request->user()->id), 403, 'Not an admin of this page');
+            $data['entity_id'] = $entityId;
+            $data['actor_entity_id'] = $entityId;
+        }
+        $data['posted_as'] = $data['posted_as'] ?? 'user';
 
         if ($data['type'] === 'prayer' && empty($data['meta'])) {
             $data['meta'] = ['answered' => false, 'answered_at' => null];

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Plugins\Comment\Models\Comment;
 use Plugins\Community\Models\Community;
+use Plugins\Entity\Models\ChurchEntity;
 use Plugins\Reaction\Models\Reaction;
 
 class Post extends Model
@@ -28,6 +29,7 @@ class Post extends Model
 
     protected $fillable = [
         'user_id', 'church_id', 'community_id', 'parent_id',
+        'entity_id', 'posted_as', 'actor_entity_id',
         'type', 'body', 'media', 'meta',
         'is_anonymous', 'status', 'published_at',
         'is_pinned', 'is_approved', 'approved_by',
@@ -41,6 +43,7 @@ class Post extends Model
         'shares_count' => 'integer',
         'is_pinned' => 'boolean',
         'approved_by' => 'integer',
+        // is_approved intentionally NOT cast — null=pending, true=approved, false=rejected (tri-state)
     ];
 
     public function author(): BelongsTo
@@ -56,6 +59,16 @@ class Post extends Model
     public function community(): BelongsTo
     {
         return $this->belongsTo(Community::class);
+    }
+
+    public function entity(): BelongsTo
+    {
+        return $this->belongsTo(ChurchEntity::class, 'entity_id');
+    }
+
+    public function entityActor(): BelongsTo
+    {
+        return $this->belongsTo(ChurchEntity::class, 'actor_entity_id');
     }
 
     public function parent(): BelongsTo
