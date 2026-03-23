@@ -28,7 +28,9 @@ class UpdaterController extends Controller
 
             $this->service->runUpdate(function (string $step, string $status, string $message) {
                 echo 'data: '.json_encode(compact('step', 'status', 'message'))."\n\n";
-                ob_flush();
+                if (ob_get_level()) {
+                    ob_flush();
+                }
                 flush();
             });
 
