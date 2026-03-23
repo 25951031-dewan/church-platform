@@ -6,4 +6,5 @@ Route::prefix('v1')->group(function () {
     Route::get('feed',                         [FeedController::class, 'home']);
     Route::get('feed/community/{communityId}', [FeedController::class, 'community']);
     Route::get('feed/church/{churchId}',       [FeedController::class, 'church']);
+    Route::get('feed/page/{entityId}',         [FeedController::class, 'page']);
 });
