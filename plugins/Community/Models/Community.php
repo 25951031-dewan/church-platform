@@ -5,6 +5,7 @@ namespace Plugins\Community\Models;
 use App\Models\Church;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,11 +13,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Community extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
+
+    protected static function newFactory(): \Database\Factories\CommunityFactory
+    {
+        return \Database\Factories\CommunityFactory::new();
+    }
 
     protected $fillable = [
         'name', 'slug', 'description', 'cover_image',
-        'church_id', 'created_by', 'privacy', 'status',
+        'church_id', 'created_by', 'privacy', 'privacy_closed', 'status',
         'members_count', 'posts_count',
         'is_counsel_group', 'requires_approval',
         'counsellor_ids', 'max_members', 'is_anonymous_posting',
@@ -26,6 +32,7 @@ class Community extends Model
         'is_counsel_group'      => 'boolean',
         'requires_approval'     => 'boolean',
         'is_anonymous_posting'  => 'boolean',
+        'privacy_closed'        => 'boolean',
         'counsellor_ids'        => 'array',
         'members_count'         => 'integer',
         'posts_count'           => 'integer',
@@ -80,5 +87,19 @@ class Community extends Model
     public function isCounsellor(int $userId): bool
     {
         return in_array($userId, $this->counsellor_ids ?? [], true);
+    }
+
+    public function isClosed(): bool
+    {
+        return (bool) $this->privacy_closed;
+    }
+
+    public function isAdmin(int $userId): bool
+    {
+        return $this->communityMembers()
+            ->where('user_id', $userId)
+            ->where('role', 'admin')
+            ->where('status', 'approved')
+            ->exists();
     }
 }
