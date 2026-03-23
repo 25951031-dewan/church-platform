@@ -10,7 +10,7 @@ return new class extends Migration
         if (DB::getDriverName() === 'mysql') {
             DB::statement("
                 ALTER TABLE social_posts
-                ADD COLUMN event_id BIGINT UNSIGNED NULL
+                ADD COLUMN event_id BIGINT UNSIGNED
                     GENERATED ALWAYS AS (CAST(JSON_UNQUOTE(JSON_EXTRACT(meta, '$.event_id')) AS UNSIGNED)) STORED
             ");
             DB::statement('ALTER TABLE social_posts ADD INDEX idx_social_posts_event_id (event_id)');
