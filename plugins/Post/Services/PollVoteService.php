@@ -1,4 +1,5 @@
 <?php
+
 namespace Plugins\Post\Services;
 
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,7 @@ class PollVoteService
     public function vote(Post $post, int $userId, string $optionId): array
     {
         // Validate option exists in meta
-        $options  = $post->meta['options'] ?? [];
+        $options = $post->meta['options'] ?? [];
         $optionIdx = collect($options)->search(fn ($o) => $o['id'] === $optionId);
         abort_if($optionIdx === false, 422, 'Invalid option');
 
@@ -108,9 +109,9 @@ class PollVoteService
         $userVote = ! empty($userVotes) ? $userVotes[0] : null;
 
         return [
-            'counts'      => $counts,
-            'user_vote'   => $userVote,
-            'user_votes'  => $userVotes,
+            'counts' => $counts,
+            'user_vote' => $userVote,
+            'user_votes' => $userVotes,
         ];
     }
 }

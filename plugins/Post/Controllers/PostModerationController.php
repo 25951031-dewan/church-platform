@@ -47,5 +47,4 @@ class PostModerationController extends Controller
             'approved_by' => $request->user()->id,
         ]);
     }
-
 }

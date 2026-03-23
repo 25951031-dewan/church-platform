@@ -34,8 +34,8 @@ class ChurchEntity extends Model
         'allow_posts' => 'boolean',
         'require_approval' => 'boolean',
         'is_active' => 'boolean',
-        'members_count'             => 'integer',
-        'posts_count'               => 'integer',
+        'members_count' => 'integer',
+        'posts_count' => 'integer',
         'verification_requested_at' => 'datetime',
     ];
 

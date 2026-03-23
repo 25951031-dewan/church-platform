@@ -19,12 +19,12 @@ class PageInsightsController extends Controller
         abort_unless($page->isAdmin($request->user()->id), 403);
 
         return response()->json([
-            'members_count'          => $page->approvedMembers()->count(),
-            'sub_pages_count'        => $page->subPages()->count(),
-            'posts_count'            => (int) $page->posts_count,
-            'is_verified'            => $page->is_verified,
+            'members_count' => $page->approvedMembers()->count(),
+            'sub_pages_count' => $page->subPages()->count(),
+            'posts_count' => (int) $page->posts_count,
+            'is_verified' => $page->is_verified,
             'verification_requested' => $page->verification_requested_at !== null,
-            'created_at'             => $page->created_at,
+            'created_at' => $page->created_at,
         ]);
     }
 }

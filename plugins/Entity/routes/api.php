@@ -29,6 +29,6 @@ Route::prefix('v1')->name('api.v1.pages.')->group(function () {
         Route::delete('/pages/{id}/members/{userId}', [PageMemberController::class, 'destroy'])->name('members.destroy');
 
         Route::get('/pages/{id}/insights', [PageInsightsController::class, 'show'])->name('insights.show');
-        Route::post('/pages/{id}/verify',  [PageVerificationController::class, 'store'])->name('verify.store');
+        Route::post('/pages/{id}/verify', [PageVerificationController::class, 'store'])->name('verify.store');
     });
 });

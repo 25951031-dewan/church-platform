@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Plugins\Post\Models\Post;
 
 class PostController extends Controller
@@ -17,32 +18,32 @@ class PostController extends Controller
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'body'               => ['required_without:media', 'nullable', 'string'],
-            'media'              => ['nullable', 'array'],
-            'type'               => ['nullable', 'string', 'in:post,prayer,blessing,poll,bible_study'],
-            'church_id'          => ['nullable', 'integer', 'exists:churches,id'],
-            'community_id'       => ['nullable', 'integer', 'exists:communities,id'],
-            'is_anonymous'       => ['boolean'],
+            'body' => ['required_without:media', 'nullable', 'string'],
+            'media' => ['nullable', 'array'],
+            'type' => ['nullable', 'string', 'in:post,prayer,blessing,poll,bible_study'],
+            'church_id' => ['nullable', 'integer', 'exists:churches,id'],
+            'community_id' => ['nullable', 'integer', 'exists:communities,id'],
+            'is_anonymous' => ['boolean'],
             'cross_post_targets' => ['nullable', 'array'],
             'cross_post_targets.*.community_id' => ['nullable', 'integer', 'exists:communities,id'],
-            'cross_post_targets.*.church_id'    => ['nullable', 'integer', 'exists:churches,id'],
+            'cross_post_targets.*.church_id' => ['nullable', 'integer', 'exists:churches,id'],
             // poll meta
-            'meta.question'       => ['required_if:type,poll', 'string'],
-            'meta.options'        => ['required_if:type,poll', 'array', 'min:2', 'max:10'],
+            'meta.question' => ['required_if:type,poll', 'string'],
+            'meta.options' => ['required_if:type,poll', 'array', 'min:2', 'max:10'],
             'meta.options.*.text' => ['required_if:type,poll', 'string'],
-            'meta.ends_at'        => ['nullable', 'date'],
+            'meta.ends_at' => ['nullable', 'date'],
             'meta.allow_multiple' => ['boolean'],
             // bible_study meta
-            'meta.scripture'     => ['required_if:type,bible_study', 'string'],
-            'meta.passage'       => ['required_if:type,bible_study', 'string'],
-            'meta.study_guide'   => ['nullable', 'string'],
+            'meta.scripture' => ['required_if:type,bible_study', 'string'],
+            'meta.passage' => ['required_if:type,bible_study', 'string'],
+            'meta.study_guide' => ['nullable', 'string'],
         ]);
 
         // For poll: generate stable option IDs and initialise votes_count
         if (($data['type'] ?? 'post') === 'poll') {
             $data['meta']['options'] = collect($data['meta']['options'])->map(fn ($opt) => [
-                'id'          => 'opt_' . \Illuminate\Support\Str::ulid(),
-                'text'        => $opt['text'],
+                'id' => 'opt_'.Str::ulid(),
+                'text' => $opt['text'],
                 'votes_count' => 0,
             ])->all();
             $data['meta']['allow_multiple'] = $data['meta']['allow_multiple'] ?? false;
@@ -59,8 +60,8 @@ class PostController extends Controller
         }
 
         $post = Post::create(array_merge($data, [
-            'user_id'      => $request->user()->id,
-            'status'       => 'published',
+            'user_id' => $request->user()->id,
+            'status' => 'published',
             'published_at' => now(),
         ]));
 
@@ -74,6 +75,7 @@ class PostController extends Controller
         if ($post->is_anonymous) {
             $response['author'] = null;
         }
+
         return response()->json($response, 201);
     }
 
@@ -87,9 +89,9 @@ class PostController extends Controller
         $post = Post::published()->findOrFail($id);
 
         $targets = $request->validate([
-            'targets'                      => ['required', 'array', 'min:1', 'max:10'],
-            'targets.*.community_id'       => ['nullable', 'integer', 'exists:communities,id'],
-            'targets.*.church_id'          => ['nullable', 'integer', 'exists:churches,id'],
+            'targets' => ['required', 'array', 'min:1', 'max:10'],
+            'targets.*.community_id' => ['nullable', 'integer', 'exists:communities,id'],
+            'targets.*.church_id' => ['nullable', 'integer', 'exists:churches,id'],
         ])['targets'];
 
         if ($post->type === 'poll') {
@@ -111,7 +113,7 @@ class PostController extends Controller
         DB::transaction(function () use ($post, $targets, $userId, &$created) {
             foreach ($targets as $target) {
                 $communityId = $target['community_id'] ?? null;
-                $churchId    = $target['church_id'] ?? null;
+                $churchId = $target['church_id'] ?? null;
 
                 // Avoid duplicate reshares to the same target
                 $alreadyShared = Post::where('parent_id', $post->id)
@@ -125,14 +127,14 @@ class PostController extends Controller
                 }
 
                 $reshare = Post::create([
-                    'user_id'      => $userId,
-                    'parent_id'    => $post->id,
+                    'user_id' => $userId,
+                    'parent_id' => $post->id,
                     'community_id' => $communityId,
-                    'church_id'    => $churchId,
-                    'type'         => $post->type,
-                    'body'         => null, // content comes from parent
-                    'meta'         => $post->meta,
-                    'status'       => 'published',
+                    'church_id' => $churchId,
+                    'type' => $post->type,
+                    'body' => null, // content comes from parent
+                    'meta' => $post->meta,
+                    'status' => 'published',
                     'published_at' => now(),
                 ]);
 
