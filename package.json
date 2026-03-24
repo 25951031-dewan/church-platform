@@ -8,15 +8,15 @@
     "dependencies": {
         "@marsidev/react-turnstile": "^1.0.0",
         "@tanstack/react-query": "^5.0.0",
-        "grapesjs": "^0.21.0",
-        "grapesjs-blocks-basic": "^1.0.0",
-        "grapesjs-preset-webpage": "^1.0.3",
         "@types/dompurify": "^3.0.5",
         "@types/react": "^18.3.0",
         "@types/react-dom": "^18.3.0",
         "@vitejs/plugin-react": "^4.3.0",
         "axios": "^1.7.4",
         "dompurify": "^3.1.0",
+        "grapesjs": "^0.22.0",
+        "grapesjs-blocks-basic": "^1.0.0",
+        "grapesjs-preset-webpage": "^1.0.3",
         "react": "^18.3.0",
         "react-dom": "^18.3.0",
         "react-router-dom": "^6.26.0",
@@ -30,6 +30,6 @@
         "postcss": "^8.4.47",
         "tailwindcss": "^3.4.13",
         "vite": "^6.0.11",
-        "vite-plugin-pwa": "^1.2.0"
+        "vite-plugin-pwa": "^0.21.2"
     }
 }
