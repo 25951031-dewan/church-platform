@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 type PostType = 'post' | 'prayer' | 'blessing' | 'poll' | 'bible_study';
 const TYPE_LABELS: Record<PostType, string> = { post: '💬 Post', prayer: '🙏 Prayer', blessing: '✨ Blessing', poll: '📊 Poll', bible_study: '📖 Bible Study' };
@@ -27,9 +28,8 @@ export default function CreatePostModal({ onClose, onCreated }: Props) {
     const [error, setError] = useState('');
 
     React.useEffect(() => {
-        fetch('/api/v1/pages?mine=1')
-            .then(r => r.json())
-            .then(d => setAdminPages(d.data ?? []))
+        axios.get('/api/v1/pages?mine=1')
+            .then(r => setAdminPages(r.data.data ?? []))
             .catch(() => {});
     }, []);
 
@@ -42,22 +42,18 @@ export default function CreatePostModal({ onClose, onCreated }: Props) {
         if (type === 'bible_study') meta = { scripture, passage, study_guide: studyGuide || undefined };
 
         try {
-            const res = await fetch('/api/v1/posts', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    type, body: body || null, meta,
-                    ...(postedAs === 'entity' && entityId ? {
-                        posted_as: 'entity',
-                        entity_id: entityId,
-                        actor_entity_id: entityId,
-                    } : {}),
-                }),
+            await axios.post('/api/v1/posts', {
+                type, body: body || null, meta,
+                ...(postedAs === 'entity' && entityId ? {
+                    posted_as: 'entity',
+                    entity_id: entityId,
+                    actor_entity_id: entityId,
+                } : {}),
             });
-            if (!res.ok) throw new Error((await res.json()).message ?? 'Failed');
             onCreated();
             onClose();
         } catch (e: any) {
-            setError(e.message);
+            setError(e.response?.data?.message ?? e.message ?? 'Failed to post.');
         } finally {
             setSubmitting(false);
         }
