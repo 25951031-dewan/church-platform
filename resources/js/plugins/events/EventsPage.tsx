@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import EventCard from './EventCard';
 import EventCalendar from './EventCalendar';
 
@@ -15,16 +16,13 @@ export default function EventsPage() {
     useEffect(() => {
         const params = new URLSearchParams({ scope: 'upcoming' });
         if (category !== 'All') params.set('category', category.toLowerCase());
-        fetch(`/api/v1/events?${params}`)
-            .then(r => r.json())
-            .then(d => { setEvents(d.data ?? d); setLoading(false); });
+        axios.get(`/api/v1/events?${params}`)
+            .then(r => { setEvents(r.data.data ?? r.data); setLoading(false); })
+            .catch(() => setLoading(false));
     }, [category]);
 
     async function rsvp(eventId: number, status: string) {
-        await fetch(`/api/v1/events/${eventId}/rsvp`, {
-            method: 'POST', body: JSON.stringify({ status }),
-            headers: { 'Content-Type': 'application/json' },
-        });
+        await axios.post(`/api/v1/events/${eventId}/rsvp`, { status });
         setEvents(prev => prev.map(e => e.id === eventId ? { ...e, user_rsvp: status, going_count: status === 'going' ? e.going_count + 1 : e.going_count } : e));
     }
 

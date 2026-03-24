@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 interface FormData { title: string; description: string; category: string; start_at: string; end_at: string; is_recurring: boolean; is_online: boolean; meeting_url: string; location: string; max_attendees: string }
 const EMPTY: FormData = { title: '', description: '', category: 'worship', start_at: '', end_at: '', is_recurring: false, is_online: false, meeting_url: '', location: '', max_attendees: '' };
@@ -14,15 +15,10 @@ export default function CreateEventForm({ onCreated }: { onCreated: () => void }
     async function submit() {
         setSubmitting(true);
         try {
-            const res = await fetch('/api/v1/events', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...form, max_attendees: form.max_attendees ? Number(form.max_attendees) : null }),
-            });
-            if (!res.ok) throw new Error((await res.json()).message ?? 'Failed');
+            await axios.post('/api/v1/events', { ...form, max_attendees: form.max_attendees ? Number(form.max_attendees) : null });
             onCreated();
         } catch (e: any) {
-            setError(e.message);
+            setError(e.response?.data?.message ?? e.message ?? 'Failed');
         } finally {
             setSubmitting(false);
         }

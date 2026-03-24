@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 interface EventDetail { id: number; title: string; description: string | null; start_at: string; end_at: string; is_online: boolean; meeting_url?: string | null; location?: string | null; cover_image?: string | null; going_count: number; maybe_count: number; user_rsvp?: string | null }
 
@@ -6,14 +7,11 @@ export default function EventDetailPage({ eventId }: { eventId: number }) {
     const [event, setEvent] = useState<EventDetail | null>(null);
 
     useEffect(() => {
-        fetch(`/api/v1/events/${eventId}`).then(r => r.json()).then(setEvent);
+        axios.get(`/api/v1/events/${eventId}`).then(r => setEvent(r.data)).catch(() => {});
     }, [eventId]);
 
     async function rsvp(status: string) {
-        await fetch(`/api/v1/events/${eventId}/rsvp`, {
-            method: 'POST', body: JSON.stringify({ status }),
-            headers: { 'Content-Type': 'application/json' },
-        });
+        await axios.post(`/api/v1/events/${eventId}/rsvp`, { status });
         setEvent(prev => prev ? { ...prev, user_rsvp: status } : prev);
     }
 
@@ -58,22 +56,18 @@ function EventDiscussion({ eventId }: { eventId: number }) {
     const [body, setBody] = useState('');
 
     useEffect(() => {
-        fetch(`/api/v1/events/${eventId}/posts`)
-            .then(r => r.json())
-            .then(d => setPosts(d.data ?? []));
+        axios.get(`/api/v1/events/${eventId}/posts`)
+            .then(r => setPosts(r.data.data ?? []))
+            .catch(() => {});
     }, [eventId]);
 
     async function post() {
         if (!body.trim()) return;
-        const res = await fetch(`/api/v1/events/${eventId}/posts`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ body }),
-        });
-        if (res.ok) {
-            const p = await res.json();
-            setPosts(prev => [p, ...prev]);
+        try {
+            const { data } = await axios.post(`/api/v1/events/${eventId}/posts`, { body });
+            setPosts(prev => [data, ...prev]);
             setBody('');
-        }
+        } catch {}
     }
 
     return (

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 interface PollOption { id: string; text: string; votes_count: number }
 interface PollMeta { question: string; options: PollOption[]; ends_at: string | null; allow_multiple: boolean }
@@ -11,27 +12,23 @@ export default function PollCard({ postId, meta }: Props) {
     const expired = meta.ends_at ? new Date(meta.ends_at) < new Date() : false;
 
     useEffect(() => {
-        fetch(`/api/v1/posts/${postId}/votes`)
-            .then(r => r.json())
-            .then(d => {
-                setCounts(d.counts ?? {});
-                setUserVote(d.user_vote ?? null);
-                setTotal(Object.values(d.counts ?? {}).reduce((s: number, c: any) => s + Number(c), 0));
-            });
+        axios.get(`/api/v1/posts/${postId}/votes`)
+            .then(r => {
+                setCounts(r.data.counts ?? {});
+                setUserVote(r.data.user_vote ?? null);
+                setTotal(Object.values(r.data.counts ?? {}).reduce((s: number, c: any) => s + Number(c), 0));
+            })
+            .catch(() => {});
     }, [postId]);
 
     async function vote(optionId: string) {
         if (expired) return;
-        const res = await fetch(`/api/v1/posts/${postId}/vote`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ option_id: optionId }),
-        });
-        if (res.ok) {
-            const d = await res.json();
-            setCounts(d.counts ?? {});
-            setUserVote(d.user_vote ?? null);
-            setTotal(Object.values(d.counts ?? {}).reduce((s: number, c: any) => s + Number(c), 0));
-        }
+        try {
+            const { data } = await axios.post(`/api/v1/posts/${postId}/vote`, { option_id: optionId });
+            setCounts(data.counts ?? {});
+            setUserVote(data.user_vote ?? null);
+            setTotal(Object.values(data.counts ?? {}).reduce((s: number, c: any) => s + Number(c), 0));
+        } catch {}
     }
 
     return (

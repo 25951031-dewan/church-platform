@@ -1,11 +1,12 @@
 import React from 'react';
+import axios from 'axios';
 
 interface PrayerMeta { answered: boolean; answered_at: string | null }
 interface Props { postId: number; body: string | null; meta: PrayerMeta; isAuthor: boolean; onAnswered?: () => void }
 
 export default function PrayerCard({ postId, body, meta, isAuthor, onAnswered }: Props) {
     async function toggleAnswered() {
-        await fetch(`/api/v1/posts/${postId}/answer-prayer`, { method: 'POST' });
+        await axios.post(`/api/v1/posts/${postId}/answer-prayer`);
         onAnswered?.();
     }
 
