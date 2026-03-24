@@ -5,13 +5,16 @@ import EventsPage from './plugins/events/EventsPage';
 import CommunityPage from './plugins/community/CommunityPage';
 import FaqPage from './plugins/faq/FaqPage';
 import ProfilePage from './plugins/profile/ProfilePage';
+import AnalyticsDashboard from './components/admin/AnalyticsDashboard';
+import PlatformSettings from './components/admin/settings/PlatformSettings';
 
-type Page = 'feed' | 'events' | 'community' | 'faq' | 'profile';
+type Page = 'feed' | 'events' | 'community' | 'faq' | 'profile' | 'admin';
 
 interface User {
     id: number;
     name: string;
     email: string;
+    roles?: string[];
 }
 
 function LoginPage({ onLogin }: { onLogin: (user: User, token: string) => void }) {
@@ -133,12 +136,15 @@ export default function App() {
 
     if (!user) return <LoginPage onLogin={handleLogin} />;
 
+    const isAdmin = user?.roles?.includes('admin');
+
     const navItems: { key: Page; label: string }[] = [
         { key: 'feed', label: 'Feed' },
         { key: 'events', label: 'Events' },
         { key: 'community', label: 'Community' },
         { key: 'faq', label: 'FAQ' },
         { key: 'profile', label: 'Profile' },
+        ...(isAdmin ? [{ key: 'admin' as Page, label: '⚙️ Admin' }] : []),
     ];
 
     return (
@@ -176,6 +182,12 @@ export default function App() {
                 {page === 'community' && <CommunityPage />}
                 {page === 'faq'       && <FaqPage />}
                 {page === 'profile'   && <ProfilePage userId={user.id} />}
+                {page === 'admin'     && isAdmin && (
+                    <div className="space-y-6">
+                        <AnalyticsDashboard />
+                        <PlatformSettings />
+                    </div>
+                )}
             </main>
         </div>
     );

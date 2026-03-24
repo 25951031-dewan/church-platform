@@ -29,7 +29,12 @@ class AuthController extends Controller
         $token = $user->createToken('spa')->plainTextToken;
 
         return response()->json([
-            'user'  => ['id' => $user->id, 'name' => $user->name, 'email' => $user->email],
+            'user'  => [
+                'id'    => $user->id,
+                'name'  => $user->name,
+                'email' => $user->email,
+                'roles' => $user->getRoleNames(),
+            ],
             'token' => $token,
         ]);
     }
@@ -42,6 +47,7 @@ class AuthController extends Controller
             'id'    => $user->id,
             'name'  => $user->name,
             'email' => $user->email,
+            'roles' => $user->getRoleNames(),
         ]);
     }
 
