@@ -101,17 +101,22 @@ class InstallerController extends Controller
 
         $this->service->updateEnv([
             'APP_INSTALLED' => 'true',
-            'SESSION_DRIVER' => 'database',
-            'SESSION_CONNECTION' => 'mysql',
-            'CACHE_STORE' => 'database',
+            'SESSION_DRIVER' => 'file',
+            'CACHE_STORE'    => 'file',
             'QUEUE_CONNECTION' => 'sync',
         ]);
 
-        // CRITICAL: lock BEFORE warmCaches so route:cache excludes installer routes
+        // Lock BEFORE warmCaches so route:cache excludes installer routes.
         $this->service->lockInstaller();
-        $this->service->warmCaches();
 
-        // Render view before route cache takes effect (prevents 404 on `/install/complete`)
+        // Warming caches is best-effort — a failure must not leave the app
+        // in a broken state (locked installer + no cached routes = perpetual 404).
+        try {
+            $this->service->warmCaches();
+        } catch (\Throwable) {
+            // Non-fatal: app runs fine without route/config cache.
+        }
+
         return view('installer::installer.complete');
     }
 

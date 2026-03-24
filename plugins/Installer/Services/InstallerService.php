@@ -241,24 +241,33 @@ HTACCESS);
 
     public function createAdmin(array $data): User
     {
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-        $user->assignRole('admin');
+        $user = User::firstOrCreate(
+            ['email' => $data['email']],
+            [
+                'name'     => $data['name'],
+                'password' => Hash::make($data['password']),
+            ]
+        );
+
+        if (! $user->hasRole('admin')) {
+            $user->assignRole('admin');
+        }
 
         return $user;
     }
 
     public function createDefaultChurch(string $name, int $createdBy): Church
     {
-        return Church::create([
-            'name' => $name,
-            'slug' => Str::slug($name),
-            'status' => 'active',
-            'created_by' => $createdBy,
-        ]);
+        $slug = Str::slug($name);
+
+        return Church::firstOrCreate(
+            ['slug' => $slug],
+            [
+                'name'       => $name,
+                'status'     => 'active',
+                'created_by' => $createdBy,
+            ]
+        );
     }
 
     public function createStorageLink(): void
