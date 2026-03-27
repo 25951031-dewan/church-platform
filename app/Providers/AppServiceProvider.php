@@ -18,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(ChurchContext::class);
         $this->app->singleton(ModuleManager::class);
         $this->app->singleton(SettingService::class);
+        $this->app->singleton(\Common\Core\PluginManager::class);
     }
 
     public function boot(): void

@@ -1,0 +1,17 @@
+{
+  "timeline":       { "enabled": true,  "version": "1.0.0" },
+  "groups":         { "enabled": true,  "version": "1.0.0" },
+  "events":         { "enabled": true,  "version": "1.0.0" },
+  "sermons":        { "enabled": true,  "version": "1.0.0" },
+  "prayer":         { "enabled": true,  "version": "1.0.0" },
+  "giving":         { "enabled": true,  "version": "1.0.0" },
+  "chat":           { "enabled": true,  "version": "1.0.0" },
+  "library":        { "enabled": true,  "version": "1.0.0" },
+  "church_builder": { "enabled": true,  "version": "1.0.0" },
+  "blog":           { "enabled": true,  "version": "1.0.0" },
+  "live_meeting":   { "enabled": true,  "version": "1.0.0" },
+  "volunteers":     { "enabled": false, "version": "1.0.0" },
+  "fundraising":    { "enabled": false, "version": "1.0.0" },
+  "stories":        { "enabled": false, "version": "1.0.0" },
+  "pastoral":       { "enabled": false, "version": "1.0.0" }
+}
