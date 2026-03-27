@@ -1,0 +1,38 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.6.0",
+    "@tanstack/react-query": "^5.75.0",
+    "zustand": "^5.0.0",
+    "immer": "^10.1.0",
+    "axios": "^1.7.0",
+    "lucide-react": "^0.460.0",
+    "framer-motion": "^12.0.0",
+    "react-hook-form": "^7.56.0",
+    "@react-aria/focus": "^3.0.0",
+    "@react-aria/overlays": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react-swc": "^4.0.0",
+    "laravel-vite-plugin": "^1.2.0",
+    "typescript": "^5.8.0",
+    "tailwindcss": "^4.0.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "@tanstack/react-query-devtools": "^5.75.0",
+    "eslint": "^9.0.0",
+    "@eslint/js": "^9.0.0",
+    "typescript-eslint": "^8.0.0"
+  }
+}

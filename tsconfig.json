@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "paths": {
+      "@app/*": ["resources/client/*"],
+      "@common/*": ["common/foundation/resources/client/*"],
+      "@ui/*": ["resources/client/common/ui/*"]
+    },
+    "baseUrl": "."
+  },
+  "include": ["resources/client/**/*"],
+  "exclude": ["node_modules"]
+}
