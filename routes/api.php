@@ -39,16 +39,34 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// V1 Foundation Settings API
+// V1 Foundation API
 Route::prefix('v1')->group(function () {
-    // Public
+    // Auth (public)
+    Route::post('login', [\Common\Auth\Controllers\AuthController::class, 'login']);
+    Route::post('register', [\Common\Auth\Controllers\AuthController::class, 'register']);
+
+    // Settings (public)
     Route::get('settings', [FoundationSettingController::class, 'index']);
     Route::get('settings/{group}', [FoundationSettingController::class, 'show']);
 
     // Authenticated
     Route::middleware('auth:sanctum')->group(function () {
+        // Auth
+        Route::post('logout', [\Common\Auth\Controllers\AuthController::class, 'logout']);
+        Route::get('me', [\Common\Auth\Controllers\AuthController::class, 'me']);
+
+        // Settings
         Route::put('settings', [FoundationSettingController::class, 'update'])
             ->middleware('permission:settings.update');
+
+        // Roles & Permissions
+        Route::middleware('permission:roles.view')->group(function () {
+            Route::get('roles', [\Common\Auth\Controllers\RoleController::class, 'index']);
+            Route::get('permissions', [\Common\Auth\Controllers\PermissionController::class, 'index']);
+        });
+        Route::middleware('permission:roles.create')->post('roles', [\Common\Auth\Controllers\RoleController::class, 'store']);
+        Route::middleware('permission:roles.update')->put('roles/{role}', [\Common\Auth\Controllers\RoleController::class, 'update']);
+        Route::middleware('permission:roles.delete')->delete('roles/{role}', [\Common\Auth\Controllers\RoleController::class, 'destroy']);
     });
 });
 
