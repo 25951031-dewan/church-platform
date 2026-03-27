@@ -34,10 +34,10 @@ class SettingsController extends Controller
         $row = DB::table('settings')->where('key', 'platform')->first();
 
         return response()->json([
-            'platform_mode'         => $row?->platform_mode ?? 'single',
+            'platform_mode' => $row?->platform_mode ?? 'single',
             'show_church_directory' => (bool) ($row?->show_church_directory ?? false),
-            'default_church_id'     => $row?->default_church_id,
-            'feature_toggles'       => json_decode($row?->feature_toggles ?? '{}', true) ?? [],
+            'default_church_id' => $row?->default_church_id,
+            'feature_toggles' => json_decode($row?->feature_toggles ?? '{}', true) ?? [],
         ]);
     }
 
@@ -56,11 +56,11 @@ class SettingsController extends Controller
     public function update(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'platform_mode'         => ['sometimes', Rule::in(['single', 'multi'])],
+            'platform_mode' => ['sometimes', Rule::in(['single', 'multi'])],
             'show_church_directory' => ['sometimes', 'boolean'],
-            'default_church_id'     => ['sometimes', 'nullable', 'integer', 'exists:churches,id'],
-            'feature_toggles'       => ['sometimes', 'array'],
-            'feature_toggles.*'     => ['boolean'],
+            'default_church_id' => ['sometimes', 'nullable', 'integer', 'exists:churches,id'],
+            'feature_toggles' => ['sometimes', 'array'],
+            'feature_toggles.*' => ['boolean'],
         ]);
 
         $current = DB::table('settings')->where('key', 'platform')->first();

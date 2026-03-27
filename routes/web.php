@@ -15,3 +15,10 @@ Route::get('/login', function () {
 Route::get('/docs/api', function () {
     return view('scribe.index');
 })->name('docs.api');
+
+// SPA catch-all — must be last. Serves the React app for all deep-linked routes
+// (e.g. /events, /admin/users). Installer/update routes take priority because
+// they are registered first by their ServiceProviders.
+Route::get('/{any}', function () {
+    return view('welcome');
+})->where('any', '.*')->name('spa.catchall');

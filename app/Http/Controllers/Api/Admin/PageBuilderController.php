@@ -33,19 +33,19 @@ class PageBuilderController extends Controller
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'title'            => ['required', 'string', 'max:255'],
-            'slug'             => ['nullable', 'string', 'max:255', 'unique:pages,slug'],
-            'content'          => ['nullable', 'string'],
-            'template'         => ['nullable', 'string'],
-            'meta_title'       => ['nullable', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:pages,slug'],
+            'content' => ['nullable', 'string'],
+            'template' => ['nullable', 'string'],
+            'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:500'],
-            'status'           => ['nullable', 'in:published,draft'],
-            'church_id'        => ['nullable', 'integer', 'exists:churches,id'],
+            'status' => ['nullable', 'in:published,draft'],
+            'church_id' => ['nullable', 'integer', 'exists:churches,id'],
         ]);
 
-        $data['slug']      = $data['slug'] ?? Str::slug($data['title']);
+        $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
         $data['author_id'] = $request->user()?->id;
-        $data['status']    = $data['status'] ?? 'draft';
+        $data['status'] = $data['status'] ?? 'draft';
 
         return response()->json(Page::create($data), 201);
     }
@@ -57,12 +57,12 @@ class PageBuilderController extends Controller
     public function getBuilder(Page $page): JsonResponse
     {
         return response()->json([
-            'id'           => $page->id,
-            'title'        => $page->title,
+            'id' => $page->id,
+            'title' => $page->title,
             'builder_data' => $page->builder_data ? json_decode($page->builder_data, true) : null,
             'builder_html' => $page->builder_html,
-            'builder_css'  => $page->builder_css,
-            'use_builder'  => $page->use_builder,
+            'builder_css' => $page->builder_css,
+            'use_builder' => $page->use_builder,
         ]);
     }
 
@@ -75,14 +75,14 @@ class PageBuilderController extends Controller
         $data = $request->validate([
             'builder_data' => ['required', 'array'],
             'builder_html' => ['required', 'string'],
-            'builder_css'  => ['nullable', 'string'],
+            'builder_css' => ['nullable', 'string'],
         ]);
 
         $page->update([
             'builder_data' => json_encode($data['builder_data']),
             'builder_html' => $data['builder_html'],
-            'builder_css'  => $data['builder_css'] ?? '',
-            'use_builder'  => true,
+            'builder_css' => $data['builder_css'] ?? '',
+            'use_builder' => true,
         ]);
 
         return response()->json(['saved' => true]);
@@ -95,13 +95,13 @@ class PageBuilderController extends Controller
     public function update(Request $request, Page $page): JsonResponse
     {
         $data = $request->validate([
-            'title'            => ['sometimes', 'string', 'max:255'],
-            'slug'             => ['sometimes', 'string', 'max:255', 'unique:pages,slug,'.$page->id],
-            'content'          => ['nullable', 'string'],
-            'meta_title'       => ['nullable', 'string', 'max:255'],
+            'title' => ['sometimes', 'string', 'max:255'],
+            'slug' => ['sometimes', 'string', 'max:255', 'unique:pages,slug,'.$page->id],
+            'content' => ['nullable', 'string'],
+            'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:500'],
-            'status'           => ['sometimes', 'in:published,draft'],
-            'use_builder'      => ['sometimes', 'boolean'],
+            'status' => ['sometimes', 'in:published,draft'],
+            'use_builder' => ['sometimes', 'boolean'],
         ]);
 
         $page->update($data);
