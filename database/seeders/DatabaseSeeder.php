@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionSeeder::class,
             RoleSeeder::class,
+            \App\Plugins\Timeline\Database\Seeders\TimelinePermissionSeeder::class,
         ]);
     }
 }
