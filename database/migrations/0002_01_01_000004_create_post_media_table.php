@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('post_media', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('post_id')->constrained('timeline_posts')->cascadeOnDelete();
             $table->string('file_path');
             $table->string('file_name');
             $table->string('mime_type', 100);

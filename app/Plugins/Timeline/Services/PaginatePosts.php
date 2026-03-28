@@ -32,6 +32,6 @@ class PaginatePosts
             $query->published()->latest();
         }
 
-        return $query->paginate($request->input('per_page', 15));
+        return $query->paginate(min((int) $request->input('per_page', 15), 50));
     }
 }
