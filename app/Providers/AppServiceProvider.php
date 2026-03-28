@@ -27,11 +27,13 @@ use App\Plugins\ChurchBuilder\Models\ChurchPage;
 use App\Plugins\ChurchBuilder\Policies\ChurchPolicy;
 use App\Plugins\ChurchBuilder\Policies\ChurchPagePolicy;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        Sanctum::ignoreMigrations();
         // Singletons for church context and module management
         $this->app->singleton(ChurchContext::class);
         $this->app->singleton(ModuleManager::class);
