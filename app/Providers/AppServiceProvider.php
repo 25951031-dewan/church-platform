@@ -20,6 +20,8 @@ use App\Plugins\Events\Models\Event;
 use App\Plugins\Events\Policies\EventPolicy;
 use App\Plugins\Sermons\Models\Sermon;
 use App\Plugins\Sermons\Policies\SermonPolicy;
+use App\Plugins\Prayer\Models\PrayerRequest;
+use App\Plugins\Prayer\Policies\PrayerRequestPolicy;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
@@ -48,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Group::class, GroupPolicy::class);
         Gate::policy(Event::class, EventPolicy::class);
         Gate::policy(Sermon::class, SermonPolicy::class);
+        Gate::policy(PrayerRequest::class, PrayerRequestPolicy::class);
 
         // Morph map (required for polymorphic reactions/comments)
         Relation::enforceMorphMap([
@@ -56,6 +59,7 @@ class AppServiceProvider extends ServiceProvider
             'group' => Group::class,
             'event' => Event::class,
             'sermon' => Sermon::class,
+            'prayer_request' => PrayerRequest::class,
         ]);
     }
 }

@@ -96,6 +96,11 @@ Route::prefix('v1')->group(function () {
         if (app(\Common\Core\PluginManager::class)->isEnabled('sermons')) {
             require app_path('Plugins/Sermons/Routes/api.php');
         }
+
+        // Prayer Plugin routes (authenticated)
+        if (app(\Common\Core\PluginManager::class)->isEnabled('prayer')) {
+            require app_path('Plugins/Prayer/Routes/api.php');
+        }
     });
 });
 
@@ -173,6 +178,12 @@ Route::post('/contact', [ContactController::class, 'store']);
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);
 Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe']);
 Route::post('/prayer-requests', [PrayerRequestController::class, 'store']);
+
+// Public prayer submission (guest-friendly, plugin version)
+if (app(\Common\Core\PluginManager::class)->isEnabled('prayer')) {
+    Route::post('/prayer-requests/submit', [\App\Plugins\Prayer\Controllers\PrayerRequestController::class, 'store']);
+}
+
 Route::post('/reviews', [ReviewController::class, 'store']);
 Route::post('/testimonies', [TestimonyController::class, 'store']);
 Route::post('/events/{event}/register', [EventController::class, 'register']);

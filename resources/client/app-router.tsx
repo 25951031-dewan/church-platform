@@ -29,6 +29,15 @@ const SermonDetailPage = lazy(() =>
 const SermonSeriesPage = lazy(() =>
   import('./plugins/sermons/pages/SermonSeriesPage').then(m => ({default: m.SermonSeriesPage}))
 );
+const PrayerWallPage = lazy(() =>
+  import('./plugins/prayer/pages/PrayerWallPage').then(m => ({default: m.PrayerWallPage}))
+);
+const PrayerDetailPage = lazy(() =>
+  import('./plugins/prayer/pages/PrayerDetailPage').then(m => ({default: m.PrayerDetailPage}))
+);
+const PrayerSubmitPage = lazy(() =>
+  import('./plugins/prayer/pages/PrayerSubmitPage').then(m => ({default: m.PrayerSubmitPage}))
+);
 
 function Loading() {
   return <div className="flex items-center justify-center h-screen">Loading...</div>;
@@ -53,6 +62,9 @@ export function AppRouter() {
           <Route path="/sermons" element={<SermonsPage />} />
           <Route path="/sermons/:sermonId" element={<SermonDetailPage />} />
           <Route path="/sermon-series/:seriesId" element={<SermonSeriesPage />} />
+          <Route path="/prayers" element={<PrayerWallPage />} />
+          <Route path="/prayers/submit" element={<PrayerSubmitPage />} />
+          <Route path="/prayers/:prayerId" element={<PrayerDetailPage />} />
 
           {/* Admin routes */}
           <Route element={<RequirePermission permission="admin.access" />}>
