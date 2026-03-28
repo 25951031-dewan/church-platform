@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { useCreatePost } from '../queries';
 
-export function PostComposer() {
+interface PostComposerProps {
+  groupId?: number | string;
+}
+
+export function PostComposer({groupId}: PostComposerProps = {}) {
   const [content, setContent] = useState('');
   const createPost = useCreatePost();
 
@@ -10,7 +14,7 @@ export function PostComposer() {
     if (!content.trim()) return;
 
     createPost.mutate(
-      { content, type: 'text', visibility: 'public' },
+      { content, type: 'text', visibility: 'public', ...(groupId !== undefined && {group_id: groupId}) },
       { onSuccess: () => setContent('') }
     );
   };

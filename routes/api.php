@@ -81,6 +81,11 @@ Route::prefix('v1')->group(function () {
         if (app(\Common\Core\PluginManager::class)->isEnabled('timeline')) {
             require app_path('Plugins/Timeline/Routes/api.php');
         }
+
+        // Groups Plugin routes
+        if (app(\Common\Core\PluginManager::class)->isEnabled('groups')) {
+            require app_path('Plugins/Groups/Routes/api.php');
+        }
     });
 });
 

@@ -2,8 +2,14 @@ import { usePostFeed } from '../queries';
 import { PostCard } from './PostCard';
 import { useEffect, useRef } from 'react';
 
-export function PostFeed() {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = usePostFeed();
+interface PostFeedProps {
+  groupId?: number | string;
+}
+
+export function PostFeed({groupId}: PostFeedProps = {}) {
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = usePostFeed(
+    groupId !== undefined ? {group_id: groupId} : undefined
+  );
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

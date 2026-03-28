@@ -19,6 +19,7 @@ class CrupdatePost
             $post = Post::create([
                 'user_id' => $data['user_id'],
                 'church_id' => $data['church_id'] ?? null,
+                'group_id' => $data['group_id'] ?? null,
                 'type' => $data['type'] ?? 'text',
                 'content' => $data['content'],
                 'visibility' => $data['visibility'] ?? 'public',

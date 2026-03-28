@@ -38,6 +38,11 @@ class Post extends Model
         return $this->hasMany(PostMedia::class)->orderBy('order');
     }
 
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(\App\Plugins\Groups\Models\Group::class);
+    }
+
     public function isOwnedBy(int $userId): bool
     {
         return $this->user_id === $userId;

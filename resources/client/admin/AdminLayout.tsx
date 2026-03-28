@@ -3,6 +3,7 @@ import { useUserPermissions } from '@app/common/auth/use-permissions';
 
 const sidebarItems = [
   { label: 'Feed', path: '/feed', icon: 'Newspaper', permission: 'posts.view' },
+  { label: 'Groups', path: '/groups', icon: 'Users2', permission: 'groups.view' },
   { label: 'Dashboard', path: '/admin', icon: 'LayoutDashboard', permission: 'admin.access' },
   { label: 'Users', path: '/admin/users', icon: 'Users', permission: 'users.view' },
   { label: 'Roles', path: '/admin/roles', icon: 'Shield', permission: 'roles.view' },

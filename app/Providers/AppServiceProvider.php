@@ -14,6 +14,8 @@ use Common\Comments\Policies\CommentPolicy;
 use Common\Settings\Services\SettingService;
 use App\Plugins\Timeline\Models\Post;
 use App\Plugins\Timeline\Policies\PostPolicy;
+use App\Plugins\Groups\Models\Group;
+use App\Plugins\Groups\Policies\GroupPolicy;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
@@ -39,11 +41,13 @@ class AppServiceProvider extends ServiceProvider
         // Register policies
         Gate::policy(Comment::class, CommentPolicy::class);
         Gate::policy(Post::class, PostPolicy::class);
+        Gate::policy(Group::class, GroupPolicy::class);
 
         // Morph map (required for polymorphic reactions/comments)
         Relation::enforceMorphMap([
             'post' => Post::class,
             'comment' => Comment::class,
+            'group' => Group::class,
         ]);
     }
 }

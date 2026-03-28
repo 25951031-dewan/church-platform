@@ -8,6 +8,12 @@ const LoginPage = lazy(() => import('./auth/LoginPage').then((m) => ({ default: 
 const NewsfeedPage = lazy(() =>
   import('./plugins/timeline/pages/NewsfeedPage').then((m) => ({ default: m.NewsfeedPage }))
 );
+const GroupBrowserPage = lazy(() =>
+  import('./plugins/groups/pages/GroupBrowserPage').then(m => ({default: m.GroupBrowserPage}))
+);
+const GroupDetailPage = lazy(() =>
+  import('./plugins/groups/pages/GroupDetailPage').then(m => ({default: m.GroupDetailPage}))
+);
 
 function Loading() {
   return <div className="flex items-center justify-center h-screen">Loading...</div>;

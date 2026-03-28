@@ -15,6 +15,7 @@ class ModifyPost extends FormRequest
             'is_pinned' => 'sometimes|boolean',
             'scheduled_at' => 'sometimes|nullable|date|after:now',
             'church_id' => 'sometimes|nullable|integer',
+            'group_id' => 'nullable|integer|exists:groups,id',
             'media' => 'sometimes|array|max:10',
             'media.*' => 'file|max:20480',
         ];

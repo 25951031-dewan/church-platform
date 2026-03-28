@@ -26,8 +26,12 @@ class PaginatePosts
             $query->where('type', $request->input('type'));
         }
 
+        if ($request->has('group_id')) {
+            $query->where('group_id', $request->input('group_id'));
+        }
+
         if ($request->input('feed', false)) {
-            $query->feed();
+            $query->feed()->whereNull('group_id');
         } else {
             $query->published()->latest();
         }
