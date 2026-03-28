@@ -67,6 +67,15 @@ Route::prefix('v1')->group(function () {
         Route::middleware('permission:roles.create')->post('roles', [\Common\Auth\Controllers\RoleController::class, 'store']);
         Route::middleware('permission:roles.update')->put('roles/{role}', [\Common\Auth\Controllers\RoleController::class, 'update']);
         Route::middleware('permission:roles.delete')->delete('roles/{role}', [\Common\Auth\Controllers\RoleController::class, 'destroy']);
+
+        // Reactions & Comments (shared foundation)
+        Route::post('reactions/toggle', [\Common\Reactions\Controllers\ReactionController::class, 'toggle'])
+            ->middleware('permission:reactions.create');
+
+        Route::get('comments', [\Common\Comments\Controllers\CommentController::class, 'index']);
+        Route::post('comments', [\Common\Comments\Controllers\CommentController::class, 'store']);
+        Route::put('comments/{comment}', [\Common\Comments\Controllers\CommentController::class, 'update']);
+        Route::delete('comments/{comment}', [\Common\Comments\Controllers\CommentController::class, 'destroy']);
     });
 });
 
