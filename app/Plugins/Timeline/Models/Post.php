@@ -4,13 +4,19 @@ namespace App\Plugins\Timeline\Models;
 
 use Common\Comments\Traits\HasComments;
 use Common\Reactions\Traits\HasReactions;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Post extends Model
 {
-    use HasReactions, HasComments;
+    use HasReactions, HasComments, HasFactory;
+
+    protected static function newFactory()
+    {
+        return \Database\Factories\PostFactory::new();
+    }
 
     protected $guarded = ['id'];
 
