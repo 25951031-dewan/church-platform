@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router';
 import { AppRouter } from './app-router';
 import { queryClient } from './common/http/query-client';
 import { BootstrapDataProvider } from './common/core/bootstrap-data';
+import { AudioPlayerBar } from './common/audio-player/AudioPlayerBar';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById('root')!).render(
       <BootstrapDataProvider>
         <BrowserRouter>
           <AppRouter />
+          <AudioPlayerBar />
         </BrowserRouter>
       </BootstrapDataProvider>
       <ReactQueryDevtools initialIsOpen={false} />

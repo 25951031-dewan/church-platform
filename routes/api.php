@@ -86,6 +86,16 @@ Route::prefix('v1')->group(function () {
         if (app(\Common\Core\PluginManager::class)->isEnabled('groups')) {
             require app_path('Plugins/Groups/Routes/api.php');
         }
+
+        // Events Plugin routes
+        if (app(\Common\Core\PluginManager::class)->isEnabled('events')) {
+            require app_path('Plugins/Events/Routes/api.php');
+        }
+
+        // Sermons Plugin routes
+        if (app(\Common\Core\PluginManager::class)->isEnabled('sermons')) {
+            require app_path('Plugins/Sermons/Routes/api.php');
+        }
     });
 });
 

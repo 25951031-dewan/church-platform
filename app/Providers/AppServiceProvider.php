@@ -16,6 +16,10 @@ use App\Plugins\Timeline\Models\Post;
 use App\Plugins\Timeline\Policies\PostPolicy;
 use App\Plugins\Groups\Models\Group;
 use App\Plugins\Groups\Policies\GroupPolicy;
+use App\Plugins\Events\Models\Event;
+use App\Plugins\Events\Policies\EventPolicy;
+use App\Plugins\Sermons\Models\Sermon;
+use App\Plugins\Sermons\Policies\SermonPolicy;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
@@ -42,12 +46,16 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Comment::class, CommentPolicy::class);
         Gate::policy(Post::class, PostPolicy::class);
         Gate::policy(Group::class, GroupPolicy::class);
+        Gate::policy(Event::class, EventPolicy::class);
+        Gate::policy(Sermon::class, SermonPolicy::class);
 
         // Morph map (required for polymorphic reactions/comments)
         Relation::enforceMorphMap([
             'post' => Post::class,
             'comment' => Comment::class,
             'group' => Group::class,
+            'event' => Event::class,
+            'sermon' => Sermon::class,
         ]);
     }
 }

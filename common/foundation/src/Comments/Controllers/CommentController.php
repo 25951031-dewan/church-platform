@@ -15,7 +15,7 @@ class CommentController extends Controller
     {
         $validated = $request->validate([
             'commentable_id' => 'required|integer',
-            'commentable_type' => 'required|string|in:post',
+            'commentable_type' => 'required|string|in:post,event,sermon',
             'page' => 'integer|min:1',
         ]);
 

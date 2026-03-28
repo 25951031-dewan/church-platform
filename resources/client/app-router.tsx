@@ -14,6 +14,21 @@ const GroupBrowserPage = lazy(() =>
 const GroupDetailPage = lazy(() =>
   import('./plugins/groups/pages/GroupDetailPage').then(m => ({default: m.GroupDetailPage}))
 );
+const EventsPage = lazy(() =>
+  import('./plugins/events/pages/EventsPage').then(m => ({default: m.EventsPage}))
+);
+const EventDetailPage = lazy(() =>
+  import('./plugins/events/pages/EventDetailPage').then(m => ({default: m.EventDetailPage}))
+);
+const SermonsPage = lazy(() =>
+  import('./plugins/sermons/pages/SermonsPage').then(m => ({default: m.SermonsPage}))
+);
+const SermonDetailPage = lazy(() =>
+  import('./plugins/sermons/pages/SermonDetailPage').then(m => ({default: m.SermonDetailPage}))
+);
+const SermonSeriesPage = lazy(() =>
+  import('./plugins/sermons/pages/SermonSeriesPage').then(m => ({default: m.SermonSeriesPage}))
+);
 
 function Loading() {
   return <div className="flex items-center justify-center h-screen">Loading...</div>;
@@ -31,6 +46,13 @@ export function AppRouter() {
         <Route element={<RequireAuth />}>
           {/* Member-accessible routes */}
           <Route path="/feed" element={<NewsfeedPage />} />
+          <Route path="/groups" element={<GroupBrowserPage />} />
+          <Route path="/groups/:groupId" element={<GroupDetailPage />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/events/:eventId" element={<EventDetailPage />} />
+          <Route path="/sermons" element={<SermonsPage />} />
+          <Route path="/sermons/:sermonId" element={<SermonDetailPage />} />
+          <Route path="/sermon-series/:seriesId" element={<SermonSeriesPage />} />
 
           {/* Admin routes */}
           <Route element={<RequirePermission permission="admin.access" />}>

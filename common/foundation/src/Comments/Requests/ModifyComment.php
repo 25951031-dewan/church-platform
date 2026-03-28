@@ -12,7 +12,7 @@ class ModifyComment extends FormRequest
             'body' => 'required|string|max:5000',
             'parent_id' => 'nullable|integer|exists:comments,id',
             'commentable_id' => 'required_without:parent_id|integer',
-            'commentable_type' => 'required_without:parent_id|string|in:post',
+            'commentable_type' => 'required_without:parent_id|string|in:post,event,sermon',
         ];
     }
 }
