@@ -76,6 +76,11 @@ Route::prefix('v1')->group(function () {
         Route::post('comments', [\Common\Comments\Controllers\CommentController::class, 'store']);
         Route::put('comments/{comment}', [\Common\Comments\Controllers\CommentController::class, 'update']);
         Route::delete('comments/{comment}', [\Common\Comments\Controllers\CommentController::class, 'destroy']);
+
+        // Timeline Plugin routes
+        if (app(\Common\Core\PluginManager::class)->isEnabled('timeline')) {
+            require app_path('Plugins/Timeline/Routes/api.php');
+        }
     });
 });
 

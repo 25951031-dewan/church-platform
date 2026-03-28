@@ -12,6 +12,9 @@ use App\Services\ChurchContext;
 use Common\Comments\Models\Comment;
 use Common\Comments\Policies\CommentPolicy;
 use Common\Settings\Services\SettingService;
+use App\Plugins\Timeline\Models\Post;
+use App\Plugins\Timeline\Policies\PostPolicy;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,5 +38,12 @@ class AppServiceProvider extends ServiceProvider
 
         // Register policies
         Gate::policy(Comment::class, CommentPolicy::class);
+        Gate::policy(Post::class, PostPolicy::class);
+
+        // Morph map (required for polymorphic reactions/comments)
+        Relation::enforceMorphMap([
+            'post' => Post::class,
+            'comment' => Comment::class,
+        ]);
     }
 }
