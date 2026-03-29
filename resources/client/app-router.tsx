@@ -40,6 +40,8 @@ const PrayerSubmitPage = lazy(() =>
 );
 const ChurchDirectoryPage = lazy(() => import('./plugins/church-builder/pages/ChurchDirectoryPage').then(m => ({default: m.ChurchDirectoryPage})));
 const ChurchProfilePage = lazy(() => import('./plugins/church-builder/pages/ChurchProfilePage').then(m => ({default: m.ChurchProfilePage})));
+const LibraryCatalogPage = lazy(() => import('./plugins/library/pages/LibraryCatalogPage').then(m => ({default: m.LibraryCatalogPage})));
+const BookDetailPage = lazy(() => import('./plugins/library/pages/BookDetailPage').then(m => ({default: m.BookDetailPage})));
 
 function Loading() {
   return <div className="flex items-center justify-center h-screen">Loading...</div>;
@@ -69,6 +71,8 @@ export function AppRouter() {
           <Route path="/prayers/:prayerId" element={<PrayerDetailPage />} />
           <Route path="/churches" element={<ChurchDirectoryPage />} />
           <Route path="/churches/:churchId" element={<ChurchProfilePage />} />
+          <Route path="/library" element={<LibraryCatalogPage />} />
+          <Route path="/library/:bookId" element={<BookDetailPage />} />
 
           {/* Admin routes */}
           <Route element={<RequirePermission permission="admin.access" />}>
