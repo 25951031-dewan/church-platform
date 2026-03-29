@@ -106,6 +106,11 @@ Route::prefix('v1')->group(function () {
         if (app(\Common\Core\PluginManager::class)->isEnabled('church_builder')) {
             require base_path('app/Plugins/ChurchBuilder/Routes/api.php');
         }
+
+        // Library Plugin routes
+        if (app(\Common\Core\PluginManager::class)->isEnabled('library')) {
+            require app_path('Plugins/Library/Routes/api.php');
+        }
     });
 });
 

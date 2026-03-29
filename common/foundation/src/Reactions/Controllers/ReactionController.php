@@ -13,7 +13,7 @@ class ReactionController extends Controller
     {
         $validated = $request->validate([
             'reactable_id' => 'required|integer',
-            'reactable_type' => 'required|string|in:post,comment,event,sermon,prayer_request,church',
+            'reactable_type' => 'required|string|in:post,comment,event,sermon,prayer_request,church,book',
             'type' => 'required|string|in:' . implode(',', Reaction::TYPES),
         ]);
 
