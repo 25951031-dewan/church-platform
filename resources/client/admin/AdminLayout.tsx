@@ -11,10 +11,17 @@ const sidebarItems = [
   { label: 'Library', path: '/library', icon: 'BookOpen', permission: 'library.view' },
   { label: 'Blog', path: '/blog', icon: 'FileText', permission: 'blog.view' },
   { label: 'Meetings', path: '/meetings', icon: 'Video', permission: 'live_meeting.view' },
+  { label: 'Notifications', path: '/notifications', icon: 'Bell', permission: 'admin.access' },
   { label: 'Dashboard', path: '/admin', icon: 'LayoutDashboard', permission: 'admin.access' },
   { label: 'Users', path: '/admin/users', icon: 'Users', permission: 'users.view' },
   { label: 'Roles', path: '/admin/roles', icon: 'Shield', permission: 'roles.view' },
   { label: 'Settings', path: '/admin/settings', icon: 'Settings', permission: 'settings.view' },
+  { label: 'Admin Meetings', path: '/admin/meetings', icon: 'Video', permission: 'admin.access' },
+  { label: 'Notif Templates', path: '/admin/notification-templates', icon: 'FileText', permission: 'admin.access' },
+  { label: 'Notif Logs', path: '/admin/notification-logs', icon: 'List', permission: 'admin.access' },
+  { label: 'Notif Settings', path: '/admin/settings/notifications', icon: 'Settings', permission: 'settings.update' },
+  { label: 'Meeting Settings', path: '/admin/settings/live-meetings', icon: 'Settings', permission: 'settings.update' },
+  { label: 'System', path: '/admin/system', icon: 'Server', permission: 'manage_settings' },
 ];
 
 export function AdminLayout() {

@@ -45,9 +45,32 @@ const BookDetailPage = lazy(() => import('./plugins/library/pages/BookDetailPage
 const BlogListPage = lazy(() => import('./plugins/blog/pages/BlogListPage').then(m => ({default: m.BlogListPage})));
 const ArticleDetailPage = lazy(() => import('./plugins/blog/pages/ArticleDetailPage').then(m => ({default: m.ArticleDetailPage})));
 const ArticleEditorPage = lazy(() => import('./plugins/blog/pages/ArticleEditorPage').then(m => ({default: m.ArticleEditorPage})));
-const MeetingsPage = lazy(() => import('./plugins/live-meeting/pages/MeetingsPage').then(m => ({default: m.MeetingsPage})));
-const MeetingDetailPage = lazy(() => import('./plugins/live-meeting/pages/MeetingDetailPage').then(m => ({default: m.MeetingDetailPage})));
+const MeetingsPage = lazy(() =>
+  import('./plugins/live-meetings/pages/MeetingsPage').then(m => ({default: m.MeetingsPage}))
+);
+const MeetingDetailPage = lazy(() =>
+  import('./plugins/live-meetings/pages/MeetingDetailPage').then(m => ({default: m.MeetingDetailPage}))
+);
 const ChatPage = lazy(() => import('./plugins/chat/pages/ChatPage').then(m => ({default: m.ChatPage})));
+const NotificationsPage = lazy(() =>
+  import('./plugins/notifications/pages/NotificationsPage').then(m => ({default: m.NotificationsPage}))
+);
+const NotificationLogsPage = lazy(() =>
+  import('./plugins/notifications/admin/NotificationLogsPage').then(m => ({default: m.NotificationLogsPage}))
+);
+const NotificationTemplatesPage = lazy(() =>
+  import('./plugins/notifications/admin/NotificationTemplatesPage').then(m => ({default: m.NotificationTemplatesPage}))
+);
+const MeetingManagerPage = lazy(() =>
+  import('./plugins/live-meetings/admin/MeetingManagerPage').then(m => ({default: m.MeetingManagerPage}))
+);
+const NotificationSettingsPage = lazy(() =>
+  import('./plugins/notifications/admin/NotificationSettingsPage').then(m => ({default: m.NotificationSettingsPage}))
+);
+const LiveMeetingSettingsPage = lazy(() =>
+  import('./plugins/live-meetings/admin/LiveMeetingSettingsPage').then(m => ({default: m.LiveMeetingSettingsPage}))
+);
+const SystemPage = lazy(() => import('./admin/SystemPage').then(m => ({ default: m.SystemPage })));
 
 function Loading() {
   return <div className="flex items-center justify-center h-screen">Loading...</div>;
@@ -86,12 +109,18 @@ export function AppRouter() {
           <Route path="/meetings" element={<MeetingsPage />} />
           <Route path="/meetings/:meetingId" element={<MeetingDetailPage />} />
           <Route path="/chat" element={<ChatPage />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
 
           {/* Admin routes */}
           <Route element={<RequirePermission permission="admin.access" />}>
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<DashboardPage />} />
-              {/* More admin routes added in subsequent tasks */}
+              <Route path="notification-logs" element={<NotificationLogsPage />} />
+              <Route path="notification-templates" element={<NotificationTemplatesPage />} />
+              <Route path="meetings" element={<MeetingManagerPage />} />
+              <Route path="settings/notifications" element={<NotificationSettingsPage />} />
+              <Route path="settings/live-meetings" element={<LiveMeetingSettingsPage />} />
+              <Route path="system" element={<SystemPage />} />
             </Route>
           </Route>
         </Route>
