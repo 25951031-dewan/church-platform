@@ -111,6 +111,16 @@ Route::prefix('v1')->group(function () {
         if (app(\Common\Core\PluginManager::class)->isEnabled('library')) {
             require app_path('Plugins/Library/Routes/api.php');
         }
+
+        // Blog Plugin routes (authenticated mutations)
+        if (app(\Common\Core\PluginManager::class)->isEnabled('blog')) {
+            require app_path('Plugins/Blog/Routes/api.php');
+        }
+
+        // LiveMeeting Plugin routes
+        if (app(\Common\Core\PluginManager::class)->isEnabled('live_meeting')) {
+            require app_path('Plugins/LiveMeeting/Routes/api.php');
+        }
     });
 });
 
@@ -193,6 +203,13 @@ Route::post('/prayer-requests', [PrayerRequestController::class, 'store']);
 if (app(\Common\Core\PluginManager::class)->isEnabled('prayer')) {
     Route::post('/prayer-requests/submit', [\App\Plugins\Prayer\Controllers\PrayerRequestController::class, 'store']);
 }
+
+// Blog public routes (no auth required — articles are public for SEO)
+Route::prefix('v1')->group(function () {
+    if (app(\Common\Core\PluginManager::class)->isEnabled('blog')) {
+        require app_path('Plugins/Blog/Routes/public.php');
+    }
+});
 
 Route::post('/reviews', [ReviewController::class, 'store']);
 Route::post('/testimonies', [TestimonyController::class, 'store']);

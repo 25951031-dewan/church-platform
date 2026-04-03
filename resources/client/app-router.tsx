@@ -42,6 +42,11 @@ const ChurchDirectoryPage = lazy(() => import('./plugins/church-builder/pages/Ch
 const ChurchProfilePage = lazy(() => import('./plugins/church-builder/pages/ChurchProfilePage').then(m => ({default: m.ChurchProfilePage})));
 const LibraryCatalogPage = lazy(() => import('./plugins/library/pages/LibraryCatalogPage').then(m => ({default: m.LibraryCatalogPage})));
 const BookDetailPage = lazy(() => import('./plugins/library/pages/BookDetailPage').then(m => ({default: m.BookDetailPage})));
+const BlogListPage = lazy(() => import('./plugins/blog/pages/BlogListPage').then(m => ({default: m.BlogListPage})));
+const ArticleDetailPage = lazy(() => import('./plugins/blog/pages/ArticleDetailPage').then(m => ({default: m.ArticleDetailPage})));
+const ArticleEditorPage = lazy(() => import('./plugins/blog/pages/ArticleEditorPage').then(m => ({default: m.ArticleEditorPage})));
+const MeetingsPage = lazy(() => import('./plugins/live-meeting/pages/MeetingsPage').then(m => ({default: m.MeetingsPage})));
+const MeetingDetailPage = lazy(() => import('./plugins/live-meeting/pages/MeetingDetailPage').then(m => ({default: m.MeetingDetailPage})));
 
 function Loading() {
   return <div className="flex items-center justify-center h-screen">Loading...</div>;
@@ -73,6 +78,12 @@ export function AppRouter() {
           <Route path="/churches/:churchId" element={<ChurchProfilePage />} />
           <Route path="/library" element={<LibraryCatalogPage />} />
           <Route path="/library/:bookId" element={<BookDetailPage />} />
+          <Route path="/blog" element={<BlogListPage />} />
+          <Route path="/blog/new" element={<ArticleEditorPage />} />
+          <Route path="/blog/:slug" element={<ArticleDetailPage />} />
+          <Route path="/blog/:slug/edit" element={<ArticleEditorPage />} />
+          <Route path="/meetings" element={<MeetingsPage />} />
+          <Route path="/meetings/:meetingId" element={<MeetingDetailPage />} />
 
           {/* Admin routes */}
           <Route element={<RequirePermission permission="admin.access" />}>

@@ -24,6 +24,10 @@ use App\Plugins\Prayer\Models\PrayerRequest;
 use App\Plugins\Prayer\Policies\PrayerRequestPolicy;
 use App\Plugins\Library\Models\Book;
 use App\Plugins\Library\Policies\BookPolicy;
+use App\Plugins\Blog\Models\Article;
+use App\Plugins\Blog\Policies\ArticlePolicy;
+use App\Plugins\LiveMeeting\Models\Meeting;
+use App\Plugins\LiveMeeting\Policies\MeetingPolicy;
 use App\Plugins\ChurchBuilder\Models\Church as ChurchModel;
 use App\Plugins\ChurchBuilder\Models\ChurchPage;
 use App\Plugins\ChurchBuilder\Policies\ChurchPolicy;
@@ -62,6 +66,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(ChurchModel::class, ChurchPolicy::class);
         Gate::policy(ChurchPage::class, ChurchPagePolicy::class);
         Gate::policy(Book::class, BookPolicy::class);
+        Gate::policy(Article::class, ArticlePolicy::class);
+        Gate::policy(Meeting::class, MeetingPolicy::class);
 
         // Morph map (required for polymorphic reactions/comments)
         Relation::enforceMorphMap([
@@ -73,6 +79,7 @@ class AppServiceProvider extends ServiceProvider
             'prayer_request' => PrayerRequest::class,
             'church' => ChurchModel::class,
             'book' => Book::class,
+            'article' => Article::class,
         ]);
     }
 }

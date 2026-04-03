@@ -9,6 +9,8 @@ const sidebarItems = [
   { label: 'Prayers', path: '/prayers', icon: 'HandHeart', permission: 'prayer.view' },
   { label: 'Churches', path: '/churches', icon: 'Church', permission: 'churches.view' },
   { label: 'Library', path: '/library', icon: 'BookOpen', permission: 'library.view' },
+  { label: 'Blog', path: '/blog', icon: 'FileText', permission: 'blog.view' },
+  { label: 'Meetings', path: '/meetings', icon: 'Video', permission: 'live_meeting.view' },
   { label: 'Dashboard', path: '/admin', icon: 'LayoutDashboard', permission: 'admin.access' },
   { label: 'Users', path: '/admin/users', icon: 'Users', permission: 'users.view' },
   { label: 'Roles', path: '/admin/roles', icon: 'Shield', permission: 'roles.view' },
