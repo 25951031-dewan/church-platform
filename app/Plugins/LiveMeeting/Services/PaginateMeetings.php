@@ -9,7 +9,7 @@ class PaginateMeetings
 {
     public function execute(array $params): LengthAwarePaginator
     {
-        $query = Meeting::query()->with(['host'])->active();
+        $query = Meeting::query()->with(['host', 'event'])->active();
 
         if ($filter = ($params['filter'] ?? null)) {
             if ($filter === 'live') {
@@ -20,7 +20,11 @@ class PaginateMeetings
         }
 
         if ($search = ($params['search'] ?? null)) {
-            $query->where('title', 'like', "%{$search}%");
+            $query->where(function ($builder) use ($search) {
+                $builder
+                    ->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
         }
 
         $query->orderBy('starts_at', 'asc');

@@ -34,4 +34,10 @@ class MeetingPolicy extends BasePolicy
         return $meeting->host_id === $user->id
             || $user->hasPermission('live_meeting.delete');
     }
+
+    public function host(User $user, Meeting $meeting): bool
+    {
+        return $meeting->host_id === $user->id
+            || $user->hasPermission('live_meeting.update');
+    }
 }

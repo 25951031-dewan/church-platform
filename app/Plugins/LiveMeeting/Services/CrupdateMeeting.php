@@ -12,6 +12,11 @@ class CrupdateMeeting
             'title' => $data['title'] ?? $meeting->title,
             'description' => $data['description'] ?? $meeting->description,
             'meeting_url' => $data['meeting_url'] ?? $meeting->meeting_url,
+            'event_id' => $data['event_id'] ?? $meeting->event_id,
+            'meeting_id' => $data['meeting_id'] ?? $meeting->meeting_id,
+            'meeting_password' => $data['meeting_password'] ?? $meeting->meeting_password,
+            'max_participants' => $data['max_participants'] ?? $meeting->max_participants,
+            'requires_registration' => $data['requires_registration'] ?? $meeting->requires_registration ?? false,
             'platform' => $data['platform'] ?? $meeting->platform ?? 'other',
             'church_id' => $data['church_id'] ?? $meeting->church_id,
             'starts_at' => $data['starts_at'] ?? $meeting->starts_at,
@@ -30,6 +35,6 @@ class CrupdateMeeting
             $meeting->update($attributes);
         }
 
-        return $meeting->load(['host']);
+        return $meeting->load(['host', 'event']);
     }
 }
