@@ -4,11 +4,10 @@ namespace Common\Chat\Policies;
 
 use Common\Auth\Models\User;
 use Common\Chat\Models\Conversation;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use Common\Core\BasePolicy;
 
-class ConversationPolicy
+class ConversationPolicy extends BasePolicy
 {
-    use HandlesAuthorization;
 
     /**
      * Determine if the user can view the list of their conversations.

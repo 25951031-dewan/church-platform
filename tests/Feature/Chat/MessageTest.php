@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Chat;
 
-use Common\Auth\Models\User;
+use App\Models\User;
 use Common\Chat\Models\Conversation;
 use Common\Chat\Models\Message;
 use Common\Chat\Events\MessageSent;

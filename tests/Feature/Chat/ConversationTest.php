@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Chat;
 
-use Common\Auth\Models\User;
+use App\Models\User;
 use Common\Chat\Models\Conversation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
