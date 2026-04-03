@@ -30,6 +30,10 @@ use App\Http\Controllers\Api\MobileThemeController;
 use App\Http\Controllers\Api\LocalizationController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use Common\Notifications\Controllers\Admin\NotificationLogController;
+use Common\Notifications\Controllers\Admin\NotificationTemplateController;
+use Common\Notifications\Controllers\NotificationController;
+use Common\Notifications\Controllers\NotificationPreferenceController;
 use Common\Settings\Controllers\SettingController as FoundationSettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,6 +80,28 @@ Route::prefix('v1')->group(function () {
         Route::post('comments', [\Common\Comments\Controllers\CommentController::class, 'store']);
         Route::put('comments/{comment}', [\Common\Comments\Controllers\CommentController::class, 'update']);
         Route::delete('comments/{comment}', [\Common\Comments\Controllers\CommentController::class, 'destroy']);
+
+        Route::prefix('notifications')->group(function () {
+            Route::get('/preferences', [NotificationPreferenceController::class, 'index']);
+            Route::put('/preferences', [NotificationPreferenceController::class, 'update']);
+            Route::post('/push/register', [NotificationPreferenceController::class, 'registerPush']);
+            Route::post('/push/unregister', [NotificationPreferenceController::class, 'unregisterPush']);
+            Route::get('/', [NotificationController::class, 'index']);
+            Route::get('/unread-count', [NotificationController::class, 'unreadCount']);
+            Route::post('/read-all', [NotificationController::class, 'markAllAsRead']);
+            Route::delete('/clear-read', [NotificationController::class, 'clearRead']);
+            Route::post('/{id}/read', [NotificationController::class, 'markAsRead']);
+            Route::delete('/{id}', [NotificationController::class, 'destroy']);
+        });
+
+        Route::prefix('admin')->middleware('permission:admin.access')->group(function () {
+            Route::get('notification-logs', [NotificationLogController::class, 'index']);
+            Route::get('notification-templates', [NotificationTemplateController::class, 'index']);
+            Route::post('notification-templates', [NotificationTemplateController::class, 'store']);
+            Route::get('notification-templates/{notificationTemplate}', [NotificationTemplateController::class, 'show']);
+            Route::put('notification-templates/{notificationTemplate}', [NotificationTemplateController::class, 'update']);
+            Route::delete('notification-templates/{notificationTemplate}', [NotificationTemplateController::class, 'destroy']);
+        });
 
         // Timeline Plugin routes
         if (app(\Common\Core\PluginManager::class)->isEnabled('timeline')) {
@@ -521,5 +547,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/system/optimize', [SystemController::class, 'optimize']);
         Route::post('/system/deploy', [SystemController::class, 'deploy']);
         Route::get('/system/git-log', [SystemController::class, 'gitLog']);
+
+        // Zip-based update (shared hosting) — upload package, extract, migrate
+        Route::get('/update/status', [\App\Http\Controllers\Admin\UpdateController::class, 'status']);
+        Route::post('/update/upload', [\App\Http\Controllers\Admin\UpdateController::class, 'upload']);
+        Route::post('/update/migrate', [\App\Http\Controllers\Admin\UpdateController::class, 'migrate']);
+        Route::post('/update/clear-caches', [\App\Http\Controllers\Admin\UpdateController::class, 'clearCaches']);
     });
 });
