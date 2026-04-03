@@ -117,7 +117,18 @@ Route::get('/manifest.json', function () {
 });
 
 // Public Content Pages (SSR with clean URLs)
-Route::get('/blog/{slug}', [PublicContentController::class, 'post'])->name('public.post');
+if (app(\Common\Core\PluginManager::class)->isEnabled('blog')) {
+    Route::get('/blog/{slug}', function ($slug) {
+        $article = \App\Plugins\Blog\Models\Article::where('slug', $slug)
+            ->published()
+            ->with('author')
+            ->firstOrFail();
+
+        return view('public.article', compact('article'));
+    })->name('public.article');
+} else {
+    Route::get('/blog/{slug}', [PublicContentController::class, 'post'])->name('public.post');
+}
 Route::get('/page/{slug}', [PublicContentController::class, 'page'])->name('public.page');
 Route::get('/ministries', [PublicContentController::class, 'ministries'])->name('public.ministries');
 Route::get('/ministries/{slug}', [PublicContentController::class, 'ministry'])->name('public.ministry');

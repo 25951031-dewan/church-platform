@@ -71,6 +71,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Morph map (required for polymorphic reactions/comments)
         Relation::enforceMorphMap([
+            'user' => \App\Models\User::class,
             'post' => Post::class,
             'comment' => Comment::class,
             'group' => Group::class,

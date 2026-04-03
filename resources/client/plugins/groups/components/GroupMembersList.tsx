@@ -16,7 +16,7 @@ export function GroupMembersList({groupId, currentUserRole}: GroupMembersListPro
   const {data, isLoading} = useGroupMembers(groupId);
   const changeRole = useChangeMemberRole(groupId);
   const removeMember = useRemoveMember(groupId);
-  const {currentUser} = useAuth();
+  const {user} = useAuth();
 
   const canManage = currentUserRole === 'admin' || currentUserRole === 'moderator';
 
@@ -48,7 +48,7 @@ export function GroupMembersList({groupId, currentUserRole}: GroupMembersListPro
               </span>
             </div>
           </div>
-          {canManage && member.user.id !== currentUser?.id && member.role !== 'admin' && (
+          {canManage && member.user.id !== user?.id && member.role !== 'admin' && (
             <div className="flex gap-1">
               {member.role === 'member' && (
                 <button

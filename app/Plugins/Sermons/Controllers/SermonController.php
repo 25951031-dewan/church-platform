@@ -8,6 +8,7 @@ use App\Plugins\Sermons\Services\CrupdateSermon;
 use App\Plugins\Sermons\Services\DeleteSermons;
 use App\Plugins\Sermons\Services\PaginateSermons;
 use App\Plugins\Sermons\Services\SermonLoader;
+use Common\Notifications\Events\SermonPublished;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -44,6 +45,8 @@ class SermonController extends Controller
             ...$request->validated(),
             'author_id' => $request->user()->id,
         ]);
+
+        event(new SermonPublished($sermon));
 
         return response()->json([
             'sermon' => $this->loader->loadForDetail($sermon),

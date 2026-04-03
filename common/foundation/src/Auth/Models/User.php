@@ -3,8 +3,11 @@
 namespace Common\Auth\Models;
 
 use Common\Chat\Models\Conversation;
+use Common\Notifications\Models\NotificationPreference;
+use Common\Notifications\Models\PushSubscription;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
@@ -52,6 +55,22 @@ class User extends Authenticatable
         return $this->belongsToMany(Conversation::class, 'conversation_user')
             ->withPivot(['last_read_at', 'is_muted', 'joined_at'])
             ->orderBy('updated_at', 'desc');
+    }
+
+    /**
+     * Get user's notification preferences.
+     */
+    public function notificationPreferences(): HasMany
+    {
+        return $this->hasMany(NotificationPreference::class);
+    }
+
+    /**
+     * Get user's push subscriptions.
+     */
+    public function pushSubscriptions(): HasMany
+    {
+        return $this->hasMany(PushSubscription::class);
     }
 
     // ── Permission Resolution (BeMusic pattern) ──

@@ -3,14 +3,14 @@
   "configurations": [
     {
       "name": "Laravel",
-      "runtimeExecutable": "php",
-      "runtimeArgs": ["artisan", "serve"],
+      "runtimeExecutable": "/bin/sh",
+      "runtimeArgs": ["/Users/siku/Documents/GitHub/church/.claude/start-laravel.sh"],
       "port": 8000
     },
     {
       "name": "Vite",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "/bin/sh",
+      "runtimeArgs": ["/Users/siku/Documents/GitHub/church/.claude/start-vite.sh"],
       "port": 5173
     }
   ]

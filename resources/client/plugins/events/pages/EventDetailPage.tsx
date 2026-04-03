@@ -87,7 +87,13 @@ export function EventDetailPage() {
         {event.description}
       </div>
 
-      <ReactionBar reactableId={event.id} reactableType="event" />
+      <ReactionBar 
+        reactableId={event.id} 
+        reactableType="event"
+        reactionCounts={event.reactions || {}}
+        currentUserReaction={null}
+        queryKey={['events', String(event.id)]}
+      />
 
       <div className="mt-8">
         <CommentThread commentableId={event.id} commentableType="event" />

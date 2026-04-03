@@ -5,6 +5,7 @@ namespace App\Plugins\Prayer\Controllers;
 use App\Plugins\Prayer\Models\PrayerRequest;
 use App\Plugins\Prayer\Models\PrayerUpdate;
 use App\Plugins\Prayer\Requests\ModifyPrayerUpdate;
+use Common\Notifications\Events\PrayerUpdated;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
@@ -45,6 +46,7 @@ class PrayerUpdateController extends Controller
         }
 
         $update->load('user:id,name,avatar');
+        event(new PrayerUpdated($update));
 
         return response()->json(['update' => $update], 201);
     }

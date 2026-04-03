@@ -70,7 +70,13 @@ export function SermonDetailPage() {
         </div>
       )}
 
-      <ReactionBar reactableId={sermon.id} reactableType="sermon" />
+      <ReactionBar 
+        reactableId={sermon.id} 
+        reactableType="sermon"
+        reactionCounts={sermon.reactions || {}}
+        currentUserReaction={null}
+        queryKey={['sermons', String(sermon.id)]}
+      />
 
       <div className="mt-8">
         <CommentThread commentableId={sermon.id} commentableType="sermon" />

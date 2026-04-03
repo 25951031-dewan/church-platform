@@ -8,7 +8,7 @@ export function EventsPage() {
   const [activeTab, setActiveTab] = useState<Tab>('upcoming');
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
-  const params =
+  const params: Record<string, string | boolean> =
     activeTab === 'upcoming'
       ? {upcoming: true}
       : activeTab === 'featured'
