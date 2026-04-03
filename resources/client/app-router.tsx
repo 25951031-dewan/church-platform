@@ -47,6 +47,7 @@ const ArticleDetailPage = lazy(() => import('./plugins/blog/pages/ArticleDetailP
 const ArticleEditorPage = lazy(() => import('./plugins/blog/pages/ArticleEditorPage').then(m => ({default: m.ArticleEditorPage})));
 const MeetingsPage = lazy(() => import('./plugins/live-meeting/pages/MeetingsPage').then(m => ({default: m.MeetingsPage})));
 const MeetingDetailPage = lazy(() => import('./plugins/live-meeting/pages/MeetingDetailPage').then(m => ({default: m.MeetingDetailPage})));
+const ChatPage = lazy(() => import('./plugins/chat/pages/ChatPage').then(m => ({default: m.ChatPage})));
 
 function Loading() {
   return <div className="flex items-center justify-center h-screen">Loading...</div>;
@@ -84,6 +85,7 @@ export function AppRouter() {
           <Route path="/blog/:slug/edit" element={<ArticleEditorPage />} />
           <Route path="/meetings" element={<MeetingsPage />} />
           <Route path="/meetings/:meetingId" element={<MeetingDetailPage />} />
+          <Route path="/chat" element={<ChatPage />} />
 
           {/* Admin routes */}
           <Route element={<RequirePermission permission="admin.access" />}>

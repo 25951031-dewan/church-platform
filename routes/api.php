@@ -121,6 +121,37 @@ Route::prefix('v1')->group(function () {
         if (app(\Common\Core\PluginManager::class)->isEnabled('live_meeting')) {
             require app_path('Plugins/LiveMeeting/Routes/api.php');
         }
+
+        // Chat Plugin routes
+        if (app(\Common\Core\PluginManager::class)->isEnabled('chat')) {
+            Route::prefix('chat')->group(function () {
+                // Conversations
+                Route::get('conversations', [\Common\Chat\Controllers\ConversationController::class, 'index']);
+                Route::post('conversations', [\Common\Chat\Controllers\ConversationController::class, 'store']);
+                Route::get('conversations/{conversation}', [\Common\Chat\Controllers\ConversationController::class, 'show']);
+                Route::post('conversations/{conversation}/read', [\Common\Chat\Controllers\ConversationController::class, 'markAsRead']);
+                Route::delete('conversations/{conversation}', [\Common\Chat\Controllers\ConversationController::class, 'destroy']);
+
+                // Messages
+                Route::get('conversations/{conversation}/messages', [\Common\Chat\Controllers\MessageController::class, 'index']);
+                Route::post('conversations/{conversation}/messages', [\Common\Chat\Controllers\MessageController::class, 'store']);
+                Route::delete('messages/{message}', [\Common\Chat\Controllers\MessageController::class, 'destroy']);
+
+                // Typing indicator
+                Route::post('conversations/{conversation}/typing', [\Common\Chat\Controllers\ChatPresenceController::class, 'typing']);
+
+                // Presence
+                Route::post('presence', [\Common\Chat\Controllers\ChatPresenceController::class, 'update']);
+
+                // Admin moderation routes
+                Route::middleware('permission:chat.moderate')->prefix('admin')->group(function () {
+                    Route::get('conversations', [\Common\Chat\Controllers\Admin\ChatModerationController::class, 'index']);
+                    Route::get('conversations/{conversation}/messages', [\Common\Chat\Controllers\Admin\ChatModerationController::class, 'messages']);
+                    Route::delete('messages/{message}/force', [\Common\Chat\Controllers\Admin\ChatModerationController::class, 'forceDelete']);
+                    Route::post('messages/{message}/restore', [\Common\Chat\Controllers\Admin\ChatModerationController::class, 'restore']);
+                });
+            });
+        }
     });
 });
 

@@ -44,4 +44,10 @@ return [
         'seo.manage'             => 'Manage SEO Settings',
         'seo.sitemap'            => 'Generate Sitemap',
     ],
+    'chat' => [
+        'chat.send'              => 'Send Messages',
+        'chat.create_group'      => 'Create Group Chats',
+        'chat.attach_files'      => 'Send File Attachments',
+        'chat.moderate'          => 'Moderate Any Chat',
+    ],
 ];

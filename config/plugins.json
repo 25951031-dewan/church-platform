@@ -5,7 +5,7 @@
   "sermons":        { "enabled": true,  "version": "1.0.0" },
   "prayer":         { "enabled": true,  "version": "1.0.0" },
   "giving":         { "enabled": true,  "version": "1.0.0" },
-  "chat":           { "enabled": true,  "version": "1.0.0" },
+  "chat":           { "enabled": true,  "version": "1.0.0", "permissions": ["chat.send", "chat.create_group", "chat.attach_files", "chat.moderate"] },
   "library":        { "enabled": true,  "version": "1.0.0" },
   "church_builder": { "enabled": true,  "version": "1.0.0" },
   "blog":           { "enabled": true,  "version": "1.0.0" },

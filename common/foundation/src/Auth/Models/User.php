@@ -2,7 +2,9 @@
 
 namespace Common\Auth\Models;
 
+use Common\Chat\Models\Conversation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
@@ -40,6 +42,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Permission::class, 'permission_user')
             ->withPivot('granted');
+    }
+
+    /**
+     * Get all conversations this user is a participant in.
+     */
+    public function conversations(): BelongsToMany
+    {
+        return $this->belongsToMany(Conversation::class, 'conversation_user')
+            ->withPivot(['last_read_at', 'is_muted', 'joined_at'])
+            ->orderBy('updated_at', 'desc');
     }
 
     // ── Permission Resolution (BeMusic pattern) ──
