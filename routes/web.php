@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Installer\InstallerController;
 use App\Http\Controllers\PublicContentController;
@@ -58,25 +57,7 @@ Route::post('/logout', function (\Illuminate\Http\Request $request) {
 Route::get('/auth/{provider}/redirect', [AuthController::class, 'socialRedirect'])->name('social.redirect');
 Route::get('/auth/{provider}/callback', [AuthController::class, 'socialCallback'])->name('social.callback');
 
-// Admin Routes
-Route::prefix('admin')->middleware(['auth'])->group(function () {
-    Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/manage/{section}', function ($section) {
-        $validSections = [
-            'verses', 'blessings', 'prayers', 'prayer-requests', 'events', 'posts', 'sermons',
-            'books', 'bible-studies', 'reviews', 'testimonies', 'galleries', 'ministries',
-            'contacts', 'newsletter', 'donations', 'users', 'settings',
-            'announcements', 'pages', 'categories', 'menus', 'roles',
-            'appearance', 'mobile-theme', 'translations',
-            'homepage', 'system', 'profile', 'sitemap',
-            'churches', 'church-builder',
-        ];
-        if (!in_array($section, $validSections)) {
-            abort(404);
-        }
-        return view('admin.manage', ['section' => $section]);
-    })->name('admin.manage');
-});
+// Admin routes are handled by the React SPA catch-all below.
 
 // Sitemap (SEO)
 Route::get('/sitemap.xml', [\App\Http\Controllers\Api\SitemapController::class, 'index'])->name('sitemap');
