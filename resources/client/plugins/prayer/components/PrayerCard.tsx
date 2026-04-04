@@ -18,29 +18,29 @@ export function PrayerCard({prayer}: PrayerCardProps) {
   return (
     <Link
       to={`/prayers/${prayer.id}`}
-      className="block bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
+      className="block bg-[#161920] rounded-xl p-4 border border-white/10 hover:shadow-lg hover:shadow-black/20 transition-shadow"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+            <h3 className="text-sm font-semibold text-white truncate">
               {prayer.subject}
             </h3>
             {prayer.is_urgent && (
-              <span className="px-1.5 py-0.5 text-xs font-medium bg-red-100 text-red-700 rounded">
+              <span className="px-1.5 py-0.5 text-xs font-medium bg-red-500/20 text-red-400 rounded border border-red-500/30">
                 Urgent
               </span>
             )}
           </div>
 
-          <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-2">
+          <p className="text-sm text-gray-400 line-clamp-2 mb-2">
             {prayer.request}
           </p>
 
           <div className="flex items-center gap-3 text-xs text-gray-400">
             <span>{prayer.name ?? 'Anonymous'}</span>
             {prayer.category && (
-              <span className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded capitalize">
+              <span className="px-1.5 py-0.5 bg-white/10 rounded capitalize">
                 {prayer.category}
               </span>
             )}
@@ -50,7 +50,7 @@ export function PrayerCard({prayer}: PrayerCardProps) {
 
         <div className="flex flex-col items-center text-center shrink-0">
           <span className="text-lg">🙏</span>
-          <span className="text-xs font-medium text-gray-500">{prayer.reactions_count ?? 0}</span>
+          <span className="text-xs font-medium text-gray-400">{prayer.reactions_count ?? 0}</span>
         </div>
       </div>
     </Link>

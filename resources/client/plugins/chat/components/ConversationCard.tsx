@@ -53,8 +53,8 @@ export function ConversationCard({ conversation, isActive, onClick }: Props) {
   return (
     <button
       onClick={onClick}
-      className={`w-full p-4 flex items-start gap-3 hover:bg-gray-50 transition-colors border-b ${
-        isActive ? 'bg-blue-50 border-l-4 border-l-blue-500' : ''
+      className={`w-full p-4 flex items-start gap-3 hover:bg-white/5 transition-colors border-b border-white/10 ${
+        isActive ? 'bg-indigo-500/20 border-l-4 border-l-indigo-500' : ''
       }`}
     >
       {/* Avatar */}
@@ -66,7 +66,7 @@ export function ConversationCard({ conversation, isActive, onClick }: Props) {
             className="w-12 h-12 rounded-full object-cover"
           />
         ) : (
-          <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-semibold">
+          <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-gray-400 font-semibold">
             {initials}
           </div>
         )}
@@ -80,7 +80,7 @@ export function ConversationCard({ conversation, isActive, onClick }: Props) {
       {/* Content */}
       <div className="flex-1 min-w-0 text-left">
         <div className="flex items-center justify-between gap-2">
-          <h3 className="font-semibold text-gray-900 truncate">
+          <h3 className="font-semibold text-white truncate">
             {conversation.display_name}
           </h3>
           <div className="flex items-center gap-2 flex-shrink-0">

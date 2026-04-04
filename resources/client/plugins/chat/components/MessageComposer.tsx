@@ -45,12 +45,12 @@ export function MessageComposer({ conversationId }: Props) {
   };
 
   return (
-    <div className="border-t p-4 bg-white">
+    <div className="border-t border-white/10 p-4 bg-[#161920]">
       <div className="flex items-center gap-2">
         {/* Attachment button */}
         <button
           type="button"
-          className="p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 transition-colors"
+          className="p-2 text-gray-400 hover:text-gray-300 rounded-full hover:bg-white/10 transition-colors"
           title="Attach file"
         >
           <svg
@@ -77,7 +77,7 @@ export function MessageComposer({ conversationId }: Props) {
           onChange={(e) => setBody(e.target.value)}
           onKeyPress={handleKeyPress}
           placeholder="Type a message..."
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+          className="flex-1 px-4 py-2 bg-[#0C0E12] border border-white/10 rounded-full text-white placeholder:text-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
           disabled={sendMessage.isPending}
         />
 

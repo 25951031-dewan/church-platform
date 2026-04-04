@@ -38,10 +38,10 @@ export function ChatModerationPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Conversations List */}
-        <div className="bg-white rounded-lg shadow p-4">
-          <h2 className="text-lg font-semibold mb-4">All Conversations</h2>
+        <div className="bg-[#161920] rounded-lg border border-white/10 p-4">
+          <h2 className="text-lg font-semibold mb-4 text-white">All Conversations</h2>
 
-          {loadingConversations && <div className="text-gray-500">Loading...</div>}
+          {loadingConversations && <div className="text-gray-400">Loading...</div>}
 
           <div className="space-y-2">
             {conversationsData?.data.map((conv) => (
@@ -50,18 +50,18 @@ export function ChatModerationPage() {
                 onClick={() => setSelectedConversation(conv)}
                 className={`w-full text-left p-3 rounded-lg border transition-colors ${
                   selectedConversation?.id === conv.id
-                    ? 'bg-blue-50 border-blue-500'
-                    : 'hover:bg-gray-50 border-gray-200'
+                    ? 'bg-indigo-500/20 border-indigo-500'
+                    : 'hover:bg-white/5 border-white/10'
                 }`}
               >
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className="font-medium">{conv.display_name}</p>
-                    <p className="text-sm text-gray-500">
+                    <p className="font-medium text-white">{conv.display_name}</p>
+                    <p className="text-sm text-gray-400">
                       {conv.type === 'group' ? `Group · ${conv.users.length} members` : 'Direct'}
                     </p>
                   </div>
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-gray-500">
                     ID: {conv.id}
                   </span>
                 </div>
@@ -94,11 +94,11 @@ export function ChatModerationPage() {
         </div>
 
         {/* Messages View */}
-        <div className="bg-white rounded-lg shadow p-4">
-          <h2 className="text-lg font-semibold mb-4">
+        <div className="bg-[#161920] rounded-lg border border-white/10 p-4">
+          <h2 className="text-lg font-semibold mb-4 text-white">
             Messages
             {selectedConversation && (
-              <span className="font-normal text-gray-500">
+              <span className="font-normal text-gray-400">
                 {' '}
                 - {selectedConversation.display_name}
               </span>

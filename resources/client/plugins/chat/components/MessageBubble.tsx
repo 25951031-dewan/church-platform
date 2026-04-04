@@ -43,13 +43,13 @@ export function MessageBubble({ message }: Props) {
         <div
           className={`rounded-2xl px-4 py-2 ${
             isSent
-              ? 'bg-blue-500 text-white rounded-br-md'
-              : 'bg-gray-100 text-gray-900 rounded-bl-md'
+              ? 'bg-indigo-500 text-white rounded-br-md'
+              : 'bg-[#161920] text-white border border-white/10 rounded-bl-md'
           }`}
         >
           {/* Sender name for received messages */}
           {!isSent && (
-            <p className="text-xs font-semibold text-gray-600 mb-1">
+            <p className="text-xs font-semibold text-gray-400 mb-1">
               {message.user.name}
             </p>
           )}

@@ -38,7 +38,7 @@ export function PrayerUpdateThread({prayerId, isOwner}: PrayerUpdateThreadProps)
 
   return (
     <div className="space-y-4">
-      <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Prayer Updates</h3>
+      <h3 className="text-sm font-semibold text-white">Prayer Updates</h3>
 
       {isOwner && (
         <form onSubmit={handleSubmit} className="space-y-2">
@@ -47,13 +47,13 @@ export function PrayerUpdateThread({prayerId, isOwner}: PrayerUpdateThreadProps)
             onChange={e => setContent(e.target.value)}
             placeholder="Share an update on this prayer..."
             rows={3}
-            className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-white/10 rounded-lg bg-[#161920] text-sm text-white placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
           />
           <div className="flex items-center gap-2">
             <select
               value={statusChange}
               onChange={e => setStatusChange(e.target.value)}
-              className="text-sm border border-gray-200 dark:border-gray-600 rounded-lg px-2 py-1.5 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+              className="text-sm border border-white/10 rounded-lg px-2 py-1.5 bg-[#161920] text-gray-300"
             >
               <option value="no_change">No status change</option>
               <option value="still_praying">Still Praying</option>
@@ -78,14 +78,14 @@ export function PrayerUpdateThread({prayerId, isOwner}: PrayerUpdateThreadProps)
           {allUpdates.map((update: PrayerUpdate) => (
             <div
               key={update.id}
-              className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3 border border-gray-100 dark:border-gray-700"
+              className="bg-[#161920] rounded-lg p-3 border border-white/10"
             >
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-sm font-medium text-gray-900 dark:text-white">
+                <span className="text-sm font-medium text-white">
                   {update.user?.name ?? 'Unknown'}
                 </span>
                 {update.status_change && update.status_change !== 'no_change' && (
-                  <span className="px-1.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-700 rounded">
+                  <span className="px-1.5 py-0.5 text-xs font-medium bg-indigo-500/20 text-indigo-400 rounded border border-indigo-500/30">
                     {STATUS_LABELS[update.status_change]}
                   </span>
                 )}

@@ -32,18 +32,18 @@ export function MessageThread({ conversation }: Props) {
   }, [conversation.id, conversation.unread_count, markAsRead]);
 
   return (
-    <div className="flex-1 flex flex-col bg-white">
+    <div className="flex-1 flex flex-col bg-[#0C0E12]">
       {/* Header */}
-      <div className="p-4 border-b flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-semibold">
+      <div className="p-4 border-b border-white/10 flex items-center gap-3">
+        <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400 font-semibold">
           {conversation.display_name[0].toUpperCase()}
         </div>
         <div>
-          <h3 className="font-semibold text-gray-900">
+          <h3 className="font-semibold text-white">
             {conversation.display_name}
           </h3>
           {conversation.type === 'group' && (
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-400">
               {conversation.users.length} members
             </p>
           )}
@@ -51,9 +51,9 @@ export function MessageThread({ conversation }: Props) {
       </div>
 
       {/* Messages area */}
-      <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
+      <div className="flex-1 overflow-y-auto p-4 bg-[#161920]">
         {isLoading && (
-          <div className="text-center text-gray-500 py-8">
+          <div className="text-center text-gray-400 py-8">
             Loading messages...
           </div>
         )}

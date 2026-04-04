@@ -1,1 +1,0 @@
-import{j as s}from"./main-D2PdWnC6.js";import{P as o,a as e}from"./PostFeed-F6Ew5Qqg.js";import"./useInfiniteQuery-DlXKZuuB.js";import"./useQuery-0oLlXv9U.js";import"./CommentThread-CnLeXRM7.js";function x(){return s.jsxs("div",{className:"max-w-2xl mx-auto py-6 px-4 space-y-4",children:[s.jsx(o,{}),s.jsx(e,{})]})}export{x as NewsfeedPage};
