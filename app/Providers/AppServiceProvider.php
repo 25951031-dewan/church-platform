@@ -76,11 +76,7 @@ class AppServiceProvider extends ServiceProvider
             'article' => Article::class,
         ]);
 
-        // Load plugin routes dynamically
-        if (config('plugins.auto_discover', true)) {
-            $this->app->booted(function () {
-                app(PluginManager::class)->loadRoutes();
-            });
-        }
+        // Plugin routes are loaded by routes/api.php via Common\Core\PluginManager (config/plugins.json).
+        // Copilot's auto_discover is disabled to prevent double registration.
     }
 }
