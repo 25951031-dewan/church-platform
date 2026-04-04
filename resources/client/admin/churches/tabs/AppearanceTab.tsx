@@ -4,8 +4,8 @@ import { toast } from 'react-hot-toast';
 import { FiImage, FiUpload, FiSettings } from 'react-icons/fi';
 
 import { Button } from '@ui/button';
-import { Label } from '@ui/Label';
-import { Input } from '@ui/Input';
+import { Label } from '@ui/label';
+import { Input } from '@ui/input';
 
 interface AppearanceTabProps {
   church: any;

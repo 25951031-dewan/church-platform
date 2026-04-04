@@ -4,10 +4,10 @@ import { toast } from 'react-hot-toast';
 import { FiPlus, FiX, FiClock } from 'react-icons/fi';
 
 import { Button } from '@ui/button';
-import { Input } from '@ui/Input';
-import { Label } from '@ui/Label';
-import { Textarea } from '@ui/Textarea';
-import { Select } from '@ui/Select';
+import { Input } from '@ui/input';
+import { Label } from '@ui/label';
+import { Textarea } from '@ui/textarea';
+import { Select } from '@ui/select';
 
 interface GeneralTabProps {
   church: any;

@@ -19,7 +19,7 @@ import {
 } from 'react-icons/fi';
 
 import { Button } from '@ui/button';
-import { Badge } from '@ui/Badge';
+import { Badge } from '@ui/badge';
 
 interface ChurchProfileProps {
   church: any;

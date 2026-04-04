@@ -4,9 +4,9 @@ import { toast } from 'react-hot-toast';
 import { FiSearch, FiFacebook, FiTwitter, FiInstagram, FiYoutube } from 'react-icons/fi';
 
 import { Button } from '@ui/button';
-import { Input } from '@ui/Input';
-import { Label } from '@ui/Label';
-import { Textarea } from '@ui/Textarea';
+import { Input } from '@ui/input';
+import { Label } from '@ui/label';
+import { Textarea } from '@ui/textarea';
 
 interface SeoTabProps {
   church: any;
