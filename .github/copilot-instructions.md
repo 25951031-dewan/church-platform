@@ -5,6 +5,30 @@ Read this entire file before making any suggestions. Every section is load-beari
 
 ---
 
+## How to Work on This Project
+
+**Before generating any implementation, always ask:**
+1. Which plugin does this belong in? (`app/Plugins/{Name}/`)
+2. Does a migration/model already exist, or is this new?
+3. What is the exact API response shape the frontend expects?
+
+**Never generate code that:**
+- Uses session auth, `Auth::attempt()`, or Blade login views
+- Uses `HandlesAuthorization` trait in Policies (use `Common\Core\BasePolicy`)
+- Adds `permissions` arrays to `plugins.json`
+- Uses `bg-white`, `bg-gray-50`, `bg-gray-100`, or `text-gray-900` in TSX files
+- Calls `App\Services\PluginManager::loadRoutes()` — it's disabled
+- Uses `Common\Auth\Models\User` in tests (use `App\Models\User`)
+- Enables a plugin in `config/plugins.json` if `app/Plugins/{Name}/` doesn't exist
+
+**When improving existing code:**
+- Read the file completely first
+- Never change API response shapes — the frontend depends on exact field names
+- Never change middleware on existing routes
+- Keep all existing method signatures intact
+
+---
+
 ## Architecture
 
 - **Backend:** Laravel 12, PHP, `App\` namespace for app code, `Common\` namespace for shared foundation (`common/foundation/src/`)

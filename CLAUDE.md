@@ -78,6 +78,31 @@ git commit -m "build: rebuild assets"
 
 ---
 
+## Claude Code vs Copilot — Coexistence Workflow
+
+**Use Copilot Chat for:** single-file boilerplate, quick inline edits, generating a migration schema
+**Use Claude Code for:** cross-file features, auditing Copilot output, architecture decisions, any fix that touches 3+ files
+
+**The handoff pattern:**
+```
+Copilot Chat writes new code
+  → commit it with message "wip: copilot - {description}"
+  → open Claude Code and say "audit the last Copilot commit"
+  → Claude Code runs checklist below and fixes issues
+  → rebuild assets + commit clean version
+```
+
+**Prompting Copilot correctly — always include this preamble in Copilot Chat:**
+```
+Read [filename] completely first. Then [task].
+Constraints: extends Common\Core\BasePolicy, dark palette only
+(bg-[#0C0E12] bg-[#161920] text-white text-gray-400), no permissions
+in plugins.json, no Auth::attempt(), no HandlesAuthorization.
+Do NOT change existing API response shapes or method signatures.
+```
+
+---
+
 ## What Copilot Gets Wrong (Always Verify After Copilot Sessions)
 
 1. **Policies:** Copilot uses `HandlesAuthorization` trait → must be `extends Common\Core\BasePolicy`
