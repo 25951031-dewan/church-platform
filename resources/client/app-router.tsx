@@ -74,6 +74,10 @@ const SystemPage = lazy(() => import('./admin/SystemPage').then(m => ({ default:
 const SettingsPage = lazy(() => import('./admin/SettingsPage').then(m => ({ default: m.SettingsPage })));
 const UsersPage = lazy(() => import('./admin/UsersPage').then(m => ({ default: m.UsersPage })));
 const RolesPage = lazy(() => import('./admin/RolesPage').then(m => ({ default: m.RolesPage })));
+const GeneralSettingsPage = lazy(() => import('./admin/settings/GeneralSettingsPage').then(m => ({ default: m.GeneralSettingsPage })));
+const EmailSettingsPage = lazy(() => import('./admin/settings/EmailSettingsPage').then(m => ({ default: m.EmailSettingsPage })));
+const AuthSettingsPage = lazy(() => import('./admin/settings/AuthSettingsPage').then(m => ({ default: m.AuthSettingsPage })));
+const AppearanceSettingsPage = lazy(() => import('./admin/settings/AppearanceSettingsPage').then(m => ({ default: m.AppearanceSettingsPage })));
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
 
 function Loading() {
@@ -141,6 +145,10 @@ export function AppRouter() {
               
               {/* Settings */}
               <Route path="settings" element={<SettingsPage />} />
+              <Route path="settings/general" element={<GeneralSettingsPage />} />
+              <Route path="settings/email" element={<EmailSettingsPage />} />
+              <Route path="settings/auth" element={<AuthSettingsPage />} />
+              <Route path="settings/appearance" element={<AppearanceSettingsPage />} />
               <Route path="settings/notifications" element={<NotificationSettingsPage />} />
               <Route path="settings/live-meetings" element={<LiveMeetingSettingsPage />} />
               
