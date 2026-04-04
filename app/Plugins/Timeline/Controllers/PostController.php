@@ -80,4 +80,68 @@ class PostController extends Controller
 
         return response()->json(['is_pinned' => $post->is_pinned]);
     }
+
+    /**
+     * Get feed data for public consumption (optimized for timeline feed)
+     */
+    public function feedData(Request $request): JsonResponse
+    {
+        $request->validate([
+            'church_id' => 'nullable|integer|exists:churches,id',
+            'limit' => 'nullable|integer|min:5|max:50',
+            'offset' => 'nullable|integer|min:0',
+        ]);
+
+        $churchId = $request->query('church_id', 1); // Default to church ID 1
+        $limit = $request->query('limit', 20);
+        $offset = $request->query('offset', 0);
+
+        // Get posts for the church (public posts only)
+        $posts = Post::where('church_id', $churchId)
+            ->where('is_public', true)
+            ->where('status', 'published')
+            ->with(['user:id,name,avatar_url', 'media', 'church:id,name'])
+            ->orderBy('is_pinned', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->skip($offset)
+            ->take($limit)
+            ->get()
+            ->map(function ($post) {
+                return [
+                    'id' => $post->id,
+                    'content' => $post->content,
+                    'type' => $post->type,
+                    'is_pinned' => $post->is_pinned,
+                    'created_at' => $post->created_at,
+                    'user' => [
+                        'id' => $post->user->id,
+                        'name' => $post->user->name,
+                        'avatar_url' => $post->user->avatar_url,
+                    ],
+                    'church' => [
+                        'id' => $post->church->id,
+                        'name' => $post->church->name,
+                    ],
+                    'media' => $post->media->map(function ($media) {
+                        return [
+                            'id' => $media->id,
+                            'type' => $media->type,
+                            'url' => $media->url,
+                            'thumbnail_url' => $media->thumbnail_url,
+                        ];
+                    }),
+                    'stats' => [
+                        'likes_count' => $post->likes_count ?? 0,
+                        'comments_count' => $post->comments_count ?? 0,
+                        'shares_count' => $post->shares_count ?? 0,
+                    ],
+                ];
+            });
+
+        return response()->json([
+            'posts' => $posts,
+            'has_more' => $posts->count() === $limit,
+            'next_offset' => $offset + $limit,
+        ]);
+    }
 }

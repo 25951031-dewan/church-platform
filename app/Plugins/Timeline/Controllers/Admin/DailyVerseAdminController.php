@@ -333,21 +333,126 @@ class DailyVerseAdminController extends Controller
     }
 
     /**
-     * Get sample verses for auto-scheduling
+     * Bulk delete daily verses
      */
-    protected function getSampleVerses(): array
+    public function bulkDelete(Request $request): JsonResponse
     {
-        return [
-            ['text' => 'For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, to give you hope and a future.', 'reference' => 'Jeremiah 29:11'],
-            ['text' => 'Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.', 'reference' => 'Proverbs 3:5-6'],
-            ['text' => 'And we know that in all things God works for the good of those who love him, who have been called according to his purpose.', 'reference' => 'Romans 8:28'],
-            ['text' => 'Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.', 'reference' => 'Joshua 1:9'],
-            ['text' => 'But those who hope in the Lord will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint.', 'reference' => 'Isaiah 40:31'],
-            ['text' => 'The Lord is my shepherd, I lack nothing. He makes me lie down in green pastures, he leads me beside quiet waters, he refreshes my soul.', 'reference' => 'Psalm 23:1-3'],
-            ['text' => 'Cast all your anxiety on him because he cares for you.', 'reference' => '1 Peter 5:7'],
-            ['text' => 'I can do all this through him who gives me strength.', 'reference' => 'Philippians 4:13'],
-            ['text' => 'The Lord your God is with you, the Mighty Warrior who saves. He will take great delight in you; in his love he will no longer rebuke you, but will rejoice over you with singing.', 'reference' => 'Zephaniah 3:17'],
-            ['text' => 'Be still, and know that I am God; I will be exalted among the nations, I will be exalted in the earth.', 'reference' => 'Psalm 46:10'],
-        ];
+        $this->authorize('delete', DailyVerse::class);
+
+        $request->validate([
+            'verse_ids' => 'required|array|min:1',
+            'verse_ids.*' => 'integer|exists:daily_verses,id',
+        ]);
+
+        $churchId = auth('sanctum')->user()->church_id;
+        $verseIds = $request->verse_ids;
+
+        // Ensure verses belong to the church
+        $verses = DailyVerse::forChurch($churchId)
+            ->whereIn('id', $verseIds)
+            ->get();
+
+        if ($verses->count() !== count($verseIds)) {
+            return response()->json([
+                'message' => 'Some verses were not found or do not belong to your church.',
+            ], 422);
+        }
+
+        $deletedCount = DailyVerse::whereIn('id', $verseIds)->delete();
+
+        return response()->json([
+            'deleted' => $deletedCount,
+            'message' => "Successfully deleted {$deletedCount} daily verses.",
+        ]);
     }
-}
+
+    /**
+     * Bulk update daily verses
+     */
+    public function bulkUpdate(Request $request): JsonResponse
+    {
+        $this->authorize('update', DailyVerse::class);
+
+        $request->validate([
+            'verse_ids' => 'required|array|min:1',
+            'verse_ids.*' => 'integer|exists:daily_verses,id',
+            'updates' => 'required|array',
+            'updates.translation' => 'nullable|string|max:10',
+            'updates.theme' => 'nullable|string|max:100',
+            'updates.is_active' => 'nullable|boolean',
+        ]);
+
+        $churchId = auth('sanctum')->user()->church_id;
+        $verseIds = $request->verse_ids;
+        $updates = array_filter($request->updates, function($value) {
+            return $value !== null;
+        });
+
+        // Ensure verses belong to the church
+        $verses = DailyVerse::forChurch($churchId)
+            ->whereIn('id', $verseIds)
+            ->get();
+
+        if ($verses->count() !== count($verseIds)) {
+            return response()->json([
+                'message' => 'Some verses were not found or do not belong to your church.',
+            ], 422);
+        }
+
+        $updatedCount = DailyVerse::whereIn('id', $verseIds)->update($updates);
+
+        return response()->json([
+            'updated' => $updatedCount,
+            'message' => "Successfully updated {$updatedCount} daily verses.",
+        ]);
+    }
+
+    /**
+     * Activate/deactivate a daily verse
+     */
+    public function activate(Request $request, DailyVerse $verse): JsonResponse
+    {
+        $this->authorize('update', $verse);
+
+        $request->validate([
+            'is_active' => 'required|boolean',
+        ]);
+
+        $verse->update(['is_active' => $request->is_active]);
+
+        $action = $request->is_active ? 'activated' : 'deactivated';
+
+        return response()->json([
+            'verse' => $verse->fresh(),
+            'message' => "Daily verse {$action} successfully.",
+        ]);
+    }
+
+    /**
+     * Get today's verse for public consumption
+     */
+    public function getTodaysVerse(Request $request): JsonResponse
+    {
+        // Get church ID from query parameter or default church
+        $churchId = $request->query('church_id', 1);
+
+        $todaysVerse = DailyVerse::getTodaysVerse($churchId);
+
+        if (!$todaysVerse) {
+            return response()->json([
+                'verse' => null,
+                'message' => 'No daily verse found for today.',
+            ]);
+        }
+
+        return response()->json([
+            'verse' => [
+                'id' => $todaysVerse->id,
+                'verse_text' => $todaysVerse->verse_text,
+                'verse_reference' => $todaysVerse->verse_reference,
+                'translation' => $todaysVerse->translation,
+                'theme' => $todaysVerse->theme,
+                'verse_date' => $todaysVerse->verse_date,
+            ],
+        ]);
+    }

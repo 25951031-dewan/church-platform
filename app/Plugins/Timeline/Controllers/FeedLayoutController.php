@@ -261,23 +261,101 @@ class FeedLayoutController extends Controller
     }
 
     /**
-     * Format widget instance for frontend
+     * Activate a specific feed layout
      */
-    protected function formatWidgetInstance(FeedWidgetInstance $instance): array
+    public function activate(Request $request, FeedLayout $layout): JsonResponse
     {
-        return [
-            'id' => $instance->id,
-            'widget_key' => $instance->widget->widget_key,
-            'display_name' => $instance->widget->display_name,
-            'component_path' => $instance->widget->component_path,
-            'icon' => $instance->widget->icon,
-            'position' => $instance->position,
-            'config' => $instance->getMergedConfig(),
-            'styling' => $instance->getStyling(),
-            'is_visible' => $instance->is_visible,
-            'is_collapsible' => $instance->is_collapsible,
-            'is_collapsed' => $instance->is_collapsed,
-            'responsive_behavior' => $instance->getResponsiveBehavior(),
+        $this->authorize('update', $layout);
+
+        // Deactivate all other layouts for this church
+        FeedLayout::forChurch($layout->church_id)
+            ->where('is_active', true)
+            ->where('id', '!=', $layout->id)
+            ->update(['is_active' => false]);
+
+        // Activate this layout
+        $layout->update(['is_active' => true]);
+
+        return response()->json([
+            'layout' => $layout->fresh(['widgetInstances.widget']),
+            'message' => 'Feed layout activated successfully.',
+        ]);
+    }
+
+    /**
+     * Duplicate a feed layout
+     */
+    public function duplicate(Request $request, FeedLayout $layout): JsonResponse
+    {
+        $this->authorize('create', FeedLayout::class);
+        $this->authorize('view', $layout);
+
+        $newLayout = $layout->replicate();
+        $newLayout->name = $layout->name . ' (Copy)';
+        $newLayout->is_active = false;
+        $newLayout->save();
+
+        // Duplicate widget instances
+        foreach ($layout->widgetInstances as $instance) {
+            $newInstance = $instance->replicate();
+            $newInstance->layout_id = $newLayout->id;
+            $newInstance->save();
+        }
+
+        $newLayout->load(['widgetInstances.widget']);
+
+        return response()->json([
+            'layout' => $newLayout,
+            'message' => 'Feed layout duplicated successfully.',
+        ], 201);
+    }
+
+    /**
+     * Get active layout for public consumption (no auth required)
+     */
+    public function publicActive(Request $request): JsonResponse
+    {
+        // Get church ID from query parameter or default church
+        $churchId = $request->query('church_id', 1); // Default to church ID 1
+
+        $layout = FeedLayout::forChurch($churchId)
+            ->active()
+            ->with([
+                'widgetInstances' => function ($query) {
+                    $query->visible()->ordered();
+                },
+                'widgetInstances.widget'
+            ])
+            ->first();
+
+        if (!$layout) {
+            return response()->json([
+                'layout' => null,
+                'message' => 'No active layout found for this church.',
+            ]);
+        }
+
+        // Format for public consumption (minimal data)
+        $publicLayout = [
+            'id' => $layout->id,
+            'name' => $layout->name,
+            'layout_data' => $layout->layout_data,
+            'mobile_config' => $layout->mobile_config,
+            'widgets' => $layout->widgetInstances->map(function ($instance) {
+                return [
+                    'widget_key' => $instance->widget->widget_key,
+                    'display_name' => $instance->widget->display_name,
+                    'component_path' => $instance->widget->component_path,
+                    'pane' => $instance->pane,
+                    'position' => $instance->position,
+                    'config' => $instance->getMergedConfig(),
+                    'is_visible' => $instance->is_visible,
+                ];
+            }),
         ];
+
+        return response()->json([
+            'layout' => $publicLayout,
+        ]);
     }
 }

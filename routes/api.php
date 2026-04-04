@@ -535,6 +535,17 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/users/{user}/reset-password', [ForgotPasswordController::class, 'adminResetPassword']);
     });
 
+    // User Profile & Timeline Settings (authenticated users)
+    Route::prefix('user/profile-settings')->group(function () {
+        Route::get('/timeline-preferences', [\App\Http\Controllers\Api\UserProfileSettingsController::class, 'getTimelinePreferences']);
+        Route::put('/timeline-preferences', [\App\Http\Controllers\Api\UserProfileSettingsController::class, 'updateTimelinePreferences']);
+        Route::get('/privacy-settings', [\App\Http\Controllers\Api\UserProfileSettingsController::class, 'getPrivacySettings']);
+        Route::put('/privacy-settings', [\App\Http\Controllers\Api\UserProfileSettingsController::class, 'updatePrivacySettings']);
+        Route::get('/content-filters', [\App\Http\Controllers\Api\UserProfileSettingsController::class, 'getContentFilters']);
+        Route::put('/content-filters', [\App\Http\Controllers\Api\UserProfileSettingsController::class, 'updateContentFilters']);
+        Route::post('/reset-to-defaults', [\App\Http\Controllers\Api\UserProfileSettingsController::class, 'resetToDefaults']);
+    });
+
     // ----------------------------------------------------------------
     // Churches — manage_churches / approve_churches
     // ----------------------------------------------------------------
