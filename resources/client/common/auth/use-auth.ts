@@ -24,7 +24,7 @@ export function useAuth() {
   });
 
   const logout = async () => {
-    await apiClient.post('logout');
+    await apiClient.post('logout').catch(() => {});
     localStorage.removeItem('auth_token');
     setUser(null);
     window.location.href = '/';
