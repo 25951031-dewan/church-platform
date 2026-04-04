@@ -92,6 +92,32 @@ Copilot Chat writes new code
   → rebuild assets + commit clean version
 ```
 
+**Copilot Memory Files (update after each session):**
+- `.copilot/progress.md` — what's done, what's next, last session fixes
+- `.copilot/patterns.md` — plugin structure, policy/route/seeder patterns
+- `.copilot/context.md` — current sprint focus, tech stack quick ref
+
+**Copilot Chat token-saving prompt templates:**
+```
+# Start a new plugin:
+#file:.copilot/patterns.md #file:.copilot/context.md
+Create a Giving plugin following the exact same structure as Library plugin.
+
+# Improve existing code:
+#file:.copilot/context.md #file:app/Plugins/Prayer/Controllers/PrayerRequestController.php
+Improve the index() method performance only. Do not change response shapes.
+
+# Fix a bug:
+#file:.copilot/context.md
+In app/Plugins/Events/Controllers/EventController.php, the store() method
+is not setting church_id. Fix only that method.
+```
+
+**Per-file auto-instructions (VS Code loads these automatically):**
+- `.github/instructions/php-backend.instructions.md` → applies to `app/**/*.php`
+- `.github/instructions/react-frontend.instructions.md` → applies to `resources/client/**/*.tsx`
+- `.github/instructions/tests.instructions.md` → applies to `tests/**/*.php`
+
 **Prompting Copilot correctly — always include this preamble in Copilot Chat:**
 ```
 Read [filename] completely first. Then [task].
