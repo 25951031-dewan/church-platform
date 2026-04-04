@@ -8,7 +8,7 @@ import {
   LayoutDashboard, Users, Shield, Settings, Server,
   Mic, Calendar, FileText, BookOpen,
   Users2, HandHeart, Church, Video, Bell, MessageCircle,
-  List, LogOut, Menu, X,
+  List, LogOut, Menu, X, Layout,
 } from 'lucide-react';
 
 interface NavItem { label: string; path: string; icon: ElementType; permission: string; exact?: boolean; }
@@ -17,6 +17,7 @@ const navItems: NavItem[] = [
   { label: 'Dashboard',   path: '/admin',                        icon: LayoutDashboard, permission: 'admin.access', exact: true },
   { label: 'Users',       path: '/admin/users',                  icon: Users,           permission: 'users.view' },
   { label: 'Roles',       path: '/admin/roles',                  icon: Shield,          permission: 'roles.view' },
+  { label: 'Feed Layout', path: '/admin/feed-customizer',        icon: Layout,          permission: 'admin.access' },
   { label: 'Sermons',     path: '/admin/sermons',                icon: Mic,             permission: 'sermons.view' },
   { label: 'Events',      path: '/admin/events',                 icon: Calendar,        permission: 'events.view' },
   { label: 'Blog',        path: '/admin/blog',                   icon: FileText,        permission: 'blog.view' },

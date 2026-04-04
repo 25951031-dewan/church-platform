@@ -78,6 +78,7 @@ const GeneralSettingsPage = lazy(() => import('./admin/settings/GeneralSettingsP
 const EmailSettingsPage = lazy(() => import('./admin/settings/EmailSettingsPage').then(m => ({ default: m.EmailSettingsPage })));
 const AuthSettingsPage = lazy(() => import('./admin/settings/AuthSettingsPage').then(m => ({ default: m.AuthSettingsPage })));
 const AppearanceSettingsPage = lazy(() => import('./admin/settings/AppearanceSettingsPage').then(m => ({ default: m.AppearanceSettingsPage })));
+const FeedCustomizerPage = lazy(() => import('./plugins/timeline/pages/FeedCustomizerPage').then(m => ({ default: m.FeedCustomizerPage })));
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
 const MobileLayout = lazy(() => import('./layouts/MobileLayout').then(m => ({ default: m.MobileLayout })));
 
@@ -147,6 +148,9 @@ export function AppRouter() {
 
               {/* Meeting management */}
               <Route path="meetings" element={<MeetingManagerPage />} />
+
+              {/* Feed customization */}
+              <Route path="feed-customizer" element={<FeedCustomizerPage />} />
 
               {/* Settings */}
               <Route path="settings" element={<SettingsLayout />}>
