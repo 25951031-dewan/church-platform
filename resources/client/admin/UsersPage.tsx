@@ -1,14 +1,20 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@app/common/http/api-client';
-import { Search } from 'lucide-react';
+import { Search, AlertCircle } from 'lucide-react';
+
+interface Role {
+  id: number;
+  name: string;
+  slug: string;
+}
 
 interface User {
   id: number;
-  name: string;
+  name: string | null;
   email: string;
   avatar: string | null;
-  roles: string[];
+  roles: Role[];
   created_at: string;
 }
 
@@ -23,7 +29,7 @@ export function UsersPage() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['admin-users', search, page],
     queryFn: () =>
       apiClient
@@ -51,14 +57,21 @@ export function UsersPage() {
         </div>
       </div>
 
+      {isError && (
+        <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-xl p-4 mb-4 text-red-400 text-sm">
+          <AlertCircle size={16} aria-hidden="true" />
+          Failed to load users. Check your permissions.
+        </div>
+      )}
+
       <div className="bg-[#161920] border border-white/5 rounded-xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/5">
               <th className="text-left px-4 py-3 text-gray-400 font-medium">User</th>
-              <th className="text-left px-4 py-3 text-gray-400 font-medium">Email</th>
-              <th className="text-left px-4 py-3 text-gray-400 font-medium">Roles</th>
-              <th className="text-left px-4 py-3 text-gray-400 font-medium">Joined</th>
+              <th className="text-left px-4 py-3 text-gray-400 font-medium hidden sm:table-cell">Email</th>
+              <th className="text-left px-4 py-3 text-gray-400 font-medium hidden md:table-cell">Roles</th>
+              <th className="text-left px-4 py-3 text-gray-400 font-medium hidden lg:table-cell">Joined</th>
             </tr>
           </thead>
           <tbody>
@@ -68,35 +81,41 @@ export function UsersPage() {
                   Loading…
                 </td>
               </tr>
+            ) : !data?.data?.length ? (
+              <tr>
+                <td colSpan={4} className="px-4 py-8 text-center text-gray-500">
+                  No users found.
+                </td>
+              </tr>
             ) : (
-              data?.data.map(user => (
+              data.data.map(user => (
                 <tr key={user.id} className="border-b border-white/5 hover:bg-white/[0.03] transition-colors">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       {user.avatar ? (
-                        <img src={user.avatar} className="w-7 h-7 rounded-full object-cover" alt="" />
+                        <img src={user.avatar} className="w-7 h-7 rounded-full object-cover flex-shrink-0" alt="" />
                       ) : (
-                        <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold text-white">
-                          {user.name.charAt(0).toUpperCase()}
+                        <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
+                          {(user.name ?? 'U').charAt(0).toUpperCase()}
                         </div>
                       )}
-                      <span className="text-white font-medium">{user.name}</span>
+                      <span className="text-white font-medium truncate">{user.name ?? '(no name)'}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-gray-400">{user.email}</td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 text-gray-400 hidden sm:table-cell">{user.email}</td>
+                  <td className="px-4 py-3 hidden md:table-cell">
                     <div className="flex flex-wrap gap-1">
-                      {user.roles?.map(r => (
+                      {user.roles?.map(role => (
                         <span
-                          key={r}
+                          key={role.id}
                           className="px-1.5 py-0.5 bg-indigo-600/20 text-indigo-400 text-xs rounded"
                         >
-                          {r}
+                          {role.name}
                         </span>
                       ))}
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-gray-500 text-xs">
+                  <td className="px-4 py-3 text-gray-500 text-xs hidden lg:table-cell">
                     {new Date(user.created_at).toLocaleDateString()}
                   </td>
                 </tr>

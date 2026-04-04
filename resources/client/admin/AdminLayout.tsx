@@ -1,4 +1,5 @@
 import type { ElementType } from 'react';
+import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router';
 import { useUserPermissions } from '@app/common/auth/use-permissions';
 import { useBootstrapStore } from '@app/common/core/bootstrap-data';
@@ -7,7 +8,7 @@ import {
   LayoutDashboard, Users, Shield, Settings, Server,
   Mic, Calendar, FileText, BookOpen,
   Users2, HandHeart, Church, Video, Bell, MessageCircle,
-  List, LogOut,
+  List, LogOut, Menu, X,
 } from 'lucide-react';
 
 interface NavItem { label: string; path: string; icon: ElementType; permission: string; exact?: boolean; }
@@ -31,71 +32,124 @@ const navItems: NavItem[] = [
   { label: 'System',      path: '/admin/system',                 icon: Server,          permission: 'manage_settings' },
 ];
 
-export function AdminLayout() {
+function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const { hasPermission } = useUserPermissions();
   const user = useBootstrapStore((s) => s.user);
   const { logout } = useAuth();
 
   return (
-    <div className="flex h-screen bg-[#0C0E12] text-white overflow-hidden">
-      <aside className="w-56 flex-shrink-0 bg-[#161920] flex flex-col border-r border-white/5">
-        {/* Logo */}
-        <div className="h-12 px-4 flex items-center border-b border-white/5">
-          <span className="text-lg">⛪</span>
-          <span className="ml-2 font-semibold text-sm truncate">Church Platform</span>
-        </div>
+    <>
+      {/* Logo */}
+      <div className="h-12 px-4 flex items-center border-b border-white/5 flex-shrink-0">
+        <span className="text-lg">⛪</span>
+        <span className="ml-2 font-semibold text-sm truncate">Church Platform</span>
+      </div>
 
-        {/* Nav */}
-        <nav className="flex-1 overflow-y-auto py-2 px-2 space-y-0.5">
-          {navItems.filter(item => hasPermission(item.permission)).map(item => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              end={item.exact}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                  isActive
-                    ? 'bg-white/10 text-white'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
-                }`
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  <item.icon size={16} className={isActive ? 'text-white' : 'text-gray-500'} />
-                  {item.label}
-                </>
-              )}
-            </NavLink>
-          ))}
-        </nav>
-
-        {/* User footer */}
-        <div className="border-t border-white/5 p-3">
-          <button
-            type="button"
-            aria-label="Sign out"
-            onClick={logout}
-            className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors text-left"
+      {/* Nav */}
+      <nav className="flex-1 overflow-y-auto py-2 px-2 space-y-0.5">
+        {navItems.filter(item => hasPermission(item.permission)).map(item => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            end={item.exact}
+            onClick={onNavigate}
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                isActive
+                  ? 'bg-white/10 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+              }`
+            }
           >
-            <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold flex-shrink-0">
-              {user?.name?.charAt(0)?.toUpperCase() ?? 'A'}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium text-white truncate">{user?.name}</p>
-              <p className="text-[10px] text-gray-500 truncate">{user?.email}</p>
-            </div>
-            <LogOut size={12} className="text-gray-500 flex-shrink-0" aria-hidden="true" />
-          </button>
-        </div>
+            {({ isActive }) => (
+              <>
+                <item.icon size={16} className={isActive ? 'text-white' : 'text-gray-500'} />
+                {item.label}
+              </>
+            )}
+          </NavLink>
+        ))}
+      </nav>
+
+      {/* User footer */}
+      <div className="border-t border-white/5 p-3 flex-shrink-0">
+        <button
+          type="button"
+          aria-label="Sign out"
+          onClick={logout}
+          className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors text-left"
+        >
+          <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold flex-shrink-0">
+            {(user?.name ?? 'A').charAt(0).toUpperCase()}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-medium text-white truncate">{user?.name}</p>
+            <p className="text-[10px] text-gray-500 truncate">{user?.email}</p>
+          </div>
+          <LogOut size={12} className="text-gray-500 flex-shrink-0" aria-hidden="true" />
+        </button>
+      </div>
+    </>
+  );
+}
+
+export function AdminLayout() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  return (
+    <div className="flex h-screen bg-[#0C0E12] text-white overflow-hidden">
+
+      {/* ── Desktop sidebar (always visible ≥ lg) ── */}
+      <aside className="hidden lg:flex w-56 flex-shrink-0 bg-[#161920] flex-col border-r border-white/5">
+        <SidebarContent />
       </aside>
 
-      {/* Content */}
-      <main className="flex-1 overflow-auto">
-        <div className="p-6 min-h-full">
-          <Outlet />
+      {/* ── Mobile slide-over sidebar ── */}
+      {sidebarOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 flex">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setSidebarOpen(false)}
+            aria-hidden="true"
+          />
+          {/* Drawer */}
+          <aside className="relative w-56 flex-shrink-0 bg-[#161920] flex flex-col border-r border-white/5 z-10">
+            {/* Close button */}
+            <button
+              type="button"
+              aria-label="Close menu"
+              onClick={() => setSidebarOpen(false)}
+              className="absolute top-3 right-3 p-1 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+            >
+              <X size={16} />
+            </button>
+            <SidebarContent onNavigate={() => setSidebarOpen(false)} />
+          </aside>
         </div>
-      </main>
+      )}
+
+      {/* ── Main content ── */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Mobile top bar */}
+        <header className="lg:hidden flex items-center gap-3 h-12 px-4 bg-[#161920] border-b border-white/5 flex-shrink-0">
+          <button
+            type="button"
+            aria-label="Open menu"
+            onClick={() => setSidebarOpen(true)}
+            className="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+          >
+            <Menu size={20} />
+          </button>
+          <span className="text-sm font-semibold truncate">Church Platform</span>
+        </header>
+
+        <main className="flex-1 overflow-auto">
+          <div className="p-4 lg:p-6 min-h-full">
+            <Outlet />
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

@@ -505,7 +505,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/roles/assign', [RoleController::class, 'assignRole']);
     });
 
-    Route::middleware('permission:manage_users')->group(function () {
+    Route::middleware('permission:admin.access')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
         Route::post('/users', [UserController::class, 'store']);
         Route::put('/users/{user}', [UserController::class, 'update']);
