@@ -8,8 +8,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
         </div>
-        <h2 class="text-2xl font-bold text-gray-800">Admin Account</h2>
-        <p class="text-gray-500 mt-2">Create your administrator account</p>
+        <h2 class="text-2xl font-bold text-gray-800">Admin Account & Install</h2>
+        <p class="text-gray-500 mt-2">Create your administrator account to complete installation</p>
     </div>
 
     @if($errors->any())
@@ -27,7 +27,7 @@
         </div>
     @endif
 
-    <form action="{{ url('/install/admin') }}" method="POST" class="space-y-5">
+    <form action="{{ url('/install/admin') }}" method="POST" class="space-y-5" x-data="{ loading: false }" @submit="loading = true">
         @csrf
 
         <div>
@@ -94,10 +94,14 @@
                 </svg>
                 Back
             </a>
-            <button type="submit"
-                    class="inline-flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-indigo-200 hover:shadow-xl hover:shadow-indigo-300 hover:-translate-y-0.5">
-                Continue
-                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <button type="submit" :disabled="loading"
+                    class="inline-flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-indigo-200 hover:shadow-xl hover:shadow-indigo-300 hover:-translate-y-0.5">
+                <svg x-show="loading" class="animate-spin w-5 h-5 mr-2 -ml-1" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                </svg>
+                <span x-text="loading ? 'Installing...' : 'Install Now'">Install Now</span>
+                <svg x-show="!loading" class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
             </button>

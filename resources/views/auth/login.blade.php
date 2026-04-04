@@ -24,6 +24,12 @@
         </div>
 
         <div class="bg-white rounded-2xl shadow-xl p-8">
+            @if(session('success'))
+                <div class="mb-6 bg-green-50 border border-green-200 rounded-xl p-4">
+                    <p class="text-sm text-green-700 font-medium">{{ session('success') }}</p>
+                </div>
+            @endif
+
             @if($errors->any())
                 <div class="mb-6 bg-red-50 border border-red-200 rounded-xl p-4">
                     <div class="flex items-start">

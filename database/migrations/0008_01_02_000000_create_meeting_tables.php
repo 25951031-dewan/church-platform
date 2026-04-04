@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('platform')->default('other'); // zoom, google_meet, youtube, other
             $table->foreignId('church_id')->nullable()->constrained('churches')->nullOnDelete();
             $table->foreignId('host_id')->constrained('users')->cascadeOnDelete();
-            $table->timestamp('starts_at');
-            $table->timestamp('ends_at');
+            $table->dateTime('starts_at');
+            $table->dateTime('ends_at');
             $table->string('timezone')->default('UTC');
             $table->boolean('is_recurring')->default(false);
             $table->string('recurrence_rule')->nullable(); // weekly, biweekly, monthly

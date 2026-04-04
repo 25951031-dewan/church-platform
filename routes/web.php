@@ -19,10 +19,6 @@ Route::prefix('install')->group(function () {
     Route::post('/database', [InstallerController::class, 'saveDatabase']);
     Route::get('/admin', [InstallerController::class, 'admin'])->name('installer.admin');
     Route::post('/admin', [InstallerController::class, 'saveAdmin']);
-    Route::get('/church', [InstallerController::class, 'church'])->name('installer.church');
-    Route::post('/church', [InstallerController::class, 'saveChurch']);
-    Route::get('/finalize', [InstallerController::class, 'finalize'])->name('installer.finalize');
-    Route::post('/finalize', [InstallerController::class, 'install']);
 });
 
 // Auth Routes
@@ -64,25 +60,25 @@ Route::get('/sitemap.xml', [\App\Http\Controllers\Api\SitemapController::class, 
 
 // Dynamic PWA Manifest
 Route::get('/manifest.json', function () {
-    $setting = \App\Models\Setting::first();
+    $s = \Common\Settings\Models\Setting::pluck('value', 'key');
     $manifest = [
-        'name' => $setting->pwa_name ?? $setting->church_name ?? config('app.name', 'Grace Community Church'),
-        'short_name' => $setting->pwa_short_name ?? 'Church',
-        'description' => $setting->pwa_description ?? 'Your church community app - worship, events, prayer, and more.',
+        'name' => $s['pwa_name'] ?? $s['church_name'] ?? config('app.name', 'Grace Community Church'),
+        'short_name' => $s['pwa_short_name'] ?? 'Church',
+        'description' => $s['pwa_description'] ?? 'Your church community app - worship, events, prayer, and more.',
         'start_url' => '/',
-        'display' => $setting->pwa_display ?? 'standalone',
-        'background_color' => $setting->pwa_background_color ?? '#0C0E12',
-        'theme_color' => $setting->pwa_theme_color ?? '#0C0E12',
-        'orientation' => $setting->pwa_orientation ?? 'portrait-primary',
+        'display' => $s['pwa_display'] ?? 'standalone',
+        'background_color' => $s['pwa_background_color'] ?? '#0C0E12',
+        'theme_color' => $s['pwa_theme_color'] ?? '#0C0E12',
+        'orientation' => $s['pwa_orientation'] ?? 'portrait-primary',
         'icons' => [
             [
-                'src' => $setting->pwa_icon_192 ? '/storage/' . $setting->pwa_icon_192 : '/images/icon-192.png',
+                'src' => !empty($s['pwa_icon_192']) ? '/storage/' . $s['pwa_icon_192'] : '/images/icon-192.png',
                 'sizes' => '192x192',
                 'type' => 'image/png',
                 'purpose' => 'any maskable',
             ],
             [
-                'src' => $setting->pwa_icon_512 ? '/storage/' . $setting->pwa_icon_512 : '/images/icon-512.png',
+                'src' => !empty($s['pwa_icon_512']) ? '/storage/' . $s['pwa_icon_512'] : '/images/icon-512.png',
                 'sizes' => '512x512',
                 'type' => 'image/png',
                 'purpose' => 'any maskable',

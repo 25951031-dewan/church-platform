@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Church Platform Installer</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body {
             background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 25%, #c7d2fe 50%, #ddd6fe 75%, #ede9fe 100%);
@@ -65,9 +66,7 @@
             $steps = [
                 1 => 'Requirements',
                 2 => 'Database',
-                3 => 'Admin',
-                4 => 'Church Info',
-                5 => 'Install',
+                3 => 'Admin & Install',
             ];
             $currentStep = $currentStep ?? 1;
         @endphp
