@@ -71,6 +71,8 @@ const LiveMeetingSettingsPage = lazy(() =>
   import('./plugins/live-meetings/admin/LiveMeetingSettingsPage').then(m => ({default: m.LiveMeetingSettingsPage}))
 );
 const SystemPage = lazy(() => import('./admin/SystemPage').then(m => ({ default: m.SystemPage })));
+const SettingsPage = lazy(() => import('./admin/SettingsPage').then(m => ({ default: m.SettingsPage })));
+const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
 
 function Loading() {
   return <div className="flex items-center justify-center h-screen">Loading...</div>;
@@ -81,7 +83,7 @@ export function AppRouter() {
     <Suspense fallback={<Loading />}>
       <Routes>
         {/* Public */}
-        <Route path="/" element={<div className="p-8 text-2xl">Church Platform v5</div>} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
 
         {/* Protected routes */}
@@ -118,6 +120,7 @@ export function AppRouter() {
               <Route path="notification-logs" element={<NotificationLogsPage />} />
               <Route path="notification-templates" element={<NotificationTemplatesPage />} />
               <Route path="meetings" element={<MeetingManagerPage />} />
+              <Route path="settings" element={<SettingsPage />} />
               <Route path="settings/notifications" element={<NotificationSettingsPage />} />
               <Route path="settings/live-meetings" element={<LiveMeetingSettingsPage />} />
               <Route path="system" element={<SystemPage />} />
