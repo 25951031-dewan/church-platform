@@ -21,33 +21,12 @@ Route::prefix('install')->group(function () {
     Route::post('/admin', [InstallerController::class, 'saveAdmin']);
 });
 
-// Auth Routes
+// Auth is handled by the React SPA (/login) via POST /api/v1/login (Bearer token).
+// Named route 'login' needed by Laravel middleware redirects:
 Route::get('/login', function () {
-    return view('auth.login');
-})->name('login')->middleware('guest');
-
-Route::post('/login', function (\Illuminate\Http\Request $request) {
-    $credentials = $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
-
-    if (\Illuminate\Support\Facades\Auth::attempt($credentials, $request->boolean('remember'))) {
-        $request->session()->regenerate();
-        return redirect()->intended('/admin');
-    }
-
-    return back()->withErrors([
-        'email' => 'The provided credentials do not match our records.',
-    ])->onlyInput('email');
-})->name('login.post');
-
-Route::post('/logout', function (\Illuminate\Http\Request $request) {
-    \Illuminate\Support\Facades\Auth::logout();
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-    return redirect('/login');
-})->name('logout');
+    // Redirect to SPA — React LoginPage handles everything via /api/v1/login
+    return redirect('/');
+})->name('login');
 
 // Social Auth Routes
 Route::get('/auth/{provider}/redirect', [AuthController::class, 'socialRedirect'])->name('social.redirect');
@@ -111,8 +90,7 @@ Route::get('/ministries', [PublicContentController::class, 'ministries'])->name(
 Route::get('/ministries/{slug}', [PublicContentController::class, 'ministry'])->name('public.ministry');
 Route::get('/bible-studies', [PublicContentController::class, 'bibleStudies'])->name('public.bible-studies');
 Route::get('/bible-studies/{slug}', [PublicContentController::class, 'bibleStudy'])->name('public.bible-study');
-Route::get('/library', [PublicContentController::class, 'library'])->name('public.library');
-Route::get('/library/{slug}', [PublicContentController::class, 'book'])->name('public.book');
+// /library and /library/{id} are handled by the React SPA (LibraryCatalogPage, BookDetailPage)
 Route::get('/about', [PublicContentController::class, 'about'])->name('public.about');
 
 // SPA catch-all — serves React app with bootstrap data
