@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
+import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
+import { Button } from '@ui/button';
+import { Switch } from '@ui/switch';
+import { Input } from '@ui/input';
+import { Label } from '@ui/label';
+import { Separator } from '@ui/separator';
 import { TimelineSettings } from './TimelineSettingsPage';
 
 interface CommunitySettingsTabProps {

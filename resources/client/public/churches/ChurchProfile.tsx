@@ -18,8 +18,8 @@ import {
   FiNavigation
 } from 'react-icons/fi';
 
-import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
+import { Button } from '@ui/button';
+import { Badge } from '@ui/Badge';
 
 interface ChurchProfileProps {
   church: any;

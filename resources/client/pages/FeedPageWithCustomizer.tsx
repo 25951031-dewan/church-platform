@@ -5,7 +5,7 @@ import React, { useState, Suspense } from 'react';
 import { Settings } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useChurch } from '@/hooks/useChurch';
-import { Button } from '@/components/ui/button';
+import { Button } from '@ui/button';
 import { ThreePaneFeedLayout } from '@/components/layout/ThreePaneFeedLayout';
 import { LeftSidebarContent } from '@/components/layout/LeftSidebarContent';
 import { RightSidebarContent } from '@/components/layout/RightSidebarContent';

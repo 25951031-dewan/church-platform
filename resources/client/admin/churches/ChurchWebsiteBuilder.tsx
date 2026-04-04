@@ -5,14 +5,13 @@ import { toast } from 'react-hot-toast';
 import { 
   FiSettings, 
   FiEdit, 
-  FiPalette, 
   FiSearch, 
   FiSave, 
   FiEye 
 } from 'react-icons/fi';
 
-import { Button } from '@/components/ui/Button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import { Button } from '@ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/tabs';
 import GeneralTab from './tabs/GeneralTab';
 import AboutTab from './tabs/AboutTab';
 import AppearanceTab from './tabs/AppearanceTab';
@@ -124,7 +123,7 @@ export default function ChurchWebsiteBuilder() {
               value="appearance" 
               className="flex items-center space-x-2"
             >
-              <FiPalette className="w-4 h-4" />
+              <FiSettings className="w-4 h-4" />
               <span>Appearance</span>
             </TabsTrigger>
             <TabsTrigger 

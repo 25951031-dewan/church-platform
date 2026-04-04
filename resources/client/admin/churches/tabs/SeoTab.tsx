@@ -3,10 +3,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { FiSearch, FiFacebook, FiTwitter, FiInstagram, FiYoutube } from 'react-icons/fi';
 
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Label } from '@/components/ui/Label';
-import { Textarea } from '@/components/ui/Textarea';
+import { Button } from '@ui/button';
+import { Input } from '@ui/Input';
+import { Label } from '@ui/Label';
+import { Textarea } from '@ui/Textarea';
 
 interface SeoTabProps {
   church: any;
@@ -37,7 +37,7 @@ export default function SeoTab({ church, churchId }: SeoTabProps) {
     },
     onSuccess: () => {
       toast.success('SEO & social media settings updated successfully');
-      queryClient.invalidateQueries(['church-website', churchId]);
+      queryClient.invalidateQueries({ queryKey: ['church-website', churchId] });
     },
     onError: () => {
       toast.error('Failed to update SEO settings');

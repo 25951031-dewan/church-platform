@@ -3,13 +3,13 @@ import { Shield, Eye, EyeOff, Users, Globe, Lock, Mail, Phone, MessageCircle } f
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
+import { Button } from '@ui/button';
+import { Label } from '@ui/label';
+import { Switch } from '@ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@ui/select';
+import { Textarea } from '@ui/textarea';
+import { Badge } from '@ui/badge';
 import { toast } from 'react-hot-toast';
 import { apiClient } from '@/lib/api-client';
 

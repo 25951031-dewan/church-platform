@@ -7,10 +7,10 @@ import {
   Church, Bookmark, Compass, TrendingUp
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent } from '@ui/card';
+import { Badge } from '@ui/badge';
+import { Button } from '@ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@ui/avatar';
 import { cn } from '@/lib/utils';
 
 interface LeftSidebarContentProps {

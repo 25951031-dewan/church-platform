@@ -11,9 +11,9 @@ import {
 } from 'lucide-react';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/tabs';
+import { Badge } from '@ui/badge';
 import { toast } from 'react-hot-toast';
 
 interface FeedCustomizerProps {

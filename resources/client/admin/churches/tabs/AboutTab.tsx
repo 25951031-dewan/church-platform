@@ -3,10 +3,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { FiFileText, FiUpload, FiDownload, FiX, FiCalendar } from 'react-icons/fi';
 
-import { Button } from '@/components/ui/Button';
-import { Label } from '@/components/ui/Label';
-import { Textarea } from '@/components/ui/Textarea';
-import { Input } from '@/components/ui/Input';
+import { Button } from '@ui/button';
+import { Label } from '@ui/Label';
+import { Textarea } from '@ui/Textarea';
+import { Input } from '@ui/Input';
 
 interface AboutTabProps {
   church: any;
@@ -38,7 +38,7 @@ export default function AboutTab({ church, churchId }: AboutTabProps) {
     },
     onSuccess: () => {
       toast.success('About section updated successfully');
-      queryClient.invalidateQueries(['church-website', churchId]);
+      queryClient.invalidateQueries({ queryKey: ['church-website', churchId] });
     },
     onError: () => {
       toast.error('Failed to update about section');
@@ -60,7 +60,7 @@ export default function AboutTab({ church, churchId }: AboutTabProps) {
     },
     onSuccess: () => {
       toast.success('Document uploaded successfully');
-      queryClient.invalidateQueries(['church-website', churchId]);
+      queryClient.invalidateQueries({ queryKey: ['church-website', churchId] });
       setDocTitle('');
     },
     onError: () => {
@@ -81,7 +81,7 @@ export default function AboutTab({ church, churchId }: AboutTabProps) {
     },
     onSuccess: () => {
       toast.success('Document deleted successfully');
-      queryClient.invalidateQueries(['church-website', churchId]);
+      queryClient.invalidateQueries({ queryKey: ['church-website', churchId] });
     },
     onError: () => {
       toast.error('Failed to delete document');

@@ -6,11 +6,11 @@ import {
   ChevronRight, Settings, MoreHorizontal, Star, Zap,
   TrendingUp, UserPlus, CheckCircle, AlertCircle
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Progress } from '@/components/ui/progress';
+import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
+import { Badge } from '@ui/badge';
+import { Button } from '@ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@ui/avatar';
+import { Progress } from '@ui/progress';
 import { cn } from '@/lib/utils';
 
 interface RightSidebarContentProps {

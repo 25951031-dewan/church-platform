@@ -12,10 +12,10 @@ import {
   FiEye 
 } from 'react-icons/fi';
 
-import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
-import { Select } from '@/components/ui/Select';
-import { Badge } from '@/components/ui/Badge';
+import { Input } from '@ui/Input';
+import { Button } from '@ui/button';
+import { Select } from '@ui/Select';
+import { Badge } from '@ui/Badge';
 
 interface ChurchDirectoryProps {
   churches: {

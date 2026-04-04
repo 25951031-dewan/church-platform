@@ -1,5 +1,5 @@
 import React, { useState, Suspense, lazy } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/tabs';
 import { User, Heart, Church, Shield, Eye } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import LoadingSpinner from '@/components/LoadingSpinner';

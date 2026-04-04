@@ -3,11 +3,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { FiPlus, FiX, FiClock } from 'react-icons/fi';
 
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Label } from '@/components/ui/Label';
-import { Textarea } from '@/components/ui/Textarea';
-import { Select } from '@/components/ui/Select';
+import { Button } from '@ui/button';
+import { Input } from '@ui/Input';
+import { Label } from '@ui/Label';
+import { Textarea } from '@ui/Textarea';
+import { Select } from '@ui/Select';
 
 interface GeneralTabProps {
   church: any;
@@ -59,7 +59,7 @@ export default function GeneralTab({ church, churchId }: GeneralTabProps) {
     },
     onSuccess: () => {
       toast.success('General settings updated successfully');
-      queryClient.invalidateQueries(['church-website', churchId]);
+      queryClient.invalidateQueries({ queryKey: ['church-website', churchId] });
     },
     onError: () => {
       toast.error('Failed to update general settings');

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
-import { FiImage, FiUpload, FiPalette } from 'react-icons/fi';
+import { FiImage, FiUpload, FiSettings } from 'react-icons/fi';
 
-import { Button } from '@/components/ui/Button';
-import { Label } from '@/components/ui/Label';
-import { Input } from '@/components/ui/Input';
+import { Button } from '@ui/button';
+import { Label } from '@ui/Label';
+import { Input } from '@ui/Input';
 
 interface AppearanceTabProps {
   church: any;
@@ -34,7 +34,7 @@ export default function AppearanceTab({ church, churchId }: AppearanceTabProps) 
     },
     onSuccess: () => {
       toast.success('Colors updated successfully');
-      queryClient.invalidateQueries(['church-website', churchId]);
+      queryClient.invalidateQueries({ queryKey: ['church-website', churchId] });
     },
     onError: () => {
       toast.error('Failed to update colors');
@@ -55,7 +55,7 @@ export default function AppearanceTab({ church, churchId }: AppearanceTabProps) 
     },
     onSuccess: () => {
       toast.success('Logo uploaded successfully');
-      queryClient.invalidateQueries(['church-website', churchId]);
+      queryClient.invalidateQueries({ queryKey: ['church-website', churchId] });
     },
     onError: () => {
       toast.error('Failed to upload logo');
@@ -79,7 +79,7 @@ export default function AppearanceTab({ church, churchId }: AppearanceTabProps) 
     },
     onSuccess: () => {
       toast.success('Cover photo uploaded successfully');
-      queryClient.invalidateQueries(['church-website', churchId]);
+      queryClient.invalidateQueries({ queryKey: ['church-website', churchId] });
     },
     onError: () => {
       toast.error('Failed to upload cover photo');
