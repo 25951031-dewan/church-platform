@@ -121,6 +121,44 @@ Do NOT add `permissions` arrays to `plugins.json`. Permissions go in a `{Name}Pe
 | Enabling plugins that don't have a directory | Only enable plugins with actual code in `app/Plugins/` |
 | `bg-white` or `text-gray-900` in components | Use dark palette above |
 | `public/build` in `.gitignore` | Build is committed — shared hosting has no Node |
+| Calling `loadRoutes()` in `AppServiceProvider::booted()` | `auto_discover` is disabled — `routes/api.php` is authoritative |
+| Writing plugin enable/disable to `plugin_status` DB and expecting it to affect routes | `routes/api.php` reads `config/plugins.json` — both must agree |
+
+---
+
+## Post-Copilot Session Audit
+
+Run this after any Copilot session before testing:
+
+```bash
+# Policies: must extend BasePolicy
+grep -rn "HandlesAuthorization" app/Plugins/ --include="*.php"
+
+# Tests: must use App\Models\User
+grep -rn "Common\\Auth\\Models\\User" tests/ --include="*.php"
+
+# No double route loading
+grep -n "loadRoutes\|auto_discover" app/Providers/AppServiceProvider.php
+
+# No Blade auth routes
+grep -n "view.*auth.login\|Auth::attempt" routes/web.php
+
+# No light-mode classes in plugin components
+grep -rn "bg-white\|bg-gray-50\|text-gray-900" resources/client/plugins/ --include="*.tsx"
+```
+
+---
+
+## Known Architecture — Two PluginManagers (DO NOT CONFUSE)
+
+| | `Common\Core\PluginManager` | `App\Services\PluginManager` |
+|-|-----------------------------|------------------------------|
+| Source | `common/foundation/src/Core/` | `app/Services/` (Copilot-added) |
+| Reads from | `config/plugins.json` | `plugin_status` DB table |
+| Used by | `routes/api.php` route loading | Admin plugin toggle UI only |
+| Status | **Active and authoritative** | `auto_discover` disabled |
+
+Never call `app(App\Services\PluginManager::class)->loadRoutes()` — it double-loads all plugin routes.
 
 ---
 

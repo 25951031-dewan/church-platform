@@ -86,6 +86,17 @@ git commit -m "build: rebuild assets"
 4. **Phantom plugins:** Copilot enables plugins that don't exist → check `app/Plugins/` first
 5. **Auth routes:** Copilot may add Blade login routes → remove them immediately
 6. **Light theme:** Copilot uses default Tailwind colors → replace with dark palette
+7. **Double route loading:** Copilot's `App\Services\PluginManager::loadRoutes()` in `AppServiceProvider::booted()` loads all plugin routes AFTER `routes/api.php` already loaded them — overwriting with `auth:sanctum` on everything. Keep `auto_discover` disabled.
+
+## Post-Copilot Audit Checklist
+
+```bash
+grep -rn "HandlesAuthorization" app/Plugins/ --include="*.php"          # must be empty
+grep -rn "Common\\Auth\\Models\\User" tests/ --include="*.php"           # must be empty
+grep -n "loadRoutes\|auto_discover" app/Providers/AppServiceProvider.php # must be disabled
+grep -n "view.*auth.login\|Auth::attempt" routes/web.php                 # must be empty
+grep -rn "bg-white\|bg-gray-50\|text-gray-900" resources/client/plugins/ --include="*.tsx" # must be empty
+```
 
 ---
 
