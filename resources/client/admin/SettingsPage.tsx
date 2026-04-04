@@ -56,8 +56,8 @@ export function SettingsPage() {
   return (
     <div className="max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">Manage your platform configuration.</p>
+        <h1 className="text-2xl font-bold text-white">Settings</h1>
+        <p className="text-gray-400 mt-1">Manage your platform configuration.</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -65,14 +65,14 @@ export function SettingsPage() {
           <Link
             key={cat.path}
             to={cat.path}
-            className="group flex items-start gap-4 p-5 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary-400 hover:shadow-md transition-all duration-150"
+            className="group flex items-start gap-4 p-5 bg-[#161920] rounded-xl border border-white/5 hover:border-indigo-500/40 hover:shadow-lg transition-all duration-150"
           >
             <span className="text-2xl mt-0.5">{cat.icon}</span>
             <div>
-              <p className="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
+              <p className="font-semibold text-white group-hover:text-indigo-400 transition-colors">
                 {cat.title}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{cat.description}</p>
+              <p className="text-sm text-gray-400 mt-0.5">{cat.description}</p>
             </div>
           </Link>
         ))}

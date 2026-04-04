@@ -79,6 +79,7 @@ const EmailSettingsPage = lazy(() => import('./admin/settings/EmailSettingsPage'
 const AuthSettingsPage = lazy(() => import('./admin/settings/AuthSettingsPage').then(m => ({ default: m.AuthSettingsPage })));
 const AppearanceSettingsPage = lazy(() => import('./admin/settings/AppearanceSettingsPage').then(m => ({ default: m.AppearanceSettingsPage })));
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
+const MobileLayout = lazy(() => import('./layouts/MobileLayout').then(m => ({ default: m.MobileLayout })));
 
 function Loading() {
   return <div className="flex items-center justify-center h-screen">Loading...</div>;
@@ -88,44 +89,48 @@ export function AppRouter() {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        {/* Public */}
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
+        {/* Public + member routes wrapped with MobileLayout (bottom nav) */}
+        <Route element={<MobileLayout />}>
+          {/* Public */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
 
-        {/* Protected routes */}
+          {/* Protected member routes */}
+          <Route element={<RequireAuth />}>
+            <Route path="/feed" element={<NewsfeedPage />} />
+            <Route path="/groups" element={<GroupBrowserPage />} />
+            <Route path="/groups/:groupId" element={<GroupDetailPage />} />
+            <Route path="/events" element={<EventsPage />} />
+            <Route path="/events/:eventId" element={<EventDetailPage />} />
+            <Route path="/sermons" element={<SermonsPage />} />
+            <Route path="/sermons/:sermonId" element={<SermonDetailPage />} />
+            <Route path="/sermon-series/:seriesId" element={<SermonSeriesPage />} />
+            <Route path="/prayers" element={<PrayerWallPage />} />
+            <Route path="/prayers/submit" element={<PrayerSubmitPage />} />
+            <Route path="/prayers/:prayerId" element={<PrayerDetailPage />} />
+            <Route path="/churches" element={<ChurchDirectoryPage />} />
+            <Route path="/churches/:churchId" element={<ChurchProfilePage />} />
+            <Route path="/library" element={<LibraryCatalogPage />} />
+            <Route path="/library/:bookId" element={<BookDetailPage />} />
+            <Route path="/blog" element={<BlogListPage />} />
+            <Route path="/blog/new" element={<ArticleEditorPage />} />
+            <Route path="/blog/:slug" element={<ArticleDetailPage />} />
+            <Route path="/blog/:slug/edit" element={<ArticleEditorPage />} />
+            <Route path="/meetings" element={<MeetingsPage />} />
+            <Route path="/meetings/:meetingId" element={<MeetingDetailPage />} />
+            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
+          </Route>
+        </Route>
+
+        {/* Admin routes — outside MobileLayout, uses AdminLayout */}
         <Route element={<RequireAuth />}>
-          {/* Member-accessible routes */}
-          <Route path="/feed" element={<NewsfeedPage />} />
-          <Route path="/groups" element={<GroupBrowserPage />} />
-          <Route path="/groups/:groupId" element={<GroupDetailPage />} />
-          <Route path="/events" element={<EventsPage />} />
-          <Route path="/events/:eventId" element={<EventDetailPage />} />
-          <Route path="/sermons" element={<SermonsPage />} />
-          <Route path="/sermons/:sermonId" element={<SermonDetailPage />} />
-          <Route path="/sermon-series/:seriesId" element={<SermonSeriesPage />} />
-          <Route path="/prayers" element={<PrayerWallPage />} />
-          <Route path="/prayers/submit" element={<PrayerSubmitPage />} />
-          <Route path="/prayers/:prayerId" element={<PrayerDetailPage />} />
-          <Route path="/churches" element={<ChurchDirectoryPage />} />
-          <Route path="/churches/:churchId" element={<ChurchProfilePage />} />
-          <Route path="/library" element={<LibraryCatalogPage />} />
-          <Route path="/library/:bookId" element={<BookDetailPage />} />
-          <Route path="/blog" element={<BlogListPage />} />
-          <Route path="/blog/new" element={<ArticleEditorPage />} />
-          <Route path="/blog/:slug" element={<ArticleDetailPage />} />
-          <Route path="/blog/:slug/edit" element={<ArticleEditorPage />} />
-          <Route path="/meetings" element={<MeetingsPage />} />
-          <Route path="/meetings/:meetingId" element={<MeetingDetailPage />} />
-          <Route path="/chat" element={<ChatPage />} />
-          <Route path="/notifications" element={<NotificationsPage />} />
-
-          {/* Admin routes */}
           <Route element={<RequirePermission permission="admin.access" />}>
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<DashboardPage />} />
               <Route path="users" element={<UsersPage />} />
               <Route path="roles" element={<RolesPage />} />
-              
+
               {/* Content redirects to public pages */}
               <Route path="sermons" element={<Navigate to="/sermons" replace />} />
               <Route path="events" element={<Navigate to="/events" replace />} />
@@ -135,14 +140,14 @@ export function AppRouter() {
               <Route path="prayers" element={<Navigate to="/prayers" replace />} />
               <Route path="churches" element={<Navigate to="/churches" replace />} />
               <Route path="chat" element={<Navigate to="/chat" replace />} />
-              
+
               {/* Notification management */}
               <Route path="notification-logs" element={<NotificationLogsPage />} />
               <Route path="notification-templates" element={<NotificationTemplatesPage />} />
-              
+
               {/* Meeting management */}
               <Route path="meetings" element={<MeetingManagerPage />} />
-              
+
               {/* Settings */}
               <Route path="settings" element={<SettingsPage />} />
               <Route path="settings/general" element={<GeneralSettingsPage />} />
@@ -151,7 +156,7 @@ export function AppRouter() {
               <Route path="settings/appearance" element={<AppearanceSettingsPage />} />
               <Route path="settings/notifications" element={<NotificationSettingsPage />} />
               <Route path="settings/live-meetings" element={<LiveMeetingSettingsPage />} />
-              
+
               {/* System */}
               <Route path="system" element={<SystemPage />} />
             </Route>

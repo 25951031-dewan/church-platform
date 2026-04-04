@@ -44,7 +44,7 @@ function Field({ label, name, value, onChange, type = 'text', placeholder, rows 
         type={rows ? undefined : type}
         name={name}
         value={value ?? ''}
-        onChange={(e: any) => onChange(e.target.value)}
+        onChange={(e) => onChange((e.target as HTMLInputElement | HTMLTextAreaElement).value)}
         placeholder={placeholder}
         rows={rows}
         className="w-full px-3 py-2 bg-[#0C0E12] border border-white/10 rounded-lg text-white text-sm placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors resize-none"

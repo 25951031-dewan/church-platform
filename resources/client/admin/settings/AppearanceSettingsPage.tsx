@@ -3,6 +3,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@app/common/http/api-client';
 import { Palette, Upload } from 'lucide-react';
 
+interface AppearanceData {
+  logo?: string;
+  banner?: string;
+  favicon?: string;
+  primary_color?: string;
+  secondary_color?: string;
+}
+
 export function AppearanceSettingsPage() {
   const queryClient = useQueryClient();
   const [logoFile, setLogoFile] = useState<File | null>(null);
@@ -11,7 +19,7 @@ export function AppearanceSettingsPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['settings', 'appearance'],
-    queryFn: () => apiClient.get<{ data: any }>('settings').then((r) => r.data.data),
+    queryFn: () => apiClient.get<{ data: AppearanceData }>('settings').then((r) => r.data.data),
   });
 
   const [primaryColor, setPrimaryColor] = useState('#6366f1');
