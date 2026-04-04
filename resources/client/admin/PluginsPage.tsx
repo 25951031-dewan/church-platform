@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@app/common/http/api-client';
 import { Puzzle, Check, X, RefreshCw } from 'lucide-react';
-import { useNotificationStore } from '@common/stores';
+import { useNotificationStore } from '@app/common/stores';
 
 interface Plugin {
   name: string;

@@ -13,5 +13,6 @@
   "volunteers":     { "enabled": false, "version": "1.0.0" },
   "fundraising":    { "enabled": false, "version": "1.0.0" },
   "stories":        { "enabled": false, "version": "1.0.0" },
-  "pastoral":       { "enabled": false, "version": "1.0.0" }
+  "pastoral":       { "enabled": false, "version": "1.0.0" },
+  "marketplace":    { "enabled": false, "version": "1.0.0" }
 }

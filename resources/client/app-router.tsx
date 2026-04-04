@@ -70,6 +70,7 @@ const NotificationSettingsPage = lazy(() =>
 const LiveMeetingSettingsPage = lazy(() =>
   import('./plugins/live-meetings/admin/LiveMeetingSettingsPage').then(m => ({default: m.LiveMeetingSettingsPage}))
 );
+const PluginsPage = lazy(() => import('./admin/PluginsPage').then(m => ({ default: m.PluginsPage })));
 const SystemPage = lazy(() => import('./admin/SystemPage').then(m => ({ default: m.SystemPage })));
 const SettingsLayout = lazy(() => import('./admin/SettingsLayout').then(m => ({ default: m.SettingsLayout })));
 const UsersPage = lazy(() => import('./admin/UsersPage').then(m => ({ default: m.UsersPage })));
@@ -131,6 +132,7 @@ export function AppRouter() {
               <Route index element={<DashboardPage />} />
               <Route path="users" element={<UsersPage />} />
               <Route path="roles" element={<RolesPage />} />
+              <Route path="plugins" element={<PluginsPage />} />
 
               {/* Content redirects to public pages */}
               <Route path="sermons" element={<Navigate to="/sermons" replace />} />
