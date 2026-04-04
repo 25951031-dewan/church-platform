@@ -456,3 +456,4 @@ class DailyVerseAdminController extends Controller
             ],
         ]);
     }
+}
