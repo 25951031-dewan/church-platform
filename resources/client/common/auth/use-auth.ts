@@ -7,7 +7,7 @@ export function useAuth() {
 
   const loginMutation = useMutation({
     mutationFn: async (data: { email: string; password: string }) => {
-      const res = await apiClient.post('/login', data);
+      const res = await apiClient.post('login', data);
       localStorage.setItem('auth_token', res.data.token);
       setUser(res.data.user);
       return res.data;
@@ -16,7 +16,7 @@ export function useAuth() {
 
   const registerMutation = useMutation({
     mutationFn: async (data: { name: string; email: string; password: string; password_confirmation: string }) => {
-      const res = await apiClient.post('/register', data);
+      const res = await apiClient.post('register', data);
       localStorage.setItem('auth_token', res.data.token);
       setUser(res.data.user);
       return res.data;
@@ -24,7 +24,7 @@ export function useAuth() {
   });
 
   const logout = async () => {
-    await apiClient.post('/logout');
+    await apiClient.post('logout');
     localStorage.removeItem('auth_token');
     setUser(null);
     window.location.href = '/';

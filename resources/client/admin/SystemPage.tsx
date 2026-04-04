@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { apiClient } from '@app/common/api-client';
+import { apiClient } from '@app/common/http/api-client';
 
 type Tab = 'status' | 'git' | 'upload';
 
@@ -87,7 +87,7 @@ function ActionButton({
 function StatusTab() {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['system-status'],
-    queryFn: () => apiClient.get<{ data: SystemStatus }>('/api/v1/system/status').then((r) => r.data),
+    queryFn: () => apiClient.get<SystemStatus>('/api/v1/system/status').then((r) => r.data),
   });
 
   if (isLoading) return <p className="text-gray-500 text-sm">Loading system info…</p>;
