@@ -1,3 +1,4 @@
+import type { ElementType } from 'react';
 import { NavLink, Outlet } from 'react-router';
 import { useUserPermissions } from '@app/common/auth/use-permissions';
 import { useBootstrapStore } from '@app/common/core/bootstrap-data';
@@ -6,10 +7,10 @@ import {
   LayoutDashboard, Users, Shield, Settings, Server,
   Mic, Calendar, FileText, BookOpen,
   Users2, HandHeart, Church, Video, Bell, MessageCircle,
-  List, ChevronDown,
+  List, LogOut,
 } from 'lucide-react';
 
-interface NavItem { label: string; path: string; icon: React.ElementType; permission: string; exact?: boolean; }
+interface NavItem { label: string; path: string; icon: ElementType; permission: string; exact?: boolean; }
 
 const navItems: NavItem[] = [
   { label: 'Dashboard',   path: '/admin',                        icon: LayoutDashboard, permission: 'admin.access', exact: true },
@@ -32,7 +33,7 @@ const navItems: NavItem[] = [
 
 export function AdminLayout() {
   const { hasPermission } = useUserPermissions();
-  const { user } = useBootstrapStore();
+  const user = useBootstrapStore((s) => s.user);
   const { logout } = useAuth();
 
   return (
@@ -72,6 +73,8 @@ export function AdminLayout() {
         {/* User footer */}
         <div className="border-t border-white/5 p-3">
           <button
+            type="button"
+            aria-label="Sign out"
             onClick={logout}
             className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors text-left"
           >
@@ -82,7 +85,7 @@ export function AdminLayout() {
               <p className="text-xs font-medium text-white truncate">{user?.name}</p>
               <p className="text-[10px] text-gray-500 truncate">{user?.email}</p>
             </div>
-            <ChevronDown size={12} className="text-gray-500 flex-shrink-0" />
+            <LogOut size={12} className="text-gray-500 flex-shrink-0" aria-hidden="true" />
           </button>
         </div>
       </aside>
