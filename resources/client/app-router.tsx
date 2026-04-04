@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router';
+import { Routes, Route, Navigate } from 'react-router';
 import { lazy, Suspense } from 'react';
 import { RequireAuth, RequirePermission } from './common/auth/auth-guards';
 
@@ -119,15 +119,33 @@ export function AppRouter() {
           <Route element={<RequirePermission permission="admin.access" />}>
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<DashboardPage />} />
+              <Route path="users" element={<UsersPage />} />
+              <Route path="roles" element={<RolesPage />} />
+              
+              {/* Content redirects to public pages */}
+              <Route path="sermons" element={<Navigate to="/sermons" replace />} />
+              <Route path="events" element={<Navigate to="/events" replace />} />
+              <Route path="blog" element={<Navigate to="/blog" replace />} />
+              <Route path="library" element={<Navigate to="/library" replace />} />
+              <Route path="groups" element={<Navigate to="/groups" replace />} />
+              <Route path="prayers" element={<Navigate to="/prayers" replace />} />
+              <Route path="churches" element={<Navigate to="/churches" replace />} />
+              <Route path="chat" element={<Navigate to="/chat" replace />} />
+              
+              {/* Notification management */}
               <Route path="notification-logs" element={<NotificationLogsPage />} />
               <Route path="notification-templates" element={<NotificationTemplatesPage />} />
+              
+              {/* Meeting management */}
               <Route path="meetings" element={<MeetingManagerPage />} />
+              
+              {/* Settings */}
               <Route path="settings" element={<SettingsPage />} />
               <Route path="settings/notifications" element={<NotificationSettingsPage />} />
               <Route path="settings/live-meetings" element={<LiveMeetingSettingsPage />} />
+              
+              {/* System */}
               <Route path="system" element={<SystemPage />} />
-              <Route path="users" element={<UsersPage />} />
-              <Route path="roles" element={<RolesPage />} />
             </Route>
           </Route>
         </Route>
