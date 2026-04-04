@@ -71,7 +71,7 @@ const LiveMeetingSettingsPage = lazy(() =>
   import('./plugins/live-meetings/admin/LiveMeetingSettingsPage').then(m => ({default: m.LiveMeetingSettingsPage}))
 );
 const SystemPage = lazy(() => import('./admin/SystemPage').then(m => ({ default: m.SystemPage })));
-const SettingsPage = lazy(() => import('./admin/SettingsPage').then(m => ({ default: m.SettingsPage })));
+const SettingsLayout = lazy(() => import('./admin/SettingsLayout').then(m => ({ default: m.SettingsLayout })));
 const UsersPage = lazy(() => import('./admin/UsersPage').then(m => ({ default: m.UsersPage })));
 const RolesPage = lazy(() => import('./admin/RolesPage').then(m => ({ default: m.RolesPage })));
 const GeneralSettingsPage = lazy(() => import('./admin/settings/GeneralSettingsPage').then(m => ({ default: m.GeneralSettingsPage })));
@@ -149,13 +149,15 @@ export function AppRouter() {
               <Route path="meetings" element={<MeetingManagerPage />} />
 
               {/* Settings */}
-              <Route path="settings" element={<SettingsPage />} />
-              <Route path="settings/general" element={<GeneralSettingsPage />} />
-              <Route path="settings/email" element={<EmailSettingsPage />} />
-              <Route path="settings/auth" element={<AuthSettingsPage />} />
-              <Route path="settings/appearance" element={<AppearanceSettingsPage />} />
-              <Route path="settings/notifications" element={<NotificationSettingsPage />} />
-              <Route path="settings/live-meetings" element={<LiveMeetingSettingsPage />} />
+              <Route path="settings" element={<SettingsLayout />}>
+                <Route index element={<Navigate to="/admin/settings/general" replace />} />
+                <Route path="general" element={<GeneralSettingsPage />} />
+                <Route path="email" element={<EmailSettingsPage />} />
+                <Route path="auth" element={<AuthSettingsPage />} />
+                <Route path="appearance" element={<AppearanceSettingsPage />} />
+                <Route path="notifications" element={<NotificationSettingsPage />} />
+                <Route path="live-meetings" element={<LiveMeetingSettingsPage />} />
+              </Route>
 
               {/* System */}
               <Route path="system" element={<SystemPage />} />
