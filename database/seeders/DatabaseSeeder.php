@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             SettingsSeeder::class,
             \App\Plugins\Timeline\Database\Seeders\TimelinePermissionSeeder::class,
+            \App\Plugins\Timeline\Database\Seeders\FeedWidgetSeeder::class,
             \App\Plugins\Groups\Database\Seeders\GroupPermissionSeeder::class,
             \App\Plugins\Events\Database\Seeders\EventPermissionSeeder::class,
             \App\Plugins\Sermons\Database\Seeders\SermonPermissionSeeder::class,

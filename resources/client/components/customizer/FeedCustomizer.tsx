@@ -76,7 +76,7 @@ const FeedCustomizer: React.FC<FeedCustomizerProps> = ({ churchId, onSave, onClo
 
   return (
     <DndProvider backend={isMobile || isTablet ? TouchBackend : HTML5Backend}>
-      <div className="h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+      <div className="h-screen bg-gray-50 dark:bg-[#0C0E12] flex flex-col">
         {/* Customizer Header */}
         <CustomizerHeader
           viewportMode={viewportMode}
@@ -134,7 +134,7 @@ const CustomizerHeader: React.FC<{
   isSaving: boolean;
 }> = ({ viewportMode, onViewportChange, isPreviewMode, onPreviewToggle, onSave, onReset, onClose, isSaving }) => {
   return (
-    <header className="h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6">
+    <header className="h-16 bg-white dark:bg-[#161920] border-b border-gray-200 dark:border-white/5 flex items-center justify-between px-6">
       {/* Left */}
       <div className="flex items-center space-x-4">
         {onClose && (
@@ -150,7 +150,7 @@ const CustomizerHeader: React.FC<{
       </div>
 
       {/* Center: Viewport Controls */}
-      <div className="flex items-center space-x-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+      <div className="flex items-center space-x-1 bg-gray-100 dark:bg-[#1e2229] rounded-lg p-1">
         <Button
           variant={viewportMode === 'desktop' ? 'secondary' : 'ghost'}
           size="sm"
@@ -213,17 +213,17 @@ const DesktopCustomizerLayout: React.FC<{
   return (
     <>
       {/* Left Pane: Widget Builder */}
-      <aside className="w-80 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700">
+      <aside className="w-80 bg-white dark:bg-[#161920] border-r border-gray-200 dark:border-white/5">
         <WidgetBuilder layout={layout} onLayoutChange={onLayoutChange} />
       </aside>
 
       {/* Center Pane: Live Preview */}
-      <main className="flex-1 bg-gray-50 dark:bg-gray-900">
+      <main className="flex-1 bg-gray-50 dark:bg-[#0C0E12]">
         <LivePreview layout={layout} viewportMode={viewportMode} isPreviewMode={isPreviewMode} />
       </main>
 
       {/* Right Pane: Widget Library */}
-      <aside className="w-80 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700">
+      <aside className="w-80 bg-white dark:bg-[#161920] border-l border-gray-200 dark:border-white/5">
         <WidgetLibrary layout={layout} onLayoutChange={onLayoutChange} />
       </aside>
     </>
@@ -242,7 +242,7 @@ const MobileCustomizerLayout: React.FC<{
   return (
     <div className="flex-1 flex flex-col">
       {/* Mobile Tabs */}
-      <div className="h-12 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex">
+      <div className="h-12 bg-white dark:bg-[#161920] border-b border-gray-200 dark:border-white/5 flex">
         {[
           { key: 'builder', icon: Layout, label: 'Builder' },
           { key: 'preview', icon: Eye, label: 'Preview' },
@@ -281,7 +281,7 @@ const WidgetBuilder: React.FC<{
 }> = ({ layout, onLayoutChange }) => {
   return (
     <div className="h-full flex flex-col">
-      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="p-4 border-b border-gray-200 dark:border-white/5">
         <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Layout Builder</h3>
         <p className="text-xs text-gray-500 dark:text-gray-400">Manage widgets in each pane</p>
       </div>
@@ -336,14 +336,14 @@ const LivePreview: React.FC<{
         </div>
 
         {/* Three-Pane Preview */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="bg-white dark:bg-[#161920] rounded-lg shadow-sm border border-gray-200 dark:border-white/5 overflow-hidden">
           <div className={cn('flex', viewportMode === 'mobile' ? 'flex-col' : 'flex-row')}>
             {/* Left Preview */}
             <div className={cn(
-              'border-r border-gray-200 dark:border-gray-700',
+              'border-r border-gray-200 dark:border-white/5',
               viewportMode === 'mobile' ? 'w-full border-r-0 border-b' : 'w-1/4'
             )}>
-              <div className="p-3 bg-gray-50 dark:bg-gray-900 border-b">
+              <div className="p-3 bg-gray-50 dark:bg-[#0C0E12] border-b">
                 <h4 className="text-xs font-medium text-gray-600 dark:text-gray-400">Left Sidebar</h4>
               </div>
               <div className="p-4 space-y-3 min-h-32">
@@ -358,7 +358,7 @@ const LivePreview: React.FC<{
 
             {/* Center Preview */}
             <div className={cn(viewportMode === 'mobile' ? 'w-full' : 'flex-1')}>
-              <div className="p-3 bg-gray-50 dark:bg-gray-900 border-b">
+              <div className="p-3 bg-gray-50 dark:bg-[#0C0E12] border-b">
                 <h4 className="text-xs font-medium text-gray-600 dark:text-gray-400">Main Feed</h4>
               </div>
               <div className="p-4 space-y-4 min-h-64">
@@ -373,10 +373,10 @@ const LivePreview: React.FC<{
 
             {/* Right Preview */}
             <div className={cn(
-              'border-l border-gray-200 dark:border-gray-700',
+              'border-l border-gray-200 dark:border-white/5',
               viewportMode === 'mobile' ? 'w-full border-l-0 border-t' : 'w-1/4'
             )}>
-              <div className="p-3 bg-gray-50 dark:bg-gray-900 border-b">
+              <div className="p-3 bg-gray-50 dark:bg-[#0C0E12] border-b">
                 <h4 className="text-xs font-medium text-gray-600 dark:text-gray-400">Right Sidebar</h4>
               </div>
               <div className="p-4 space-y-3 min-h-32">
@@ -424,14 +424,14 @@ const WidgetLibrary: React.FC<{
 
   return (
     <div className="h-full flex flex-col">
-      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="p-4 border-b border-gray-200 dark:border-white/5">
         <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Widget Library</h3>
         <p className="text-xs text-gray-500 dark:text-gray-400">Drag widgets to customize layout</p>
       </div>
 
       <div className="flex-1 p-4 space-y-3">
         {availableWidgets.map((widget) => (
-          <div key={widget.type} className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div key={widget.type} className="p-3 bg-gray-50 dark:bg-[#161920] rounded-lg border border-gray-200 dark:border-white/5">
             <div className="flex items-center space-x-3 mb-2">
               <span className="text-lg">{widget.icon}</span>
               <div>
@@ -467,7 +467,7 @@ const PaneWidgetList: React.FC<{ pane: string; widgets: any[]; onLayoutChange: a
   return (
     <div className="space-y-2">
       {widgets.map((widget, index) => (
-        <div key={widget.id} className="p-2 bg-gray-50 dark:bg-gray-800 rounded border flex items-center justify-between">
+        <div key={widget.id} className="p-2 bg-gray-50 dark:bg-[#161920] rounded border flex items-center justify-between">
           <span className="text-sm font-medium">{widget.type}</span>
           <Button size="sm" variant="ghost" onClick={() => removeWidget(index)}>
             <X className="w-3 h-3" />
@@ -484,8 +484,8 @@ const PaneWidgetList: React.FC<{ pane: string; widgets: any[]; onLayoutChange: a
 const WidgetPreview: React.FC<{ widget: any; isPreviewMode: boolean }> = ({ widget, isPreviewMode }) => {
   return (
     <div className={cn(
-      "p-3 bg-gray-100 dark:bg-gray-700 rounded border-2 border-dashed transition-colors",
-      isPreviewMode ? "border-transparent bg-white dark:bg-gray-800 shadow-sm" : "border-gray-300 dark:border-gray-600"
+      "p-3 bg-gray-100 dark:bg-[#1e2229] rounded border-2 border-dashed transition-colors",
+      isPreviewMode ? "border-transparent bg-white dark:bg-[#161920] shadow-sm" : "border-gray-300 dark:border-gray-600"
     )}>
       <div className="text-sm font-medium text-gray-700 dark:text-gray-300">{widget.type}</div>
       <div className="text-xs text-gray-500 dark:text-gray-400">Widget preview</div>

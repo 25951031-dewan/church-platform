@@ -84,12 +84,58 @@ class FeedWidget extends Model
         return true;
     }
 
+    // ------------------------------------------------------------------
+    // Accessors — bridge DB column names to the API contract
+    // (DB uses 'schema'/'permissions'/'is_enabled'; frontend expects
+    //  'config_schema'/'permissions_required'/'is_system'/'is_customizable')
+    // ------------------------------------------------------------------
+
+    public function getConfigSchemaAttribute(): mixed
+    {
+        return $this->attributes['schema'] ?? null;
+    }
+
+    public function getPermissionsRequiredAttribute(): mixed
+    {
+        return $this->permissions;
+    }
+
+    public function getIsSystemAttribute(): bool
+    {
+        return false; // All widgets are community-defined in this platform
+    }
+
+    public function getIsCustomizableAttribute(): bool
+    {
+        return true;
+    }
+
+    // ------------------------------------------------------------------
+    // Scopes
+    // ------------------------------------------------------------------
+
     /**
      * Scope to get only enabled widgets
      */
     public function scopeEnabled($query)
     {
         return $query->where('is_enabled', true);
+    }
+
+    /**
+     * Alias scope — controller calls ::available()
+     */
+    public function scopeAvailable($query)
+    {
+        return $query->where('is_enabled', true);
+    }
+
+    /**
+     * Order by sort_order then display_name
+     */
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('sort_order')->orderBy('display_name');
     }
 
     /**

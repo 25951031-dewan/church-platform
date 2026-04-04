@@ -41,7 +41,7 @@ const ThreePaneFeedLayout: React.FC<ThreePaneFeedLayoutProps> = ({
   }, [isDesktop]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0C0E12]">
       {/* Mobile Header */}
       {(isMobile || isTablet) && (
         <MobileHeader
@@ -122,12 +122,12 @@ const MobileHeader: React.FC<{
 }> = ({ onMenuToggle, onSearchToggle, searchOpen, searchComponent }) => {
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 z-50">
+      <header className="fixed top-0 left-0 right-0 h-16 bg-white dark:bg-[#161920] border-b border-gray-200 dark:border-white/5 z-50">
         <div className="flex items-center justify-between h-full px-4">
           {/* Left: Menu Button */}
           <button
             onClick={onMenuToggle}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[#1e2229] transition-colors"
           >
             <Menu className="w-6 h-6" />
           </button>
@@ -142,7 +142,7 @@ const MobileHeader: React.FC<{
           {/* Right: Search Button */}
           <button
             onClick={onSearchToggle}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[#1e2229] transition-colors"
           >
             <Search className="w-6 h-6" />
           </button>
@@ -151,7 +151,7 @@ const MobileHeader: React.FC<{
 
       {/* Search Overlay */}
       {searchOpen && (
-        <div className="fixed top-16 left-0 right-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 z-40 p-4">
+        <div className="fixed top-16 left-0 right-0 bg-white dark:bg-[#161920] border-b border-gray-200 dark:border-white/5 z-40 p-4">
           <div className="flex items-center gap-3">
             <div className="flex-1">
               {searchComponent || <DefaultSearchBar />}
@@ -179,7 +179,7 @@ const LeftSidebar: React.FC<{
 }> = ({ children, isOpen, onClose, isMobile, isTablet }) => {
   return (
     <aside className={cn(
-      "bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300",
+      "bg-white dark:bg-[#161920] border-r border-gray-200 dark:border-white/5 transition-all duration-300",
       // Desktop: always visible, fixed width
       !isMobile && !isTablet && "w-80 sticky top-0 h-screen overflow-y-auto",
       // Mobile/Tablet: overlay sidebar
@@ -193,11 +193,11 @@ const LeftSidebar: React.FC<{
     )}>
       {/* Mobile/Tablet Close Button */}
       {(isMobile || isTablet) && (
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-white/5">
           <h2 className="text-lg font-semibold">Menu</h2>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[#1e2229]"
           >
             <X className="w-5 h-5" />
           </button>
@@ -225,7 +225,7 @@ const RightSidebar: React.FC<{
 }> = ({ children, isOpen, onClose, isMobile, isTablet }) => {
   return (
     <aside className={cn(
-      "bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 transition-all duration-300",
+      "bg-white dark:bg-[#161920] border-l border-gray-200 dark:border-white/5 transition-all duration-300",
       // Desktop: always visible, fixed width
       !isMobile && !isTablet && "w-80 sticky top-0 h-screen overflow-y-auto",
       // Mobile/Tablet: overlay sidebar
@@ -239,11 +239,11 @@ const RightSidebar: React.FC<{
     )}>
       {/* Mobile/Tablet Close Button */}
       {(isMobile || isTablet) && (
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-white/5">
           <h2 className="text-lg font-semibold">Widgets</h2>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[#1e2229]"
           >
             <X className="w-5 h-5" />
           </button>
@@ -285,7 +285,7 @@ const SidebarToggleButtons: React.FC<{
       {!leftOpen && (
         <button
           onClick={onLeftToggle}
-          className="fixed top-20 left-2 z-30 p-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg hover:shadow-xl transition-all"
+          className="fixed top-20 left-2 z-30 p-2 bg-white dark:bg-[#161920] border border-gray-200 dark:border-white/5 rounded-lg shadow-lg hover:shadow-xl transition-all"
         >
           <ChevronRight className="w-5 h-5" />
         </button>
@@ -295,7 +295,7 @@ const SidebarToggleButtons: React.FC<{
       {!rightOpen && (
         <button
           onClick={onRightToggle}
-          className="fixed top-20 right-2 z-30 p-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg hover:shadow-xl transition-all"
+          className="fixed top-20 right-2 z-30 p-2 bg-white dark:bg-[#161920] border border-gray-200 dark:border-white/5 rounded-lg shadow-lg hover:shadow-xl transition-all"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
@@ -316,7 +316,7 @@ const DefaultSearchBar: React.FC = () => {
         placeholder="Search posts, people, events..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+        className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-[#1e2229] text-gray-900 dark:text-white"
       />
     </div>
   );

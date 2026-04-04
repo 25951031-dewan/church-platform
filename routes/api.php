@@ -325,25 +325,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/announcements/{announcement}', [AnnouncementController::class, 'destroy']);
     });
 
-    // ----------------------------------------------------------------
-    // Sermons — manage_sermons
-    // ----------------------------------------------------------------
-    Route::middleware('permission:manage_sermons')->group(function () {
-        Route::get('/sermons', [SermonController::class, 'index']);
-        Route::post('/sermons', [SermonController::class, 'store']);
-        Route::put('/sermons/{sermon}', [SermonController::class, 'update']);
-        Route::delete('/sermons/{sermon}', [SermonController::class, 'destroy']);
-    });
+    // Sermons CRUD → handled by Plugins/Sermons/Routes/api.php at /api/v1/sermons
+    // Books CRUD   → handled by Plugins/Library/Routes/api.php  at /api/v1/books
 
     // ----------------------------------------------------------------
-    // Books & Bible Studies — manage_books / manage_bible_studies
+    // Books & Bible Studies — manage_bible_studies
     // ----------------------------------------------------------------
-    Route::middleware('permission:manage_books')->group(function () {
-        Route::get('/books', [BookController::class, 'index']);
-        Route::post('/books', [BookController::class, 'store']);
-        Route::put('/books/{book}', [BookController::class, 'update']);
-        Route::delete('/books/{book}', [BookController::class, 'destroy']);
-    });
 
     Route::middleware('permission:manage_bible_studies')->group(function () {
         Route::get('/bible-studies', [BibleStudyController::class, 'index']);
@@ -403,26 +390,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/ministries/{ministry}', [MinistryController::class, 'destroy']);
     });
 
-    // ----------------------------------------------------------------
-    // Events — manage_events
-    // ----------------------------------------------------------------
-    Route::middleware('permission:manage_events')->group(function () {
-        Route::get('/events', [EventController::class, 'index']);
-        Route::get('/events/{event}', [EventController::class, 'show']);
-        Route::post('/events', [EventController::class, 'store']);
-        Route::put('/events/{event}', [EventController::class, 'update']);
-        Route::delete('/events/{event}', [EventController::class, 'destroy']);
-    });
-
-    // ----------------------------------------------------------------
-    // Prayer Requests — manage_prayers
-    // ----------------------------------------------------------------
-    Route::middleware('permission:manage_prayers')->group(function () {
-        Route::get('/prayer-requests', [PrayerRequestController::class, 'index']);
-        Route::put('/prayer-requests/{prayerRequest}', [PrayerRequestController::class, 'update']);
-        Route::patch('/prayer-requests/{prayerRequest}/status', [PrayerRequestController::class, 'updateStatus']);
-        Route::delete('/prayer-requests/{prayerRequest}', [PrayerRequestController::class, 'destroy']);
-    });
+    // Events CRUD        → handled by Plugins/Events/Routes/api.php  at /api/v1/events
+    // Prayer Requests    → handled by Plugins/Prayer/Routes/api.php  at /api/v1/prayer-requests
 
     // ----------------------------------------------------------------
     // Contacts — manage_contacts

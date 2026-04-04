@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 // Authenticated routes (all actions require login)
 Route::get('prayer-requests', [PrayerRequestController::class, 'index']);
 Route::get('prayer-requests/{prayerRequest}', [PrayerRequestController::class, 'show']);
+Route::post('prayer-requests', [PrayerRequestController::class, 'store']);
 Route::put('prayer-requests/{prayerRequest}', [PrayerRequestController::class, 'update']);
 Route::delete('prayer-requests/{prayerRequest}', [PrayerRequestController::class, 'destroy']);
 
