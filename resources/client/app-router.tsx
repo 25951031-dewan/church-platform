@@ -72,6 +72,8 @@ const LiveMeetingSettingsPage = lazy(() =>
 );
 const SystemPage = lazy(() => import('./admin/SystemPage').then(m => ({ default: m.SystemPage })));
 const SettingsPage = lazy(() => import('./admin/SettingsPage').then(m => ({ default: m.SettingsPage })));
+const UsersPage = lazy(() => import('./admin/UsersPage').then(m => ({ default: m.UsersPage })));
+const RolesPage = lazy(() => import('./admin/RolesPage').then(m => ({ default: m.RolesPage })));
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
 
 function Loading() {
@@ -124,6 +126,8 @@ export function AppRouter() {
               <Route path="settings/notifications" element={<NotificationSettingsPage />} />
               <Route path="settings/live-meetings" element={<LiveMeetingSettingsPage />} />
               <Route path="system" element={<SystemPage />} />
+              <Route path="users" element={<UsersPage />} />
+              <Route path="roles" element={<RolesPage />} />
             </Route>
           </Route>
         </Route>
