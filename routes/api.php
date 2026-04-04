@@ -617,6 +617,69 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/plugins', [\App\Http\Controllers\Admin\PluginController::class, 'index']);
             Route::post('/plugins/enable', [\App\Http\Controllers\Admin\PluginController::class, 'enable']);
             Route::post('/plugins/disable', [\App\Http\Controllers\Admin\PluginController::class, 'disable']);
+            Route::get('/plugins/{plugin}', [\App\Http\Controllers\Admin\PluginController::class, 'show']);
+            Route::post('/plugins/install', [\App\Http\Controllers\Admin\PluginController::class, 'install']);
+            Route::delete('/plugins/{plugin}', [\App\Http\Controllers\Admin\PluginController::class, 'uninstall']);
+            Route::get('/plugins/{plugin}/settings', [\App\Http\Controllers\Admin\PluginController::class, 'getSettings']);
+            Route::put('/plugins/{plugin}/settings', [\App\Http\Controllers\Admin\PluginController::class, 'updateSettings']);
+
+            // Landing Page Customizer
+            Route::prefix('landing-page')->group(function () {
+                Route::get('/', [\App\Http\Controllers\Admin\LandingPageController::class, 'index']);
+                Route::post('/', [\App\Http\Controllers\Admin\LandingPageController::class, 'store']);
+                Route::put('/{section}', [\App\Http\Controllers\Admin\LandingPageController::class, 'update']);
+                Route::delete('/{section}', [\App\Http\Controllers\Admin\LandingPageController::class, 'destroy']);
+                Route::post('/reorder', [\App\Http\Controllers\Admin\LandingPageController::class, 'reorder']);
+                Route::put('/settings', [\App\Http\Controllers\Admin\LandingPageController::class, 'updateSettings']);
+                Route::get('/templates', [\App\Http\Controllers\Admin\LandingPageController::class, 'templates']);
+                Route::get('/preview', [\App\Http\Controllers\Admin\LandingPageController::class, 'preview']);
+            });
+
+            // Menu Customizer
+            Route::prefix('menus')->group(function () {
+                Route::get('/', [\App\Http\Controllers\Admin\MenuController::class, 'index']);
+                Route::post('/', [\App\Http\Controllers\Admin\MenuController::class, 'store']);
+                Route::put('/{menuItem}', [\App\Http\Controllers\Admin\MenuController::class, 'update']);
+                Route::delete('/{menuItem}', [\App\Http\Controllers\Admin\MenuController::class, 'destroy']);
+                Route::post('/reorder', [\App\Http\Controllers\Admin\MenuController::class, 'reorder']);
+                Route::put('/settings', [\App\Http\Controllers\Admin\MenuController::class, 'updateSettings']);
+                Route::get('/locations', [\App\Http\Controllers\Admin\MenuController::class, 'locations']);
+                Route::get('/routes', [\App\Http\Controllers\Admin\MenuController::class, 'availableRoutes']);
+                Route::get('/preview', [\App\Http\Controllers\Admin\MenuController::class, 'preview']);
+            });
+
+            // Theme & Appearance
+            Route::prefix('appearance')->group(function () {
+                Route::get('/', [\App\Http\Controllers\Admin\AppearanceController::class, 'index']);
+                Route::put('/theme', [\App\Http\Controllers\Admin\AppearanceController::class, 'updateTheme']);
+                Route::post('/upload-logo', [\App\Http\Controllers\Admin\AppearanceController::class, 'uploadLogo']);
+                Route::put('/custom-css', [\App\Http\Controllers\Admin\AppearanceController::class, 'updateCustomCss']);
+                Route::get('/themes', [\App\Http\Controllers\Admin\AppearanceController::class, 'themes']);
+                Route::get('/color-palettes', [\App\Http\Controllers\Admin\AppearanceController::class, 'colorPalettes']);
+                Route::post('/preview', [\App\Http\Controllers\Admin\AppearanceController::class, 'preview']);
+                Route::post('/reset', [\App\Http\Controllers\Admin\AppearanceController::class, 'reset']);
+                Route::get('/export', [\App\Http\Controllers\Admin\AppearanceController::class, 'export']);
+                Route::post('/import', [\App\Http\Controllers\Admin\AppearanceController::class, 'import']);
+            });
+
+            // Settings Management
+            Route::prefix('settings')->group(function () {
+                Route::get('/', [\App\Http\Controllers\Admin\SettingsController::class, 'index']);
+                Route::put('/general', [\App\Http\Controllers\Admin\SettingsController::class, 'updateGeneral']);
+                Route::put('/contact', [\App\Http\Controllers\Admin\SettingsController::class, 'updateContact']);
+                Route::put('/social', [\App\Http\Controllers\Admin\SettingsController::class, 'updateSocial']);
+                Route::put('/worship', [\App\Http\Controllers\Admin\SettingsController::class, 'updateWorship']);
+                Route::put('/notifications', [\App\Http\Controllers\Admin\SettingsController::class, 'updateNotifications']);
+                Route::put('/security', [\App\Http\Controllers\Admin\SettingsController::class, 'updateSecurity']);
+                Route::put('/integrations', [\App\Http\Controllers\Admin\SettingsController::class, 'updateIntegrations']);
+                Route::get('/export', [\App\Http\Controllers\Admin\SettingsController::class, 'export']);
+                Route::post('/import', [\App\Http\Controllers\Admin\SettingsController::class, 'import']);
+                Route::post('/reset', [\App\Http\Controllers\Admin\SettingsController::class, 'reset']);
+                
+                // System settings (super admin only)
+                Route::get('/system', [\App\Http\Controllers\Admin\SettingsController::class, 'getSystemSettings']);
+                Route::put('/system', [\App\Http\Controllers\Admin\SettingsController::class, 'updateSystemSettings']);
+            });
         });
     });
 });
