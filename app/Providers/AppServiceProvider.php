@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
 use App\Services\ChurchContext;
+use App\Services\PluginManager;
 use Common\Comments\Models\Comment;
 use Common\Comments\Policies\CommentPolicy;
 use Common\Settings\Services\SettingService;
@@ -39,7 +40,8 @@ class AppServiceProvider extends ServiceProvider
         Sanctum::ignoreMigrations();
         $this->app->singleton(ChurchContext::class);
         $this->app->singleton(SettingService::class);
-        $this->app->singleton(\Common\Core\PluginManager::class);
+        $this->app->singleton(PluginManager::class);
+        $this->app->singleton(\App\Services\Search\SearchService::class);
         $this->app->singleton(\Common\Core\BootstrapDataService::class);
     }
 
@@ -73,5 +75,12 @@ class AppServiceProvider extends ServiceProvider
             'book' => Book::class,
             'article' => Article::class,
         ]);
+
+        // Load plugin routes dynamically
+        if (config('plugins.auto_discover', true)) {
+            $this->app->booted(function () {
+                app(PluginManager::class)->loadRoutes();
+            });
+        }
     }
 }

@@ -18,10 +18,10 @@ export function ConversationList({
   const { data: conversations, isLoading, error } = useConversations();
 
   return (
-    <div className="w-80 border-r h-full flex flex-col bg-white">
+    <div className="w-80 border-r border-white/5 h-full flex flex-col bg-[#161920]">
       {/* Header */}
-      <div className="p-4 border-b flex items-center justify-between">
-        <h2 className="text-xl font-bold text-gray-900">Messages</h2>
+      <div className="p-4 border-b border-white/5 flex items-center justify-between">
+        <h2 className="text-xl font-bold text-white">Messages</h2>
         {onNewChat && (
           <button
             onClick={onNewChat}

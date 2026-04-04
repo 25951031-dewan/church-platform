@@ -11,7 +11,7 @@ export function EventCard({event}: EventCardProps) {
   const hasMeetingUrl = Boolean(event.meeting_url);
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+    <div className="bg-[#161920] rounded-lg border border-white/5 overflow-hidden hover:border-white/10 transition-colors">
       {event.image && (
         <div className="aspect-video overflow-hidden">
           <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
@@ -21,18 +21,18 @@ export function EventCard({event}: EventCardProps) {
         <div className="flex items-start justify-between gap-2 mb-2">
           <Link
             to={`/events/${event.id}`}
-            className="font-semibold text-gray-900 hover:text-blue-600 line-clamp-2"
+            className="font-semibold text-white hover:text-indigo-400 line-clamp-2 transition-colors"
           >
             {event.title}
           </Link>
           {hasMeetingUrl && (
-            <span className="shrink-0 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+            <span className="shrink-0 text-xs bg-indigo-500/10 text-indigo-400 px-2 py-0.5 rounded-full">
               Online
             </span>
           )}
         </div>
 
-        <div className="text-sm text-gray-500 space-y-1 mb-3">
+        <div className="text-sm text-gray-400 space-y-1 mb-3">
           <div className="flex items-center gap-1">
             <span>📅</span>
             <span>
@@ -54,7 +54,7 @@ export function EventCard({event}: EventCardProps) {
         </div>
 
         {event.attending_rsvps_count > 0 && (
-          <div className="text-xs text-gray-400">
+          <div className="text-xs text-gray-500">
             {event.attending_rsvps_count} attending
           </div>
         )}

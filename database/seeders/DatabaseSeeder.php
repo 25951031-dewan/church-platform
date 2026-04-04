@@ -23,5 +23,7 @@ class DatabaseSeeder extends Seeder
             \App\Plugins\LiveMeeting\Database\Seeders\LiveMeetingPermissionSeeder::class,
             \Common\Chat\Database\Seeders\ChatPermissionSeeder::class,
         ]);
+
+        // Optionally seed demo content (run with --class=DemoSeeder for just demo data)
     }
 }

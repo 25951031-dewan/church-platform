@@ -61,7 +61,7 @@ Route::prefix('v1')->group(function () {
 
         // Settings
         Route::put('settings', [FoundationSettingController::class, 'update'])
-            ->middleware('permission:settings.update');
+            ->middleware('permission:admin.access');
 
         // Roles & Permissions
         Route::middleware('permission:roles.view')->group(function () {
@@ -161,6 +161,7 @@ Route::prefix('v1')->group(function () {
                 // Messages
                 Route::get('conversations/{conversation}/messages', [\Common\Chat\Controllers\MessageController::class, 'index']);
                 Route::post('conversations/{conversation}/messages', [\Common\Chat\Controllers\MessageController::class, 'store']);
+                Route::put('messages/{message}', [\Common\Chat\Controllers\MessageController::class, 'update']);
                 Route::delete('messages/{message}', [\Common\Chat\Controllers\MessageController::class, 'destroy']);
 
                 // Typing indicator
@@ -168,6 +169,21 @@ Route::prefix('v1')->group(function () {
 
                 // Presence
                 Route::post('presence', [\Common\Chat\Controllers\ChatPresenceController::class, 'update']);
+
+                // ━━━━━━ Advanced Chat Features ━━━━━━
+                
+                // Reactions
+                Route::post('messages/{message}/reactions', [\Common\Chat\Controllers\ReactionController::class, 'toggle']);
+                Route::get('messages/{message}/reactions', [\Common\Chat\Controllers\ReactionController::class, 'index']);
+
+                // Pinned Messages
+                Route::get('conversations/{conversation}/pins', [\Common\Chat\Controllers\PinController::class, 'index']);
+                Route::post('messages/{message}/pin', [\Common\Chat\Controllers\PinController::class, 'store']);
+                Route::delete('messages/{message}/pin', [\Common\Chat\Controllers\PinController::class, 'destroy']);
+
+                // Read Receipts
+                Route::post('conversations/{conversation}/read-receipts', [\Common\Chat\Controllers\ReadReceiptController::class, 'markRead']);
+                Route::get('messages/{message}/read-receipts', [\Common\Chat\Controllers\ReadReceiptController::class, 'show']);
 
                 // Admin moderation routes
                 Route::middleware('permission:chat.moderate')->prefix('admin')->group(function () {
@@ -240,6 +256,12 @@ Route::get('/translations/{language}', [LocalizationController::class, 'getTrans
 // Appearance (public - CSS themes)
 Route::get('/appearance', [AppearanceController::class, 'index']);
 Route::get('/appearance/themes', [AppearanceController::class, 'themes']);
+
+// Search (public)
+Route::get('/search', [App\Http\Controllers\Api\SearchController::class, 'search']);
+Route::get('/search/suggest', [App\Http\Controllers\Api\SearchController::class, 'suggest']);
+Route::get('/search/health', [App\Http\Controllers\Api\SearchController::class, 'health']);
+Route::get('/search/{type}', [App\Http\Controllers\Api\SearchController::class, 'searchType']);
 
 // Churches (public)
 Route::get('/churches', [ChurchController::class, 'directory']);
@@ -436,9 +458,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // ----------------------------------------------------------------
-    // System Settings — manage_settings
+    // System Settings — admin.access
     // ----------------------------------------------------------------
-    Route::middleware('permission:manage_settings')->group(function () {
+    Route::middleware('permission:admin.access')->group(function () {
         Route::put('/settings', [SettingController::class, 'update']);
         Route::get('/settings/email', [SettingController::class, 'emailSettings']);
         Route::put('/settings/email', [SettingController::class, 'updateEmailSettings']);
@@ -553,5 +575,37 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/update/upload', [\App\Http\Controllers\Admin\UpdateController::class, 'upload']);
         Route::post('/update/migrate', [\App\Http\Controllers\Admin\UpdateController::class, 'migrate']);
         Route::post('/update/clear-caches', [\App\Http\Controllers\Admin\UpdateController::class, 'clearCaches']);
+
+        // Enhanced Admin Dashboard
+        Route::prefix('admin')->group(function () {
+            Route::get('/dashboard/analytics', [\App\Http\Controllers\Admin\DashboardController::class, 'analytics']);
+            Route::get('/dashboard/activity', [\App\Http\Controllers\Admin\DashboardController::class, 'recentActivity']);
+            Route::get('/dashboard/health', [\App\Http\Controllers\Admin\DashboardController::class, 'systemHealth']);
+
+            // User Management
+            Route::get('/users', [\App\Http\Controllers\Admin\UserManagementController::class, 'index']);
+            Route::post('/users', [\App\Http\Controllers\Admin\UserManagementController::class, 'store']);
+            Route::get('/users/{user}', [\App\Http\Controllers\Admin\UserManagementController::class, 'show']);
+            Route::put('/users/{user}', [\App\Http\Controllers\Admin\UserManagementController::class, 'update']);
+            Route::delete('/users/{user}', [\App\Http\Controllers\Admin\UserManagementController::class, 'destroy']);
+            Route::post('/users/{user}/toggle-active', [\App\Http\Controllers\Admin\UserManagementController::class, 'toggleActive']);
+            Route::post('/users/{user}/impersonate', [\App\Http\Controllers\Admin\UserManagementController::class, 'impersonate']);
+            Route::post('/impersonate/stop', [\App\Http\Controllers\Admin\UserManagementController::class, 'stopImpersonating']);
+
+            // System Management
+            Route::get('/system/info', [\App\Http\Controllers\Admin\SystemController::class, 'info']);
+            Route::post('/system/cache/clear', [\App\Http\Controllers\Admin\SystemController::class, 'clearCache']);
+            Route::post('/system/optimize', [\App\Http\Controllers\Admin\SystemController::class, 'optimizeApp']);
+            Route::get('/system/logs', [\App\Http\Controllers\Admin\SystemController::class, 'logs']);
+            Route::delete('/system/logs', [\App\Http\Controllers\Admin\SystemController::class, 'clearLogs']);
+            Route::post('/system/maintenance', [\App\Http\Controllers\Admin\SystemController::class, 'maintenanceMode']);
+            Route::get('/system/queue', [\App\Http\Controllers\Admin\SystemController::class, 'queueStatus']);
+            Route::post('/system/queue/retry', [\App\Http\Controllers\Admin\SystemController::class, 'retryFailedJobs']);
+
+            // Plugin Management
+            Route::get('/plugins', [\App\Http\Controllers\Admin\PluginController::class, 'index']);
+            Route::post('/plugins/enable', [\App\Http\Controllers\Admin\PluginController::class, 'enable']);
+            Route::post('/plugins/disable', [\App\Http\Controllers\Admin\PluginController::class, 'disable']);
+        });
     });
 });

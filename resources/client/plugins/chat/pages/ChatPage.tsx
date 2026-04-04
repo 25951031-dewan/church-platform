@@ -21,7 +21,7 @@ export function ChatPage() {
   };
 
   return (
-    <div className="h-screen flex bg-gray-100">
+    <div className="h-screen flex bg-[#0C0E12]">
       {/* Conversation List */}
       <ConversationList
         activeConversationId={activeConversationId}
@@ -33,7 +33,7 @@ export function ChatPage() {
       {activeConversation ? (
         <MessageThread conversation={activeConversation} />
       ) : (
-        <div className="flex-1 flex flex-col items-center justify-center bg-gray-50">
+        <div className="flex-1 flex flex-col items-center justify-center bg-[#0C0E12]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-24 w-24 text-gray-300"

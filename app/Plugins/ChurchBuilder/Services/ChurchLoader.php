@@ -33,4 +33,38 @@ class ChurchLoader
 
         return $data;
     }
+
+    /**
+     * Load church data for website builder dashboard
+     */
+    public function loadForWebsiteBuilder(Church $church): array
+    {
+        return $church->toArray();
+    }
+
+    /**
+     * Load church data for public display
+     */
+    public function loadForPublicDisplay(Church $church): array
+    {
+        $church->load([
+            'admin:id,display_name,avatar',
+            'publishedPages:id,church_id,title,slug,body,sort_order'
+        ]);
+
+        $data = $church->toArray();
+
+        // Format documents for public display (URLs only)
+        if ($church->documents) {
+            $data['documents'] = collect($church->documents)->map(function ($doc) {
+                return [
+                    'title' => $doc['title'],
+                    'url' => asset('storage/' . $doc['path']),
+                    'size' => $doc['size'] ?? null,
+                ];
+            });
+        }
+
+        return $data;
+    }
 }

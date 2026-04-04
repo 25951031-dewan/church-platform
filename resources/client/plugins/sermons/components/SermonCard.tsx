@@ -27,7 +27,7 @@ export function SermonCard({sermon}: SermonCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-sm transition-shadow">
+    <div className="bg-[#161920] rounded-lg border border-white/5 p-4 hover:border-white/10 transition-colors">
       <div className="flex gap-3">
         {sermon.image && (
           <div className="shrink-0 w-16 h-16 rounded-lg overflow-hidden">
@@ -37,12 +37,12 @@ export function SermonCard({sermon}: SermonCardProps) {
         <div className="flex-1 min-w-0">
           <Link
             to={`/sermons/${sermon.id}`}
-            className="font-semibold text-gray-900 hover:text-blue-600 line-clamp-2 block mb-1"
+            className="font-semibold text-white hover:text-indigo-400 line-clamp-2 block mb-1 transition-colors"
           >
             {sermon.title}
           </Link>
-          <div className="text-sm text-gray-500 mb-1">{sermon.speaker}</div>
-          <div className="flex flex-wrap gap-2 text-xs text-gray-400">
+          <div className="text-sm text-gray-400 mb-1">{sermon.speaker}</div>
+          <div className="flex flex-wrap gap-2 text-xs text-gray-500">
             {sermon.scripture_reference && <span>{sermon.scripture_reference}</span>}
             {sermon.sermon_date && <span>{new Date(sermon.sermon_date).toLocaleDateString()}</span>}
             {sermon.duration_minutes && <span>{sermon.duration_minutes}m</span>}
@@ -50,7 +50,7 @@ export function SermonCard({sermon}: SermonCardProps) {
           {sermon.sermon_series && (
             <Link
               to={`/sermon-series/${sermon.sermon_series.id}`}
-              className="inline-block mt-1 text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full hover:bg-purple-200"
+              className="inline-block mt-1 text-xs bg-indigo-500/10 text-indigo-400 px-2 py-0.5 rounded-full hover:bg-indigo-500/20"
             >
               {sermon.sermon_series.name}
             </Link>
@@ -59,7 +59,7 @@ export function SermonCard({sermon}: SermonCardProps) {
         {sermon.audio_url && (
           <button
             onClick={handlePlay}
-            className="shrink-0 self-center w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center hover:bg-blue-200 transition-colors"
+            className="shrink-0 self-center w-10 h-10 rounded-full bg-indigo-500/10 text-indigo-400 flex items-center justify-center hover:bg-indigo-500/20 transition-colors"
           >
             {isCurrentlyPlaying ? '⏸' : '▶'}
           </button>

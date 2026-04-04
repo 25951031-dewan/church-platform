@@ -3,6 +3,7 @@
 use App\Plugins\ChurchBuilder\Controllers\ChurchMemberController;
 use App\Plugins\ChurchBuilder\Controllers\ChurchPageController;
 use App\Plugins\ChurchBuilder\Controllers\ChurchProfileController;
+use App\Plugins\ChurchBuilder\Controllers\ChurchWebsiteController;
 use Illuminate\Support\Facades\Route;
 
 // Church profile + directory
@@ -24,3 +25,16 @@ Route::get('churches/{church}/pages/{page}', [ChurchPageController::class, 'show
 Route::post('churches/{church}/pages', [ChurchPageController::class, 'store']);
 Route::put('churches/{church}/pages/{page}', [ChurchPageController::class, 'update']);
 Route::delete('churches/{church}/pages/{page}', [ChurchPageController::class, 'destroy']);
+
+// Website Builder (Church Admin Dashboard)
+Route::group(['prefix' => 'churches/{church}/website'], function () {
+    Route::get('/', [ChurchWebsiteController::class, 'show']);
+    Route::put('/general', [ChurchWebsiteController::class, 'updateGeneral']);
+    Route::put('/about', [ChurchWebsiteController::class, 'updateAbout']);
+    Route::put('/appearance', [ChurchWebsiteController::class, 'updateAppearance']);
+    Route::put('/seo', [ChurchWebsiteController::class, 'updateSeo']);
+    Route::post('/logo', [ChurchWebsiteController::class, 'uploadLogo']);
+    Route::post('/cover', [ChurchWebsiteController::class, 'uploadCoverPhoto']);
+    Route::post('/documents', [ChurchWebsiteController::class, 'uploadDocument']);
+    Route::delete('/documents/{index}', [ChurchWebsiteController::class, 'deleteDocument']);
+});

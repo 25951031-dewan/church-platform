@@ -2,6 +2,7 @@
 
 namespace App\Plugins\Prayer\Services;
 
+use App\Events\Prayer\PrayerRequestCreated;
 use App\Plugins\Prayer\Models\PrayerRequest;
 
 class CrupdatePrayerRequest
@@ -12,6 +13,8 @@ class CrupdatePrayerRequest
             'name', 'email', 'phone', 'subject', 'request', 'description',
             'status', 'is_public', 'is_anonymous', 'is_urgent', 'category',
         ];
+
+        $isCreating = !$prayer;
 
         if ($prayer) {
             $updateData = [];
@@ -38,6 +41,11 @@ class CrupdatePrayerRequest
                 }
             }
             $prayer = PrayerRequest::create($createData);
+        }
+
+        // Dispatch event for new prayer requests
+        if ($isCreating) {
+            event(new PrayerRequestCreated($prayer));
         }
 
         return $prayer;

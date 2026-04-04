@@ -10,7 +10,7 @@ const mobileNav = [
 
 export function MobileLayout() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-[#0C0E12]">
       <main className="flex-1 pb-16 sm:pb-0">
         <Outlet />
       </main>

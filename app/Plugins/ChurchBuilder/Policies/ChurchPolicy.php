@@ -72,4 +72,9 @@ class ChurchPolicy extends BasePolicy
         }
         return $user->hasPermission('churches.manage_pages');
     }
+
+    public function manageWebsite(User $user, Church $church): bool
+    {
+        return $church->isChurchAdmin($user->id);
+    }
 }

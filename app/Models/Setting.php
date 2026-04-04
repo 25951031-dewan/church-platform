@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
+    protected $table = 'church_settings';
     protected $guarded = ['id'];
 
     protected $casts = [
