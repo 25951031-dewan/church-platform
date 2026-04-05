@@ -13,7 +13,7 @@ class UserManagementController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'can:admin']);
+        $this->middleware(['auth:sanctum', 'permission:admin.access']);
     }
 
     public function index(Request $request): JsonResponse

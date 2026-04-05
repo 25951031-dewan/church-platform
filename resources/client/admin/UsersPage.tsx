@@ -31,10 +31,32 @@ export function UsersPage() {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['admin-users', search, page],
-    queryFn: () =>
-      apiClient
-        .get<PaginatedUsers>('users', { params: { search, page, per_page: 15 } })
-        .then(r => r.data),
+    queryFn: async () => {
+      // Use admin users endpoint which is outside v1 prefix
+      const response = await fetch(`/api/admin/users?${new URLSearchParams({
+        search: search || '',
+        page: String(page),
+        per_page: '15',
+      })}`, {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch users');
+      }
+      
+      const data = await response.json();
+      // Handle the pagination response format
+      return {
+        data: data.pagination?.data || data.data || [],
+        total: data.pagination?.total || data.total || 0,
+        current_page: data.pagination?.current_page || data.current_page || 1,
+        last_page: data.pagination?.last_page || data.last_page || 1,
+      };
+    },
     placeholderData: (prev) => prev,
   });
 

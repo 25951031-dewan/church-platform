@@ -39,7 +39,7 @@ class FeedLayoutController extends Controller
     public function active(Request $request): JsonResponse
     {
         $user = $request->user();
-        $churchId = $user->church_id;
+        $churchId = $user->church_id ?? 1; // Default to church ID 1 if user has no church
 
         $layout = FeedLayout::forChurch($churchId)
             ->active()
@@ -50,6 +50,18 @@ class FeedLayoutController extends Controller
                 'widgetInstances.widget'
             ])
             ->first();
+
+        if (!$layout) {
+            // Try to get any active layout (global fallback)
+            $layout = FeedLayout::active()
+                ->with([
+                    'widgetInstances' => function ($query) {
+                        $query->visible()->ordered();
+                    },
+                    'widgetInstances.widget'
+                ])
+                ->first();
+        }
 
         if (!$layout) {
             // Create default layout if none exists
@@ -357,5 +369,22 @@ class FeedLayoutController extends Controller
         return response()->json([
             'layout' => $publicLayout,
         ]);
+    }
+
+    /**
+     * Format widget instance for API response
+     */
+    protected function formatWidgetInstance($instance): array
+    {
+        return [
+            'id' => $instance->id,
+            'widget_key' => $instance->widget?->widget_key ?? $instance->widget_key ?? 'unknown',
+            'display_name' => $instance->widget?->display_name ?? $instance->display_name ?? 'Widget',
+            'pane' => $instance->pane,
+            'sort_order' => $instance->position ?? $instance->sort_order ?? 0,
+            'is_visible' => $instance->is_visible ?? true,
+            'config' => $instance->config ?? [],
+            'styling' => $instance->styling ?? [],
+        ];
     }
 }

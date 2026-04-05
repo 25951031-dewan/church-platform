@@ -17,13 +17,42 @@ export function PluginsPage() {
 
   const { data: plugins, isLoading } = useQuery({
     queryKey: ['admin-plugins'],
-    queryFn: () => apiClient.get<{ data: Plugin[] }>('admin/plugins').then(r => r.data.data),
+    queryFn: async () => {
+      // Use admin plugins endpoint which is outside v1 prefix
+      const response = await fetch('/api/admin/plugins', {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch plugins');
+      }
+      
+      const data = await response.json();
+      return data.data || [];
+    },
   });
 
   const toggleMutation = useMutation({
     mutationFn: async ({ name, enable }: { name: string; enable: boolean }) => {
-      const endpoint = enable ? 'admin/plugins/enable' : 'admin/plugins/disable';
-      return apiClient.post(endpoint, { name });
+      const endpoint = enable ? '/api/admin/plugins/enable' : '/api/admin/plugins/disable';
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+        },
+        body: JSON.stringify({ name }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to toggle plugin');
+      }
+      
+      return response.json();
     },
     onSuccess: (_, { name, enable }) => {
       queryClient.invalidateQueries({ queryKey: ['admin-plugins'] });

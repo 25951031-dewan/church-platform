@@ -13,7 +13,7 @@ export function RolesPage() {
   const { data, isLoading } = useQuery({
     queryKey: ['admin-roles'],
     queryFn: () =>
-      apiClient.get<{ data: Role[] }>('roles').then(r => r.data.data),
+      apiClient.get<{ roles: Role[] }>('roles').then(r => r.data.roles || []),
   });
 
   return (

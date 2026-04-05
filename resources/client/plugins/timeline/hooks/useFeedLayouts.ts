@@ -46,9 +46,28 @@ export function useActiveFeedLayout() {
   return useQuery({
     queryKey: ['feed-layout', 'active'],
     queryFn: async () => {
-      const { data } = await apiClient.get('/feed-layouts/active');
-      return data.layout;
+      try {
+        const { data } = await apiClient.get('/feed-layouts/active');
+        return data.layout;
+      } catch (error) {
+        // Return a default layout structure if API fails
+        return {
+          id: 0,
+          name: 'Default Feed',
+          layout_data: {},
+          mobile_config: {},
+          responsive_settings: {},
+          left_sidebar_config: { widgets: [] },
+          right_sidebar_config: { widgets: [] },
+          panes: {
+            left: { config: {}, widgets: [] },
+            center: { config: {}, widgets: [] },
+            right: { config: {}, widgets: [] },
+          },
+        };
+      }
     },
+    retry: false, // Don't retry if feed layout fails
   });
 }
 

@@ -88,6 +88,9 @@ class FeedLayout extends Model
      */
     public function scopeForChurch($query, $churchId = null)
     {
+        if ($churchId === null) {
+            return $query; // Return all layouts if no church ID
+        }
         return $query->where('church_id', $churchId);
     }
 

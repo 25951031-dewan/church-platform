@@ -98,36 +98,37 @@ export function LayoutRenderer() {
     return <LoadingSkeleton />;
   }
   
-  if (error) {
+  // Show default feed even if there's an error or no layout
+  if (error || !activeLayout) {
     return (
-      <div className="min-h-screen bg-[#0C0E12] flex items-center justify-center">
-        <div className="bg-[#161920] border border-white/5 rounded-xl p-6 max-w-md">
-          <h2 className="text-lg font-semibold text-white mb-2">Unable to load feed layout</h2>
-          <p className="text-gray-400 text-sm">
-            There was an error loading the feed configuration. Please try refreshing the page.
-          </p>
+      <div className="min-h-screen bg-[#0C0E12]">
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Center Content - Default Post Feed */}
+            <div className="lg:col-span-8 lg:col-start-3">
+              <div className="space-y-4">
+                <WidgetRenderer instance={{
+                  widget_key: 'post_feed',
+                  sort_order: 0,
+                  is_visible: true,
+                  config: { show_composer: true }
+                }} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
   
-  if (!activeLayout) {
-    return (
-      <div className="min-h-screen bg-[#0C0E12] flex items-center justify-center">
-        <div className="bg-[#161920] border border-white/5 rounded-xl p-6 max-w-md text-center">
-          <h2 className="text-lg font-semibold text-white mb-2">No active feed layout</h2>
-          <p className="text-gray-400 text-sm">
-            Please configure a feed layout in the admin panel to view your community feed.
-          </p>
-        </div>
-      </div>
-    );
-  }
-  
+  // Handle both old layout_data format and new panes format
   const layoutData = activeLayout.layout_data as LayoutData || {};
-  const leftWidgets = layoutData.left_sidebar_config?.widgets || [];
-  const rightWidgets = layoutData.right_sidebar_config?.widgets || [];
-  const centerWidgets = layoutData.center_widgets || [];
+  const panes = (activeLayout as any).panes || {};
+  
+  // Get widgets from either panes or layout_data format
+  const leftWidgets = panes.left?.widgets || layoutData.left_sidebar_config?.widgets || [];
+  const rightWidgets = panes.right?.widgets || layoutData.right_sidebar_config?.widgets || [];
+  const centerWidgets = panes.center?.widgets || layoutData.center_widgets || [];
   
   return (
     <div className="min-h-screen bg-[#0C0E12]">
