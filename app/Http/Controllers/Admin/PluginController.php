@@ -85,7 +85,21 @@ class PluginController extends Controller
 
         $this->pluginManager->enable($name);
 
-        return response()->json(['message' => "Plugin '{$name}' enabled"]);
+        // Clear caches to force fresh read
+        \Illuminate\Support\Facades\Cache::forget('plugins.enabled');
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
+
+        // Return updated plugin list
+        $enabled = $this->pluginManager->getEnabled();
+        $plugins = collect($all)->map(fn($config, $name) => [
+            'name' => $name,
+            'is_enabled' => in_array($name, $enabled),
+        ])->values();
+
+        return response()->json([
+            'message' => "Plugin '{$name}' enabled",
+            'plugins' => $plugins,
+        ]);
     }
 
     public function disable(Request $request): JsonResponse
@@ -99,6 +113,20 @@ class PluginController extends Controller
 
         $this->pluginManager->disable($name);
 
-        return response()->json(['message' => "Plugin '{$name}' disabled"]);
+        // Clear caches to force fresh read
+        \Illuminate\Support\Facades\Cache::forget('plugins.enabled');
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
+
+        // Return updated plugin list
+        $enabled = $this->pluginManager->getEnabled();
+        $plugins = collect($all)->map(fn($config, $name) => [
+            'name' => $name,
+            'is_enabled' => in_array($name, $enabled),
+        ])->values();
+
+        return response()->json([
+            'message' => "Plugin '{$name}' disabled",
+            'plugins' => $plugins,
+        ]);
     }
 }

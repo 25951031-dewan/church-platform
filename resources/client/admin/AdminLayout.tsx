@@ -1,9 +1,11 @@
 import type { ElementType } from 'react';
 import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
 import { useUserPermissions } from '@app/common/auth/use-permissions';
 import { useBootstrapStore } from '@app/common/core/bootstrap-data';
 import { useAuth } from '@app/common/auth/use-auth';
+import { apiClient } from '@app/common/http/api-client';
 import UserDropdown from '../auth/components/UserDropdown';
 import {
   LayoutDashboard, Users, Shield, Settings, Server,
@@ -12,33 +14,53 @@ import {
   List, LogOut, Menu, X, Layout, Puzzle,
 } from 'lucide-react';
 
-interface NavItem { label: string; path: string; icon: ElementType; permission: string; exact?: boolean; }
+interface NavItem { label: string; path: string; icon: ElementType; permission: string; exact?: boolean; plugin?: string; }
 
 const navItems: NavItem[] = [
   { label: 'Dashboard',   path: '/admin',                        icon: LayoutDashboard, permission: 'admin.access', exact: true },
   { label: 'Users',       path: '/admin/users',                  icon: Users,           permission: 'users.view' },
   { label: 'Roles',       path: '/admin/roles',                  icon: Shield,          permission: 'roles.view' },
   { label: 'Plugins',     path: '/admin/plugins',                icon: Puzzle,          permission: 'admin.access' },
-  { label: 'Feed Layout', path: '/admin/feed-customizer',        icon: Layout,          permission: 'admin.access' },
-  { label: 'Sermons',     path: '/admin/sermons',                icon: Mic,             permission: 'sermons.view' },
-  { label: 'Events',      path: '/admin/events',                 icon: Calendar,        permission: 'events.view' },
-  { label: 'Blog',        path: '/admin/blog',                   icon: FileText,        permission: 'blog.view' },
-  { label: 'Library',     path: '/admin/library',                icon: BookOpen,        permission: 'library.view' },
-  { label: 'Groups',      path: '/admin/groups',                 icon: Users2,          permission: 'groups.view' },
-  { label: 'Prayers',     path: '/admin/prayers',                icon: HandHeart,       permission: 'prayer.view' },
-  { label: 'Churches',    path: '/admin/churches',               icon: Church,          permission: 'churches.view' },
-  { label: 'Meetings',    path: '/admin/meetings',               icon: Video,           permission: 'admin.access' },
-  { label: 'Chat',        path: '/admin/chat',                   icon: MessageCircle,   permission: 'chat.send' },
+  { label: 'Feed Layout', path: '/admin/feed-customizer',        icon: Layout,          permission: 'admin.access', plugin: 'timeline' },
+  { label: 'Sermons',     path: '/admin/sermons',                icon: Mic,             permission: 'sermons.view', plugin: 'sermons' },
+  { label: 'Events',      path: '/admin/events',                 icon: Calendar,        permission: 'events.view', plugin: 'events' },
+  { label: 'Blog',        path: '/admin/blog',                   icon: FileText,        permission: 'blog.view', plugin: 'blog' },
+  { label: 'Library',     path: '/admin/library',                icon: BookOpen,        permission: 'library.view', plugin: 'library' },
+  { label: 'Groups',      path: '/admin/groups',                 icon: Users2,          permission: 'groups.view', plugin: 'groups' },
+  { label: 'Prayers',     path: '/admin/prayers',                icon: HandHeart,       permission: 'prayer.view', plugin: 'prayer' },
+  { label: 'Churches',    path: '/admin/churches',               icon: Church,          permission: 'churches.view', plugin: 'church_builder' },
+  { label: 'Meetings',    path: '/admin/meetings',               icon: Video,           permission: 'admin.access', plugin: 'live_meeting' },
+  { label: 'Chat',        path: '/admin/chat',                   icon: MessageCircle,   permission: 'chat.send', plugin: 'chat' },
   { label: 'Notif Logs',  path: '/admin/notification-logs',      icon: List,            permission: 'admin.access' },
   { label: 'Templates',   path: '/admin/notification-templates', icon: Bell,            permission: 'admin.access' },
   { label: 'Settings',    path: '/admin/settings',               icon: Settings,        permission: 'settings.view' },
-  { label: 'System',      path: '/admin/system',                 icon: Server,          permission: 'manage_settings' },
+  { label: 'System',      path: '/admin/system',                 icon: Server,          permission: 'admin.access' },
 ];
+
+function useEnabledPlugins() {
+  return useQuery({
+    queryKey: ['admin-plugins-list'],
+    queryFn: async () => {
+      const { data } = await apiClient.get('admin/plugins');
+      const plugins = data.data || [];
+      return new Set(plugins.filter((p: any) => p.is_enabled).map((p: any) => p.name));
+    },
+    staleTime: 30000,
+    select: (data) => data || new Set(),
+  });
+}
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const { hasPermission } = useUserPermissions();
   const user = useBootstrapStore((s) => s.user);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const { data: enabledPlugins = new Set() } = useEnabledPlugins();
+
+  const visibleNavItems = navItems.filter(item => {
+    if (!hasPermission(item.permission)) return false;
+    if (item.plugin && !enabledPlugins.has(item.plugin)) return false;
+    return true;
+  });
 
   return (
     <>
@@ -50,7 +72,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto py-2 px-2 space-y-0.5">
-        {navItems.filter(item => hasPermission(item.permission)).map(item => (
+        {visibleNavItems.map(item => (
           <NavLink
             key={item.path}
             to={item.path}

@@ -37,6 +37,14 @@ export function PluginsPage() {
     },
   });
 
+  const { data: pluginStats } = useQuery({
+    queryKey: ['admin-plugins-stats'],
+    queryFn: async () => {
+      const { data } = await apiClient.get('admin/plugins');
+      return data.stats || { total: 0, enabled: 0, disabled: 0 };
+    },
+  });
+
   const toggleMutation = useMutation({
     mutationFn: async ({ name, enable }: { name: string; enable: boolean }) => {
       const endpoint = enable ? 'admin/plugins/enable' : 'admin/plugins/disable';
@@ -45,6 +53,8 @@ export function PluginsPage() {
     },
     onSuccess: (_, { name, enable }) => {
       queryClient.invalidateQueries({ queryKey: ['admin-plugins'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-plugins-stats'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-plugins-list'] }); // For sidebar refresh
       success(`${name} ${enable ? 'enabled' : 'disabled'}`);
     },
     onError: () => {
@@ -79,10 +89,28 @@ export function PluginsPage() {
           <Puzzle size={24} />
           Plugins
         </h1>
-        <span className="text-sm text-gray-400">
-          {enabledPlugins.length} of {plugins?.length || 0} enabled
-        </span>
+        <div className="text-sm text-gray-400">
+          <span>{pluginStats?.enabled || enabledPlugins.length} of {pluginStats?.total || plugins?.length || 0} enabled</span>
+        </div>
       </div>
+
+      {/* Stats Bar */}
+      {pluginStats && (
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-[#161920] border border-white/5 rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-white">{pluginStats.total}</div>
+            <div className="text-sm text-gray-400">Total Plugins</div>
+          </div>
+          <div className="bg-[#161920] border border-green-500/20 rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-green-400">{pluginStats.enabled}</div>
+            <div className="text-sm text-gray-400">Enabled</div>
+          </div>
+          <div className="bg-[#161920] border border-gray-500/20 rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-gray-400">{pluginStats.disabled}</div>
+            <div className="text-sm text-gray-400">Available</div>
+          </div>
+        </div>
+      )}
 
       {/* Enabled Plugins */}
       {enabledPlugins.length > 0 && (
@@ -109,7 +137,11 @@ export function PluginsPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     {plugin.has_settings && (
-                      <button className="p-2 rounded-lg bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white transition-colors">
+                      <button 
+                        onClick={() => success(`Settings for ${plugin.display_name} — coming soon`)}
+                        className="p-2 rounded-lg bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
+                        title="Plugin settings"
+                      >
                         <Settings size={18} />
                       </button>
                     )}

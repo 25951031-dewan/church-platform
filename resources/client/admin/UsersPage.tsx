@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@app/common/http/api-client';
-import { Search, AlertCircle, Shield, Edit, UserPlus, X } from 'lucide-react';
+import { Search, AlertCircle, Shield, UserPlus, X, Plus, Download, Power, PowerOff } from 'lucide-react';
 import { useNotificationStore } from '@app/common/stores';
 
 interface Role {
@@ -17,6 +17,7 @@ interface User {
   avatar: string | null;
   roles: Role[];
   created_at: string;
+  is_active?: boolean;
 }
 
 interface PaginatedUsers {
@@ -24,6 +25,133 @@ interface PaginatedUsers {
   total: number;
   current_page: number;
   last_page: number;
+}
+
+interface AddUserModalProps {
+  onClose: () => void;
+}
+
+function AddUserModal({ onClose }: AddUserModalProps) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [selectedRoles, setSelectedRoles] = useState<number[]>([]);
+  const queryClient = useQueryClient();
+  const { success, error } = useNotificationStore();
+
+  const { data: allRoles } = useQuery({
+    queryKey: ['admin-roles'],
+    queryFn: () => apiClient.get<{ roles: Role[] }>('roles').then(r => r.data.roles || []),
+  });
+
+  const addUserMutation = useMutation({
+    mutationFn: (data: { name: string; email: string; password: string; roles: number[] }) =>
+      apiClient.post('admin/users', data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+      success('User created successfully');
+      onClose();
+    },
+    onError: () => error('Failed to create user'),
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !email.trim() || !password.trim()) return;
+    addUserMutation.mutate({ name: name.trim(), email: email.trim(), password: password.trim(), roles: selectedRoles });
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-[#161920] border border-white/10 rounded-xl w-full max-w-md">
+        <div className="flex items-center justify-between p-4 border-b border-white/10">
+          <h3 className="text-lg font-semibold text-white">Add New User</h3>
+          <button onClick={onClose} className="text-gray-400 hover:text-white">
+            <X size={20} />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-4 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Name</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-3 py-2 bg-[#0C0E12] border border-white/10 rounded-lg text-white placeholder:text-gray-500 focus:border-indigo-500 focus:outline-none"
+              placeholder="Enter user's name"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-3 py-2 bg-[#0C0E12] border border-white/10 rounded-lg text-white placeholder:text-gray-500 focus:border-indigo-500 focus:outline-none"
+              placeholder="Enter user's email"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 bg-[#0C0E12] border border-white/10 rounded-lg text-white placeholder:text-gray-500 focus:border-indigo-500 focus:outline-none"
+              placeholder="Enter password"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Roles (Optional)</label>
+            <div className="space-y-2 max-h-32 overflow-y-auto">
+              {allRoles?.map((role) => (
+                <label key={role.id} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedRoles.includes(role.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedRoles([...selectedRoles, role.id]);
+                      } else {
+                        setSelectedRoles(selectedRoles.filter(id => id !== role.id));
+                      }
+                    }}
+                    className="rounded border-white/20 bg-[#0C0E12]"
+                  />
+                  <span className="text-sm text-white">{role.name}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center justify-end gap-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={addUserMutation.isPending || !name.trim() || !email.trim() || !password.trim()}
+              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+            >
+              <Plus size={16} />
+              Create User
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }
 
 interface UserRoleModalProps {
@@ -131,8 +259,11 @@ export function UsersPage() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [editingUser, setEditingUser] = useState<User | undefined>();
+  const [showAddModal, setShowAddModal] = useState(false);
+  const queryClient = useQueryClient();
+  const { success, error } = useNotificationStore();
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, error: queryError } = useQuery({
     queryKey: ['admin-users', search, page],
     queryFn: async () => {
       const { data } = await apiClient.get('admin/users', {
@@ -149,6 +280,40 @@ export function UsersPage() {
     placeholderData: (prev) => prev,
   });
 
+  const toggleActiveMutation = useMutation({
+    mutationFn: (userId: number) => apiClient.post(`admin/users/${userId}/toggle-active`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+      success('User status updated successfully');
+    },
+    onError: () => error('Failed to update user status'),
+  });
+
+  const exportCsv = () => {
+    if (!data?.data?.length) return;
+    
+    const headers = ['Name', 'Email', 'Roles', 'Status', 'Joined'];
+    const rows = data.data.map(user => [
+      user.name || '(no name)',
+      user.email,
+      user.roles?.map(r => r.name).join('; ') || 'No roles',
+      user.is_active ? 'Active' : 'Inactive',
+      new Date(user.created_at).toLocaleDateString()
+    ]);
+    
+    const csv = [headers, ...rows].map(row => 
+      row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
+    ).join('\n');
+    
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `users-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -157,6 +322,22 @@ export function UsersPage() {
           Users
         </h1>
         <div className="flex items-center gap-4">
+          <button
+            onClick={exportCsv}
+            disabled={!data?.data?.length}
+            className="flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white disabled:opacity-50 rounded-lg text-sm transition-colors"
+            title="Export CSV"
+          >
+            <Download size={14} />
+            Export
+          </button>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm transition-colors"
+          >
+            <Plus size={14} />
+            Add User
+          </button>
           <span className="text-sm text-gray-400">
             {data?.total || 0} total users
           </span>
@@ -179,7 +360,12 @@ export function UsersPage() {
       {isError && (
         <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-xl p-4 mb-4 text-red-400 text-sm">
           <AlertCircle size={16} aria-hidden="true" />
-          Failed to load users. Check your permissions.
+          Failed to load users. Check your permissions. 
+          {queryError && (
+            <span className="text-xs ml-2">
+              ({queryError instanceof Error ? queryError.message : 'Unknown error'})
+            </span>
+          )}
         </div>
       )}
 
@@ -190,20 +376,21 @@ export function UsersPage() {
               <th className="text-left px-4 py-3 text-gray-400 font-medium">User</th>
               <th className="text-left px-4 py-3 text-gray-400 font-medium hidden sm:table-cell">Email</th>
               <th className="text-left px-4 py-3 text-gray-400 font-medium hidden md:table-cell">Roles</th>
-              <th className="text-left px-4 py-3 text-gray-400 font-medium hidden lg:table-cell">Joined</th>
+              <th className="text-left px-4 py-3 text-gray-400 font-medium hidden lg:table-cell">Status</th>
+              <th className="text-left px-4 py-3 text-gray-400 font-medium hidden xl:table-cell">Joined</th>
               <th className="text-right px-4 py-3 text-gray-400 font-medium">Actions</th>
             </tr>
           </thead>
           <tbody>
             {isLoading ? (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
+                <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
                   Loading…
                 </td>
               </tr>
             ) : !data?.data?.length ? (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
+                <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
                   {search ? `No users found for "${search}"` : 'No users found.'}
                 </td>
               </tr>
@@ -219,7 +406,15 @@ export function UsersPage() {
                           {(user.name ?? 'U').charAt(0).toUpperCase()}
                         </div>
                       )}
-                      <span className="text-white font-medium truncate">{user.name ?? '(no name)'}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-white font-medium truncate">{user.name ?? '(no name)'}</span>
+                        {user.is_active !== false && (
+                          <div className="w-2 h-2 bg-green-500 rounded-full" title="Active" />
+                        )}
+                        {user.is_active === false && (
+                          <div className="w-2 h-2 bg-gray-500 rounded-full" title="Inactive" />
+                        )}
+                      </div>
                     </div>
                   </td>
                   <td className="px-4 py-3 text-gray-400 hidden sm:table-cell">{user.email}</td>
@@ -239,11 +434,32 @@ export function UsersPage() {
                       )}
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-gray-500 text-xs hidden lg:table-cell">
+                  <td className="px-4 py-3 hidden lg:table-cell">
+                    <span className={`text-xs px-2 py-0.5 rounded ${
+                      user.is_active !== false 
+                        ? 'bg-green-500/10 text-green-400' 
+                        : 'bg-gray-500/10 text-gray-400'
+                    }`}>
+                      {user.is_active !== false ? 'Active' : 'Inactive'}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-gray-500 text-xs hidden xl:table-cell">
                     {new Date(user.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-2">
+                      <button
+                        onClick={() => toggleActiveMutation.mutate(user.id)}
+                        disabled={toggleActiveMutation.isPending}
+                        className={`p-2 rounded-lg transition-colors ${
+                          user.is_active !== false
+                            ? 'text-gray-400 hover:text-red-400 hover:bg-red-500/10'
+                            : 'text-gray-400 hover:text-green-400 hover:bg-green-500/10'
+                        }`}
+                        title={user.is_active !== false ? 'Deactivate user' : 'Activate user'}
+                      >
+                        {user.is_active !== false ? <PowerOff size={16} /> : <Power size={16} />}
+                      </button>
                       <button
                         onClick={() => setEditingUser(user)}
                         className="p-2 text-gray-400 hover:text-indigo-400 transition-colors"
@@ -288,6 +504,10 @@ export function UsersPage() {
           </div>
         )}
       </div>
+
+      {showAddModal && (
+        <AddUserModal onClose={() => setShowAddModal(false)} />
+      )}
 
       {editingUser && (
         <UserRoleModal
