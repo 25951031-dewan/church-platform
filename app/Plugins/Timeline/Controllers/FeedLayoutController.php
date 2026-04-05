@@ -14,14 +14,11 @@ use Illuminate\Http\Request;
 class FeedLayoutController extends Controller
 {
     /**
-     * Get all feed layouts for the authenticated user's church
+     * Get all feed layouts (single-church mode — no church_id filtering)
      */
     public function index(Request $request): JsonResponse
     {
-        $user = $request->user();
-        $churchId = $user->church_id;
-
-        $layouts = FeedLayout::forChurch($churchId)
+        $layouts = FeedLayout::withoutGlobalScopes()
             ->with(['widgetInstances.widget'])
             ->orderBy('is_active', 'desc')
             ->orderBy('sort_order')
@@ -34,14 +31,11 @@ class FeedLayoutController extends Controller
     }
 
     /**
-     * Get the active feed layout for the church
+     * Get the active feed layout
      */
     public function active(Request $request): JsonResponse
     {
-        $user = $request->user();
-        $churchId = $user->church_id ?? 1; // Default to church ID 1 if user has no church
-
-        $layout = FeedLayout::forChurch($churchId)
+        $layout = FeedLayout::withoutGlobalScopes()
             ->active()
             ->with([
                 'widgetInstances' => function ($query) {
@@ -52,20 +46,8 @@ class FeedLayoutController extends Controller
             ->first();
 
         if (!$layout) {
-            // Try to get any active layout (global fallback)
-            $layout = FeedLayout::active()
-                ->with([
-                    'widgetInstances' => function ($query) {
-                        $query->visible()->ordered();
-                    },
-                    'widgetInstances.widget'
-                ])
-                ->first();
-        }
-
-        if (!$layout) {
             // Create default layout if none exists
-            $layout = $this->createDefaultLayout($churchId);
+            $layout = $this->createDefaultLayout();
         }
 
         // Format the layout for frontend consumption
@@ -113,11 +95,10 @@ class FeedLayoutController extends Controller
         $this->authorize('create', FeedLayout::class);
 
         $data = $request->validated();
-        $data['church_id'] = $user->church_id;
 
-        // If this is being set as active, deactivate other layouts
+        // If this is being set as active, deactivate all other layouts
         if ($data['is_active'] ?? false) {
-            FeedLayout::forChurch($user->church_id)
+            FeedLayout::withoutGlobalScopes()
                 ->where('is_active', true)
                 ->update(['is_active' => false]);
         }
@@ -160,9 +141,9 @@ class FeedLayoutController extends Controller
 
         $data = $request->validated();
 
-        // If this is being set as active, deactivate other layouts
+        // If this is being set as active, deactivate all other layouts
         if (($data['is_active'] ?? false) && !$layout->is_active) {
-            FeedLayout::forChurch($layout->church_id)
+            FeedLayout::withoutGlobalScopes()
                 ->where('is_active', true)
                 ->where('id', '!=', $layout->id)
                 ->update(['is_active' => false]);
@@ -191,7 +172,7 @@ class FeedLayoutController extends Controller
         $this->authorize('delete', $layout);
 
         // Prevent deletion of the only layout
-        $layoutCount = FeedLayout::forChurch($layout->church_id)->count();
+        $layoutCount = FeedLayout::withoutGlobalScopes()->count();
         if ($layoutCount <= 1) {
             return response()->json([
                 'message' => 'Cannot delete the last feed layout.',
@@ -200,7 +181,7 @@ class FeedLayoutController extends Controller
 
         // If deleting active layout, activate another one
         if ($layout->is_active) {
-            $nextLayout = FeedLayout::forChurch($layout->church_id)
+            $nextLayout = FeedLayout::withoutGlobalScopes()
                 ->where('id', '!=', $layout->id)
                 ->first();
             
@@ -242,12 +223,12 @@ class FeedLayoutController extends Controller
     }
 
     /**
-     * Create a default layout for a church
+     * Create the default global feed layout
      */
-    protected function createDefaultLayout($churchId): FeedLayout
+    protected function createDefaultLayout(): FeedLayout
     {
         $layout = FeedLayout::create([
-            'church_id' => $churchId,
+            'church_id' => null,
             'name' => 'Main Feed',
             'is_active' => true,
             'layout_data' => FeedLayout::getDefaultLayoutData(),

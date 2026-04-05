@@ -17,9 +17,6 @@ return [
     'cipher' => 'AES-256-CBC',
     'maintenance' => ['driver' => 'file'],
 
-    // Church platform mode: 'single' (default) or 'multi'
-    'church_mode' => env('CHURCH_MODE', 'single'),
-
     'providers' => ServiceProvider::defaultProviders()->merge([
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,

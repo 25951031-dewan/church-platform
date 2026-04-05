@@ -41,7 +41,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     // Timeline Settings API Routes (for admin panel)
-    Route::middleware('admin')->prefix('admin/timeline')->group(function () {
+    Route::middleware('permission:admin.access')->prefix('admin/timeline')->group(function () {
         
         // Community Settings
         Route::get('/settings/community', [TimelineSettingsController::class, 'getCommunitySettings']);
@@ -62,7 +62,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     // Daily Verse Admin Routes (enhanced CRUD)
-    Route::prefix('admin/daily-verses')->middleware('admin')->group(function () {
+    Route::prefix('admin/daily-verses')->middleware('permission:admin.access')->group(function () {
         Route::get('/', [DailyVerseAdminController::class, 'index']);
         Route::get('/export', [DailyVerseAdminController::class, 'export']);
         Route::post('/', [DailyVerseAdminController::class, 'store']);

@@ -93,6 +93,7 @@ const FeedCustomizerPage = lazy(() => import('./plugins/timeline/pages/FeedCusto
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
 const LandingPage = lazy(() => import('./pages/LandingPage').then(m => ({ default: m.LandingPage })));
 const MobileLayout = lazy(() => import('./layouts/MobileLayout').then(m => ({ default: m.MobileLayout })));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
 
 function Loading() {
   return <div className="flex items-center justify-center h-screen">Loading...</div>;
@@ -192,6 +193,9 @@ export function AppRouter() {
             </Route>
           </Route>
         </Route>
+
+        {/* 404 catch-all */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );

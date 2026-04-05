@@ -3,26 +3,14 @@
 namespace App\Traits;
 
 use App\Scopes\ChurchScope;
-use App\Services\ChurchContext;
 
 trait BelongsToChurch
 {
     public static function bootBelongsToChurch(): void
     {
+        // ChurchScope is a no-op in single-church mode.
+        // church_id is an optional association, not a tenant filter.
         static::addGlobalScope(new ChurchScope());
-
-        // Auto-set church_id on create in multi-church mode
-        static::creating(function ($model) {
-            if (
-                config('app.church_mode', 'single') === 'multi'
-                && empty($model->church_id)
-            ) {
-                $context = app(ChurchContext::class);
-                if ($context->has()) {
-                    $model->church_id = $context->getId();
-                }
-            }
-        });
     }
 
     /**

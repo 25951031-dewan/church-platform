@@ -36,7 +36,7 @@ export function useFeedLayouts() {
   return useQuery({
     queryKey: ['feed-layouts'],
     queryFn: async () => {
-      const { data } = await apiClient.get('/feed-layouts');
+      const { data } = await apiClient.get('feed-layouts');
       return data.layouts as FeedLayout[];
     },
   });
@@ -47,7 +47,7 @@ export function useActiveFeedLayout() {
     queryKey: ['feed-layout', 'active'],
     queryFn: async () => {
       try {
-        const { data } = await apiClient.get('/feed-layouts/active');
+        const { data } = await apiClient.get('feed-layouts/active');
         return data.layout;
       } catch (error) {
         // Return a default layout structure if API fails
@@ -75,7 +75,7 @@ export function useFeedWidgets() {
   return useQuery({
     queryKey: ['feed-widgets'],
     queryFn: async () => {
-      const { data } = await apiClient.get('/feed-widgets');
+      const { data } = await apiClient.get('feed-widgets');
       return data.widgets as FeedWidget[];
     },
   });
@@ -85,7 +85,7 @@ export function useFeedWidgetCategories() {
   return useQuery({
     queryKey: ['feed-widgets', 'categories'],
     queryFn: async () => {
-      const { data } = await apiClient.get('/feed-widgets/categories');
+      const { data } = await apiClient.get('feed-widgets/categories');
       return data.categories;
     },
   });
@@ -96,7 +96,7 @@ export function useCreateFeedLayout() {
   
   return useMutation({
     mutationFn: async (layoutData: Partial<FeedLayout>) => {
-      const { data } = await apiClient.post('/feed-layouts', layoutData);
+      const { data } = await apiClient.post('feed-layouts', layoutData);
       return data.layout;
     },
     onSuccess: () => {
@@ -111,7 +111,7 @@ export function useUpdateFeedLayout() {
   
   return useMutation({
     mutationFn: async ({ id, ...layoutData }: Partial<FeedLayout> & { id: number }) => {
-      const { data } = await apiClient.put(`/feed-layouts/${id}`, layoutData);
+      const { data } = await apiClient.put(`feed-layouts/${id}`, layoutData);
       return data.layout;
     },
     onSuccess: () => {
@@ -126,7 +126,7 @@ export function useDeleteFeedLayout() {
   
   return useMutation({
     mutationFn: async (id: number) => {
-      await apiClient.delete(`/feed-layouts/${id}`);
+      await apiClient.delete(`feed-layouts/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feed-layouts'] });

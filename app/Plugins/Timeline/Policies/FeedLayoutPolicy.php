@@ -10,7 +10,7 @@ class FeedLayoutPolicy extends BasePolicy
 {
     public function view(User $user, FeedLayout $layout): bool
     {
-        return $user->church_id === $layout->church_id;
+        return true; // All authenticated users can view layouts
     }
 
     public function create(User $user): bool
@@ -20,13 +20,11 @@ class FeedLayoutPolicy extends BasePolicy
 
     public function update(User $user, FeedLayout $layout): bool
     {
-        return $user->church_id === $layout->church_id
-            && $user->hasPermission('admin.access');
+        return $user->hasPermission('admin.access');
     }
 
     public function delete(User $user, FeedLayout $layout): bool
     {
-        return $user->church_id === $layout->church_id
-            && $user->hasPermission('admin.access');
+        return $user->hasPermission('admin.access');
     }
 }

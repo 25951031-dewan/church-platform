@@ -14,13 +14,7 @@ class ResolveChurch
 
     public function handle(Request $request, Closure $next)
     {
-        if (config('app.church_mode', 'single') !== 'multi') {
-            return $next($request);
-        }
-
-        $churchId = $this->resolveChurchId($request);
-        $this->context->setId($churchId);
-
+        // Single-church platform: church resolution is a no-op.
         return $next($request);
     }
 
