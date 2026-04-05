@@ -27,20 +27,20 @@ export function PostCard({ post }: PostCardProps) {
   const isOwner = currentUser?.id === post.user.id;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+    <div className="bg-[#161920] border border-white/5 rounded-xl">
       {/* Header */}
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-sm font-bold text-primary-700 dark:text-primary-400">
+          <div className="w-10 h-10 rounded-full bg-indigo-600/20 flex items-center justify-center text-sm font-bold text-indigo-400">
             {post.user.name[0]}
           </div>
           <div>
-            <p className="font-medium text-gray-900 dark:text-white">{post.user.name}</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="font-medium text-white">{post.user.name}</p>
+            <p className="text-xs text-gray-400">
               {new Date(post.created_at).toLocaleDateString()}
-              {post.is_pinned && <span className="ml-2 text-primary-600">Pinned</span>}
+              {post.is_pinned && <span className="ml-2 text-indigo-400">Pinned</span>}
               {post.type === 'announcement' && (
-                <span className="ml-2 px-1.5 py-0.5 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 rounded text-xs">
+                <span className="ml-2 px-1.5 py-0.5 bg-yellow-500/20 text-yellow-400 rounded text-xs">
                   Announcement
                 </span>
               )}
@@ -62,7 +62,7 @@ export function PostCard({ post }: PostCardProps) {
 
       {/* Content */}
       <div className="px-4 pb-3">
-        <p className="text-gray-900 dark:text-gray-100 whitespace-pre-wrap">{post.content}</p>
+        <p className="text-white whitespace-pre-wrap">{post.content}</p>
       </div>
 
       {/* Media */}
@@ -77,7 +77,7 @@ export function PostCard({ post }: PostCardProps) {
       )}
 
       {/* Reactions + Comment toggle */}
-      <div className="px-4 py-2 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
+      <div className="px-4 py-2 border-t border-white/10 flex items-center justify-between">
         <ReactionBar
           reactableId={post.id}
           reactableType="post"
@@ -88,7 +88,7 @@ export function PostCard({ post }: PostCardProps) {
 
         <button
           onClick={() => setShowComments(!showComments)}
-          className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+          className="text-sm text-gray-400 hover:text-gray-300"
         >
           {post.comments_count} comments
         </button>
@@ -96,7 +96,7 @@ export function PostCard({ post }: PostCardProps) {
 
       {/* Comments */}
       {showComments && (
-        <div className="px-4 pb-4 border-t border-gray-100 dark:border-gray-700 pt-3">
+        <div className="px-4 pb-4 border-t border-white/10 pt-3">
           <CommentThread commentableId={post.id} commentableType="post" />
         </div>
       )}

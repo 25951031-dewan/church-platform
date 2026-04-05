@@ -20,19 +20,19 @@ export function PostComposer({groupId}: PostComposerProps = {}) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+    <form onSubmit={handleSubmit} className="bg-[#161920] border border-white/5 rounded-xl p-4">
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Share something with your community..."
-        className="w-full border-0 resize-none focus:ring-0 text-gray-900 dark:text-white dark:bg-gray-800 placeholder-gray-400"
+        className="w-full border-0 resize-none focus:ring-0 text-white bg-[#161920] placeholder-gray-400"
         rows={3}
       />
       <div className="flex justify-end mt-2">
         <button
           type="submit"
           disabled={createPost.isPending || !content.trim()}
-          className="px-4 py-2 bg-primary-600 text-white rounded-md text-sm hover:bg-primary-700 disabled:opacity-50"
+          className="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm hover:bg-indigo-700 disabled:opacity-50"
         >
           {createPost.isPending ? 'Posting...' : 'Post'}
         </button>

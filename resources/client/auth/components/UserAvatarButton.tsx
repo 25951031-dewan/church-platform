@@ -1,8 +1,7 @@
 import React from 'react';
 import { User } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@app/common/auth/use-auth';
 import UserDropdown from './UserDropdown';
-import { cn } from '@/lib/utils';
 
 interface UserAvatarButtonProps {
   className?: string;
@@ -14,7 +13,7 @@ const UserAvatarButton: React.FC<UserAvatarButtonProps> = ({ className }) => {
 
   if (!user) {
     return (
-      <div className={cn('w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700', className)} />
+      <div className={`w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 ${className || ''}`} />
     );
   }
 
@@ -22,11 +21,7 @@ const UserAvatarButton: React.FC<UserAvatarButtonProps> = ({ className }) => {
     <div className="relative">
       <button
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        className={cn(
-          'relative w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden transition-all hover:ring-2 hover:ring-blue-500 hover:ring-offset-2 dark:hover:ring-offset-gray-900',
-          isDropdownOpen && 'ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-gray-900',
-          className
-        )}
+        className={`relative w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden transition-all hover:ring-2 hover:ring-blue-500 hover:ring-offset-2 dark:hover:ring-offset-gray-900 ${isDropdownOpen ? 'ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-gray-900' : ''} ${className || ''}`}
         aria-label="User menu"
       >
         {user.profile_photo ? (

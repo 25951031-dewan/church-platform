@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { User, Shield, Smartphone, Heart, Settings, HelpCircle, LogOut, Church, Camera } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { cn } from '@/lib/utils';
+import { useAuth } from '@app/common/auth/use-auth';
+import { Link } from 'react-router';
 
 interface UserDropdownProps {
   isOpen: boolean;
@@ -186,19 +186,32 @@ const MenuItem = React.memo<{
   const handleClick = () => {
     if (item.onClick) {
       item.onClick();
-    } else if (item.href) {
-      window.location.href = item.href;
     }
     onClose();
   };
 
+  if (item.href && !item.onClick) {
+    return (
+      <Link
+        to={item.href}
+        onClick={onClose}
+        className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${item.className || ''}`}
+      >
+        <item.icon className="w-4 h-4 flex-shrink-0" />
+        <span className="flex-1">{item.label}</span>
+        {item.badge && (
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200">
+            {item.badge}
+          </span>
+        )}
+      </Link>
+    );
+  }
+
   return (
     <button
       onClick={handleClick}
-      className={cn(
-        'w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors',
-        item.className
-      )}
+      className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${item.className || ''}`}
     >
       <item.icon className="w-4 h-4 flex-shrink-0" />
       <span className="flex-1">{item.label}</span>
