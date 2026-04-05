@@ -108,6 +108,27 @@ Route::prefix('v1')->group(function () {
             Route::delete('notification-templates/{notificationTemplate}', [NotificationTemplateController::class, 'destroy']);
         });
 
+        // Theme Management (admin.access)
+        Route::middleware('permission:admin.access')->group(function () {
+            Route::get('themes', [ThemeController::class, 'index']);
+            Route::post('themes', [ThemeController::class, 'store']);
+            Route::get('themes/{theme}', [ThemeController::class, 'show']);
+            Route::put('themes/{theme}', [ThemeController::class, 'update']);
+            Route::delete('themes/{theme}', [ThemeController::class, 'destroy']);
+            
+            // Menu Editor Config
+            Route::get('menu-editor-config', function () {
+                return response()->json([
+                    'positions' => config('menus.positions'),
+                    'available_routes' => config('menus.available_routes'),
+                ]);
+            });
+            
+            // Landing Page Admin
+            Route::get('landing-page-admin', [LandingPageController::class, 'index']);
+            Route::put('landing-page', [LandingPageController::class, 'update']);
+        });
+
         // Timeline Plugin routes
         if (app(\Common\Core\PluginManager::class)->isEnabled('timeline')) {
             require app_path('Plugins/Timeline/Routes/api.php');
@@ -445,24 +466,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/settings/profile-fields', [SettingController::class, 'updateProfileFields']);
         Route::post('/sitemap/generate', [SitemapController::class, 'generate']);
         
-        // Menu Editor Config
-        Route::get('/menu-editor-config', function () {
-            return response()->json([
-                'positions' => config('menus.positions'),
-                'available_routes' => config('menus.available_routes'),
-            ]);
-        });
-        
-        // Landing Page Admin
-        Route::get('/landing-page-admin', [LandingPageController::class, 'index']);
-        Route::put('/landing-page', [LandingPageController::class, 'update']);
-        
-        // Theme Management
-        Route::get('/themes', [ThemeController::class, 'index']);
-        Route::post('/themes', [ThemeController::class, 'store']);
-        Route::get('/themes/{theme}', [ThemeController::class, 'show']);
-        Route::put('/themes/{theme}', [ThemeController::class, 'update']);
-        Route::delete('/themes/{theme}', [ThemeController::class, 'destroy']);
+
     });
 
     // ----------------------------------------------------------------
