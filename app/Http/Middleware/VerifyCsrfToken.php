@@ -9,5 +9,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         'api/*',
         'install/*',
+        'webhook/*',
+        'deploy-webhook.php',
     ];
 }
