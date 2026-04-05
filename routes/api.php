@@ -439,6 +439,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/settings/profile-fields', [SettingController::class, 'profileFields']);
         Route::put('/settings/profile-fields', [SettingController::class, 'updateProfileFields']);
         Route::post('/sitemap/generate', [SitemapController::class, 'generate']);
+        
+        // Menu Editor Config
+        Route::get('/menu-editor-config', function () {
+            return response()->json([
+                'positions' => config('menus.positions'),
+                'available_routes' => config('menus.available_routes'),
+            ]);
+        });
     });
 
     // ----------------------------------------------------------------
