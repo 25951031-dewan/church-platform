@@ -1,7 +1,7 @@
 import { NavLink, Outlet } from 'react-router';
 import { useState } from 'react';
 import {
-  Settings, Mail, Bell, Palette, Lock, Video, Server, Upload, Globe, Search, BarChart2, Code2, ShieldCheck, Bot, Menu, X, Layers
+  Settings, Mail, Bell, Palette, Lock, Video, Server, Upload, Globe, Search, BarChart2, Code2, ShieldCheck, Bot, Menu, X, Layers, List
 } from 'lucide-react';
 import type { ElementType } from 'react';
 
@@ -25,6 +25,7 @@ const settingsNav: SettingNav[] = [
   { label: 'GDPR',           path: '/admin/settings/gdpr',          icon: ShieldCheck},
   { label: 'Captcha',        path: '/admin/settings/captcha',       icon: Bot        },
   { label: 'Landing Page',   path: '/admin/settings/landing-page',  icon: Layers     },
+  { label: 'Menus',          path: '/admin/settings/menus',         icon: List       },
   { label: 'Live Meetings',  path: '/admin/settings/live-meetings', icon: Video      },
   { label: 'System',         path: '/admin/system',                 icon: Server     },
 ];

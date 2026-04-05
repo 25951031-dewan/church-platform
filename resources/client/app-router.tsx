@@ -87,6 +87,7 @@ const CustomCodeSettingsPage = lazy(() => import('./admin/settings/CustomCodeSet
 const GdprSettingsPage = lazy(() => import('./admin/settings/GdprSettingsPage').then(m => ({ default: m.GdprSettingsPage })));
 const CaptchaSettingsPage = lazy(() => import('./admin/settings/CaptchaSettingsPage').then(m => ({ default: m.CaptchaSettingsPage })));
 const LandingPageSettingsPage = lazy(() => import('./admin/settings/LandingPageSettingsPage').then(m => ({ default: m.LandingPageSettingsPage })));
+const MenuSettingsPage = lazy(() => import('./admin/settings/MenuSettingsPage').then(m => ({ default: m.MenuSettingsPage })));
 const FeedCustomizerPage = lazy(() => import('./plugins/timeline/pages/FeedCustomizerPage').then(m => ({ default: m.FeedCustomizerPage })));
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
 const MobileLayout = lazy(() => import('./layouts/MobileLayout').then(m => ({ default: m.MobileLayout })));
@@ -178,6 +179,7 @@ export function AppRouter() {
                 <Route path="gdpr" element={<GdprSettingsPage />} />
                 <Route path="captcha" element={<CaptchaSettingsPage />} />
                 <Route path="landing-page" element={<LandingPageSettingsPage />} />
+                <Route path="menus" element={<MenuSettingsPage />} />
                 <Route path="live-meetings" element={<LiveMeetingSettingsPage />} />
               </Route>
 
