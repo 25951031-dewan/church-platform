@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\GalleryController;
+use App\Http\Controllers\Api\LandingPageController;
 use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Api\MinistryController;
 use App\Http\Controllers\Api\NewsletterController;
@@ -52,6 +53,9 @@ Route::prefix('v1')->group(function () {
     // Settings (public)
     Route::get('settings', [FoundationSettingController::class, 'index']);
     Route::get('settings/{group}', [FoundationSettingController::class, 'show']);
+    
+    // Landing Page (public)
+    Route::get('landing-page', [LandingPageController::class, 'publicSections']);
 
     // Authenticated
     Route::middleware('auth:sanctum')->group(function () {
@@ -447,6 +451,10 @@ Route::middleware('auth:sanctum')->group(function () {
                 'available_routes' => config('menus.available_routes'),
             ]);
         });
+        
+        // Landing Page Admin
+        Route::get('/landing-page-admin', [LandingPageController::class, 'index']);
+        Route::put('/landing-page', [LandingPageController::class, 'update']);
     });
 
     // ----------------------------------------------------------------
