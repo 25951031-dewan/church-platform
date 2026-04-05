@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\SermonController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\ChurchController;
 use App\Http\Controllers\Api\SitemapController;
+use App\Http\Controllers\Api\ThemeController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TestimonyController;
 use App\Http\Controllers\Api\SystemController;
@@ -455,6 +456,13 @@ Route::middleware('auth:sanctum')->group(function () {
         // Landing Page Admin
         Route::get('/landing-page-admin', [LandingPageController::class, 'index']);
         Route::put('/landing-page', [LandingPageController::class, 'update']);
+        
+        // Theme Management
+        Route::get('/themes', [ThemeController::class, 'index']);
+        Route::post('/themes', [ThemeController::class, 'store']);
+        Route::get('/themes/{theme}', [ThemeController::class, 'show']);
+        Route::put('/themes/{theme}', [ThemeController::class, 'update']);
+        Route::delete('/themes/{theme}', [ThemeController::class, 'destroy']);
     });
 
     // ----------------------------------------------------------------
