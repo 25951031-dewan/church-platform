@@ -1,8 +1,19 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useBootstrapStore } from '@app/common/core/bootstrap-data';
+import { useEnabledPlugins } from '@app/common/hooks/use-enabled-plugins';
+import { useEffect } from 'react';
 
 export function HomePage() {
   const { user } = useBootstrapStore();
+  const enabledPlugins = useEnabledPlugins();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Redirect authenticated users to main feed if timeline plugin is enabled
+    if (user && enabledPlugins.has('timeline')) {
+      navigate('/feed', { replace: true });
+    }
+  }, [user, enabledPlugins, navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">

@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router';
 import { lazy, Suspense } from 'react';
 import { RequireAuth, RequirePermission } from './common/auth/auth-guards';
+import { PluginRoute } from './components/PluginRoute';
 
 const AdminLayout = lazy(() => import('./admin/AdminLayout').then((m) => ({ default: m.AdminLayout })));
 const DashboardPage = lazy(() => import('./admin/DashboardPage').then((m) => ({ default: m.DashboardPage })));
@@ -112,28 +113,28 @@ export function AppRouter() {
 
           {/* Protected member routes */}
           <Route element={<RequireAuth />}>
-            <Route path="/feed" element={<NewsfeedPage />} />
-            <Route path="/groups" element={<GroupBrowserPage />} />
-            <Route path="/groups/:groupId" element={<GroupDetailPage />} />
-            <Route path="/events" element={<EventsPage />} />
-            <Route path="/events/:eventId" element={<EventDetailPage />} />
-            <Route path="/sermons" element={<SermonsPage />} />
-            <Route path="/sermons/:sermonId" element={<SermonDetailPage />} />
-            <Route path="/sermon-series/:seriesId" element={<SermonSeriesPage />} />
-            <Route path="/prayers" element={<PrayerWallPage />} />
-            <Route path="/prayers/submit" element={<PrayerSubmitPage />} />
-            <Route path="/prayers/:prayerId" element={<PrayerDetailPage />} />
-            <Route path="/churches" element={<ChurchDirectoryPage />} />
-            <Route path="/churches/:churchId" element={<ChurchProfilePage />} />
-            <Route path="/library" element={<LibraryCatalogPage />} />
-            <Route path="/library/:bookId" element={<BookDetailPage />} />
-            <Route path="/blog" element={<BlogListPage />} />
-            <Route path="/blog/new" element={<ArticleEditorPage />} />
-            <Route path="/blog/:slug" element={<ArticleDetailPage />} />
-            <Route path="/blog/:slug/edit" element={<ArticleEditorPage />} />
-            <Route path="/meetings" element={<MeetingsPage />} />
-            <Route path="/meetings/:meetingId" element={<MeetingDetailPage />} />
-            <Route path="/chat" element={<ChatPage />} />
+            <PluginRoute plugin="timeline" path="/feed" element={<NewsfeedPage />} />
+            <PluginRoute plugin="groups" path="/groups" element={<GroupBrowserPage />} />
+            <PluginRoute plugin="groups" path="/groups/:groupId" element={<GroupDetailPage />} />
+            <PluginRoute plugin="events" path="/events" element={<EventsPage />} />
+            <PluginRoute plugin="events" path="/events/:eventId" element={<EventDetailPage />} />
+            <PluginRoute plugin="sermons" path="/sermons" element={<SermonsPage />} />
+            <PluginRoute plugin="sermons" path="/sermons/:sermonId" element={<SermonDetailPage />} />
+            <PluginRoute plugin="sermons" path="/sermon-series/:seriesId" element={<SermonSeriesPage />} />
+            <PluginRoute plugin="prayer" path="/prayers" element={<PrayerWallPage />} />
+            <PluginRoute plugin="prayer" path="/prayers/submit" element={<PrayerSubmitPage />} />
+            <PluginRoute plugin="prayer" path="/prayers/:prayerId" element={<PrayerDetailPage />} />
+            <PluginRoute plugin="church_builder" path="/churches" element={<ChurchDirectoryPage />} />
+            <PluginRoute plugin="church_builder" path="/churches/:churchId" element={<ChurchProfilePage />} />
+            <PluginRoute plugin="library" path="/library" element={<LibraryCatalogPage />} />
+            <PluginRoute plugin="library" path="/library/:bookId" element={<BookDetailPage />} />
+            <PluginRoute plugin="blog" path="/blog" element={<BlogListPage />} />
+            <PluginRoute plugin="blog" path="/blog/new" element={<ArticleEditorPage />} />
+            <PluginRoute plugin="blog" path="/blog/:slug" element={<ArticleDetailPage />} />
+            <PluginRoute plugin="blog" path="/blog/:slug/edit" element={<ArticleEditorPage />} />
+            <PluginRoute plugin="live_meeting" path="/meetings" element={<MeetingsPage />} />
+            <PluginRoute plugin="live_meeting" path="/meetings/:meetingId" element={<MeetingDetailPage />} />
+            <PluginRoute plugin="chat" path="/chat" element={<ChatPage />} />
             <Route path="/notifications" element={<NotificationsPage />} />
           </Route>
         </Route>
