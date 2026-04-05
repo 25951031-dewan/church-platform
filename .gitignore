@@ -17,3 +17,12 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Laravel logs and sessions (runtime, not committed)
+storage/logs/
+storage/framework/sessions/
+storage/framework/cache/data/
