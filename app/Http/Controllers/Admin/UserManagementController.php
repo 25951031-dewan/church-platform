@@ -112,6 +112,21 @@ class UserManagementController extends Controller
         ]);
     }
 
+    public function updateRoles(Request $request, User $user): JsonResponse
+    {
+        $validated = $request->validate([
+            'roles' => 'required|array',
+            'roles.*' => 'exists:roles,id',
+        ]);
+
+        $user->roles()->sync($validated['roles']);
+
+        return response()->json([
+            'user' => $user->load('roles'),
+            'message' => 'User roles updated successfully',
+        ]);
+    }
+
     public function destroy(User $user): JsonResponse
     {
         // Prevent self-deletion

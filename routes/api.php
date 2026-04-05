@@ -596,6 +596,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/users/{user}', [\App\Http\Controllers\Admin\UserManagementController::class, 'show']);
             Route::put('/users/{user}', [\App\Http\Controllers\Admin\UserManagementController::class, 'update']);
             Route::delete('/users/{user}', [\App\Http\Controllers\Admin\UserManagementController::class, 'destroy']);
+            Route::put('/users/{user}/roles', [\App\Http\Controllers\Admin\UserManagementController::class, 'updateRoles']);
             Route::post('/users/{user}/toggle-active', [\App\Http\Controllers\Admin\UserManagementController::class, 'toggleActive']);
             Route::post('/users/{user}/impersonate', [\App\Http\Controllers\Admin\UserManagementController::class, 'impersonate']);
             Route::post('/impersonate/stop', [\App\Http\Controllers\Admin\UserManagementController::class, 'stopImpersonating']);
