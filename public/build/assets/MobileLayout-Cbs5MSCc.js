@@ -1,6 +1,0 @@
-import{c as t,j as e,O as c,K as l,S as r,N as n}from"./main-vqQtmYIE.js";import{U as i}from"./user-D5cMP21N.js";/**
- * @license lucide-react v0.460.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */const o=t("Rss",[["path",{d:"M4 11a9 9 0 0 1 9 9",key:"pv89mb"}],["path",{d:"M4 4a16 16 0 0 1 16 16",key:"k0647b"}],["circle",{cx:"5",cy:"19",r:"1",key:"bfqh0e"}]]),x=[{label:"Home",path:"/",icon:l,exact:!0},{label:"Search",path:"/sermons",icon:r},{label:"Feed",path:"/feed",icon:o},{label:"Account",path:"/login",icon:i}];function m(){return e.jsxs("div",{className:"flex flex-col min-h-screen bg-[#0C0E12]",children:[e.jsx("main",{className:"flex-1 pb-16 sm:pb-0",children:e.jsx(c,{})}),e.jsx("nav",{className:"sm:hidden fixed bottom-0 left-0 right-0 bg-[#161920] border-t border-white/5 flex z-50",children:x.map(a=>e.jsx(n,{to:a.path,end:"exact"in a?a.exact:void 0,className:({isActive:s})=>`flex-1 flex flex-col items-center justify-center py-2 text-[10px] transition-colors ${s?"text-white":"text-gray-500"}`,children:({isActive:s})=>e.jsxs(e.Fragment,{children:[e.jsx(a.icon,{size:20,className:s?"text-white":"text-gray-500","aria-hidden":"true"}),e.jsx("span",{className:"mt-1",children:a.label})]})},a.path))})]})}export{m as MobileLayout};
