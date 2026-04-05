@@ -85,12 +85,16 @@ export function CaptchaSettingsPage() {
     { value: 'recaptcha_v2', label: 'reCAPTCHA v2' },
     { value: 'recaptcha_v3', label: 'reCAPTCHA v3' },
     { value: 'hcaptcha', label: 'hCaptcha' },
+    { value: 'turnstile', label: 'Cloudflare Turnstile' },
   ];
 
   return (
     <div className="max-w-2xl">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-white">Captcha</h2>
+        <div>
+          <h2 className="text-lg font-semibold text-white">Captcha</h2>
+          <p className="text-sm text-gray-400 mt-1">Enable captcha integration for your church platform</p>
+        </div>
         <div className="flex items-center gap-3">
           {saved && <span className="flex items-center gap-1 text-xs text-green-400"><CheckCircle size={13} /> Saved</span>}
           <button type="button" onClick={() => mutation.mutate(form)} disabled={mutation.isPending}
@@ -103,19 +107,32 @@ export function CaptchaSettingsPage() {
         <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">Failed to save. Please try again.</div>
       )}
       <div className="bg-[#161920] border border-white/5 rounded-xl p-5 mb-4">
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Provider</p>
-        <Select label="Captcha Driver" name="captcha_driver" value={v('captcha_driver') || 'none'} onChange={set('captcha_driver')} options={captchaDriverOptions} />
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Provider & credentials</p>
+        <p className="text-sm text-gray-400 mb-4">Select captcha provider and enter your API credentials.</p>
+        <Select label="Captcha provider" name="captcha_driver" value={v('captcha_driver') || 'none'} onChange={set('captcha_driver')} options={captchaDriverOptions} />
         {v('captcha_driver') !== 'none' && (
           <div className="space-y-0">
-            <Field label="Site Key" name="recaptcha_site_key" value={v('recaptcha_site_key')} onChange={set('recaptcha_site_key')} />
-            <Field label="Secret Key" name="recaptcha_secret_key" value={v('recaptcha_secret_key')} onChange={set('recaptcha_secret_key')} />
+            {v('captcha_driver') === 'turnstile' ? (
+              <>
+                <Field label="Turnstile site key" name="turnstile_site_key" value={v('turnstile_site_key')} onChange={set('turnstile_site_key')} />
+                <Field label="Turnstile secret key" name="turnstile_secret_key" value={v('turnstile_secret_key')} onChange={set('turnstile_secret_key')} />
+              </>
+            ) : (
+              <>
+                <Field label="Site Key" name="recaptcha_site_key" value={v('recaptcha_site_key')} onChange={set('recaptcha_site_key')} />
+                <Field label="Secret Key" name="recaptcha_secret_key" value={v('recaptcha_secret_key')} onChange={set('recaptcha_secret_key')} />
+              </>
+            )}
           </div>
         )}
       </div>
       <div className="bg-[#161920] border border-white/5 rounded-xl p-5">
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Usage</p>
-        <Toggle label="Require on registration" checked={bool('captcha_on_register')} onChange={setToggle('captcha_on_register')} />
-        <Toggle label="Require on contact forms" checked={bool('captcha_on_contact')} onChange={setToggle('captcha_on_contact')} />
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Enable captcha</p>
+        <p className="text-sm text-gray-400 mb-4">Select which pages should be protected by captcha.</p>
+        <div className="space-y-1">
+          <Toggle label='Enable captcha integration for "contact us" page.' checked={bool('captcha_on_contact')} onChange={setToggle('captcha_on_contact')} />
+          <Toggle label="Enable captcha integration for registration page." checked={bool('captcha_on_register')} onChange={setToggle('captcha_on_register')} />
+        </div>
       </div>
     </div>
   );
