@@ -85,9 +85,8 @@ class PluginController extends Controller
 
         $this->pluginManager->enable($name);
 
-        // Clear caches to force fresh read
-        \Illuminate\Support\Facades\Cache::forget('plugins.enabled');
-        \Illuminate\Support\Facades\Artisan::call('config:clear');
+        // Clear caches — PluginManager uses cache key 'app.plugins' (see common/foundation/src/Core/PluginManager.php)
+        \Illuminate\Support\Facades\Cache::forget('app.plugins');
 
         // Return updated plugin list
         $enabled = $this->pluginManager->getEnabled();
@@ -113,9 +112,8 @@ class PluginController extends Controller
 
         $this->pluginManager->disable($name);
 
-        // Clear caches to force fresh read
-        \Illuminate\Support\Facades\Cache::forget('plugins.enabled');
-        \Illuminate\Support\Facades\Artisan::call('config:clear');
+        // Clear caches — PluginManager uses cache key 'app.plugins' (see common/foundation/src/Core/PluginManager.php)
+        \Illuminate\Support\Facades\Cache::forget('app.plugins');
 
         // Return updated plugin list
         $enabled = $this->pluginManager->getEnabled();

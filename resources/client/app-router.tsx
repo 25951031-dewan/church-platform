@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router';
 import { lazy, Suspense } from 'react';
 import { RequireAuth, RequirePermission } from './common/auth/auth-guards';
-import { PluginRoute } from './components/PluginRoute';
+import { RequirePlugin } from './components/PluginRoute';
 
 const AdminLayout = lazy(() => import('./admin/AdminLayout').then((m) => ({ default: m.AdminLayout })));
 const DashboardPage = lazy(() => import('./admin/DashboardPage').then((m) => ({ default: m.DashboardPage })));
@@ -113,29 +113,61 @@ export function AppRouter() {
 
           {/* Protected member routes */}
           <Route element={<RequireAuth />}>
-            <PluginRoute plugin="timeline" path="/feed" element={<NewsfeedPage />} />
-            <PluginRoute plugin="groups" path="/groups" element={<GroupBrowserPage />} />
-            <PluginRoute plugin="groups" path="/groups/:groupId" element={<GroupDetailPage />} />
-            <PluginRoute plugin="events" path="/events" element={<EventsPage />} />
-            <PluginRoute plugin="events" path="/events/:eventId" element={<EventDetailPage />} />
-            <PluginRoute plugin="sermons" path="/sermons" element={<SermonsPage />} />
-            <PluginRoute plugin="sermons" path="/sermons/:sermonId" element={<SermonDetailPage />} />
-            <PluginRoute plugin="sermons" path="/sermon-series/:seriesId" element={<SermonSeriesPage />} />
-            <PluginRoute plugin="prayer" path="/prayers" element={<PrayerWallPage />} />
-            <PluginRoute plugin="prayer" path="/prayers/submit" element={<PrayerSubmitPage />} />
-            <PluginRoute plugin="prayer" path="/prayers/:prayerId" element={<PrayerDetailPage />} />
-            <PluginRoute plugin="church_builder" path="/churches" element={<ChurchDirectoryPage />} />
-            <PluginRoute plugin="church_builder" path="/churches/:churchId" element={<ChurchProfilePage />} />
-            <PluginRoute plugin="library" path="/library" element={<LibraryCatalogPage />} />
-            <PluginRoute plugin="library" path="/library/:bookId" element={<BookDetailPage />} />
-            <PluginRoute plugin="blog" path="/blog" element={<BlogListPage />} />
-            <PluginRoute plugin="blog" path="/blog/new" element={<ArticleEditorPage />} />
-            <PluginRoute plugin="blog" path="/blog/:slug" element={<ArticleDetailPage />} />
-            <PluginRoute plugin="blog" path="/blog/:slug/edit" element={<ArticleEditorPage />} />
-            <PluginRoute plugin="live_meeting" path="/meetings" element={<MeetingsPage />} />
-            <PluginRoute plugin="live_meeting" path="/meetings/:meetingId" element={<MeetingDetailPage />} />
-            <PluginRoute plugin="chat" path="/chat" element={<ChatPage />} />
+            {/* Always available */}
             <Route path="/notifications" element={<NotificationsPage />} />
+
+            {/* Plugin-gated routes — RequirePlugin uses Outlet pattern (same as RequireAuth) */}
+            <Route element={<RequirePlugin plugin="timeline" />}>
+              <Route path="/feed" element={<NewsfeedPage />} />
+            </Route>
+
+            <Route element={<RequirePlugin plugin="groups" />}>
+              <Route path="/groups" element={<GroupBrowserPage />} />
+              <Route path="/groups/:groupId" element={<GroupDetailPage />} />
+            </Route>
+
+            <Route element={<RequirePlugin plugin="events" />}>
+              <Route path="/events" element={<EventsPage />} />
+              <Route path="/events/:eventId" element={<EventDetailPage />} />
+            </Route>
+
+            <Route element={<RequirePlugin plugin="sermons" />}>
+              <Route path="/sermons" element={<SermonsPage />} />
+              <Route path="/sermons/:sermonId" element={<SermonDetailPage />} />
+              <Route path="/sermon-series/:seriesId" element={<SermonSeriesPage />} />
+            </Route>
+
+            <Route element={<RequirePlugin plugin="prayer" />}>
+              <Route path="/prayers" element={<PrayerWallPage />} />
+              <Route path="/prayers/submit" element={<PrayerSubmitPage />} />
+              <Route path="/prayers/:prayerId" element={<PrayerDetailPage />} />
+            </Route>
+
+            <Route element={<RequirePlugin plugin="church_builder" />}>
+              <Route path="/churches" element={<ChurchDirectoryPage />} />
+              <Route path="/churches/:churchId" element={<ChurchProfilePage />} />
+            </Route>
+
+            <Route element={<RequirePlugin plugin="library" />}>
+              <Route path="/library" element={<LibraryCatalogPage />} />
+              <Route path="/library/:bookId" element={<BookDetailPage />} />
+            </Route>
+
+            <Route element={<RequirePlugin plugin="blog" />}>
+              <Route path="/blog" element={<BlogListPage />} />
+              <Route path="/blog/new" element={<ArticleEditorPage />} />
+              <Route path="/blog/:slug" element={<ArticleDetailPage />} />
+              <Route path="/blog/:slug/edit" element={<ArticleEditorPage />} />
+            </Route>
+
+            <Route element={<RequirePlugin plugin="live_meeting" />}>
+              <Route path="/meetings" element={<MeetingsPage />} />
+              <Route path="/meetings/:meetingId" element={<MeetingDetailPage />} />
+            </Route>
+
+            <Route element={<RequirePlugin plugin="chat" />}>
+              <Route path="/chat" element={<ChatPage />} />
+            </Route>
           </Route>
         </Route>
 
