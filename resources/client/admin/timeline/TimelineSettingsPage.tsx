@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast';
 import CommunitySettingsTab from './CommunitySettingsTab';
 import MediaSettingsTab from './MediaSettingsTab';
 import DailyVerseTab from './DailyVerseTab';
-import { apiClient } from '@/lib/api-client';
+import { apiClient } from '@app/common/http/api-client';
 
 export interface TimelineSettings {
   // Community Controls

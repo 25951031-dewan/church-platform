@@ -36,5 +36,6 @@ export function useAuth() {
     login: loginMutation,
     register: registerMutation,
     logout,
+    signOut: logout,  // Alias for UserDropdown compatibility
   };
 }

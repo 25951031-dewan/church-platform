@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@ui/textarea';
 import { Badge } from '@ui/badge';
 import { toast } from 'react-hot-toast';
-import { apiClient } from '@/lib/api-client';
+import { apiClient } from '@app/common/http/api-client';
 
 const privacySettingsSchema = z.object({
   profile_visibility: z.enum(['public', 'members_only', 'private']).default('members_only'),

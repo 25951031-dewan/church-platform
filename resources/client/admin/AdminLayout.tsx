@@ -4,6 +4,7 @@ import { NavLink, Outlet } from 'react-router';
 import { useUserPermissions } from '@app/common/auth/use-permissions';
 import { useBootstrapStore } from '@app/common/core/bootstrap-data';
 import { useAuth } from '@app/common/auth/use-auth';
+import UserDropdown from '../auth/components/UserDropdown';
 import {
   LayoutDashboard, Users, Shield, Settings, Server,
   Mic, Calendar, FileText, BookOpen,
@@ -37,7 +38,7 @@ const navItems: NavItem[] = [
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const { hasPermission } = useUserPermissions();
   const user = useBootstrapStore((s) => s.user);
-  const { logout } = useAuth();
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
 
   return (
     <>
@@ -74,11 +75,11 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
       </nav>
 
       {/* User footer */}
-      <div className="border-t border-white/5 p-3 flex-shrink-0">
+      <div className="border-t border-white/5 p-3 flex-shrink-0 relative">
         <button
           type="button"
-          aria-label="Sign out"
-          onClick={logout}
+          aria-label="User menu"
+          onClick={() => setShowUserDropdown(!showUserDropdown)}
           className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors text-left"
         >
           <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold flex-shrink-0">
@@ -88,8 +89,11 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
             <p className="text-xs font-medium text-white truncate">{user?.name}</p>
             <p className="text-[10px] text-gray-500 truncate">{user?.email}</p>
           </div>
-          <LogOut size={12} className="text-gray-500 flex-shrink-0" aria-hidden="true" />
         </button>
+        <UserDropdown 
+          isOpen={showUserDropdown} 
+          onClose={() => setShowUserDropdown(false)} 
+        />
       </div>
     </>
   );

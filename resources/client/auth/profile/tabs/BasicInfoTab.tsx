@@ -10,7 +10,7 @@ import { Textarea } from '@ui/textarea';
 import { Label } from '@ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@ui/select';
 import { useAuth } from '@/hooks/useAuth';
-import { apiClient } from '@/lib/api-client';
+import { apiClient } from '@app/common/http/api-client';
 import { toast } from 'react-hot-toast';
 import ProfilePhotoUpload from '../../components/ProfilePhotoUpload';
 

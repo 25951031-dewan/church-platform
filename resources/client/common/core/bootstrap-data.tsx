@@ -12,6 +12,12 @@ interface BootstrapUser {
   roles: string[];
   theme: string;
   language: string;
+  // Additional fields for UserDropdown
+  profile_photo?: string | null;
+  profile_completeness?: number;
+  two_factor_enabled?: boolean;
+  spiritual_profile?: boolean;
+  role?: string;
 }
 
 interface BootstrapData {

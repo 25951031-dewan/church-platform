@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@ui/checkbox';
 import { Badge } from '@ui/badge';
 import { useAuth } from '@/hooks/useAuth';
-import { apiClient } from '@/lib/api-client';
+import { apiClient } from '@app/common/http/api-client';
 import { toast } from 'react-hot-toast';
 
 const spiritualProfileSchema = z.object({

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
 import { Button } from '@ui/button';
 import { Badge } from '@ui/badge';
 import { useAuth } from '@/hooks/useAuth';
-import { apiClient } from '@/lib/api-client';
+import { apiClient } from '@app/common/http/api-client';
 import { toast } from 'react-hot-toast';
 import TwoFactorSetup from '../../components/TwoFactorSetup';
 import ChangePasswordForm from '../../components/ChangePasswordForm';

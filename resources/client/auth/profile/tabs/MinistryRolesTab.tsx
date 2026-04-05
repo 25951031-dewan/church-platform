@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@ui/collapsible';
 import { toast } from 'react-hot-toast';
-import { apiClient } from '@/lib/api-client';
+import { apiClient } from '@app/common/http/api-client';
 
 const ministryRoleSchema = z.object({
   current_roles: z.array(z.object({

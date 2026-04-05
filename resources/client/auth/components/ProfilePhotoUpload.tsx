@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Upload, X, Crop, Save } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { apiClient } from '@/lib/api-client';
+import { apiClient } from '@app/common/http/api-client';
 import { toast } from 'react-hot-toast';
 
 interface ProfilePhotoUploadProps {

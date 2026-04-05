@@ -10,7 +10,7 @@ import { Badge } from '@ui/badge';
 import { Upload, Download, FileText, Calendar, Book, Heart } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { TimelineSettings } from './TimelineSettingsPage';
-import { apiClient } from '@/lib/api-client';
+import { apiClient } from '@app/common/http/api-client';
 
 interface DailyVerse {
   id: number;
