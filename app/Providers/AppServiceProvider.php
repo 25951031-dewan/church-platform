@@ -49,6 +49,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
+        // Register plugin migrations (not in default database/migrations/)
+        $this->loadMigrationsFrom(app_path('Plugins/Timeline/Database/migrations'));
+
         // Register policies
         Gate::policy(Comment::class, CommentPolicy::class);
         Gate::policy(Post::class, PostPolicy::class);
