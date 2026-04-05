@@ -511,14 +511,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // ----------------------------------------------------------------
-    // Users & Roles — manage_users / manage_roles / assign_roles
+    // Users & Roles — handled by Foundation controllers (lines 72-78 above)
+    // Duplicate routes removed — foundation routes use roles.view / roles.create etc.
     // ----------------------------------------------------------------
-    Route::middleware('permission:manage_roles')->group(function () {
-        Route::get('/roles', [RoleController::class, 'index']);
-        Route::post('/roles', [RoleController::class, 'store']);
-        Route::put('/roles/{role}', [RoleController::class, 'update']);
-        Route::delete('/roles/{role}', [RoleController::class, 'destroy']);
-    });
 
     Route::middleware('permission:assign_roles')->group(function () {
         Route::post('/roles/assign', [RoleController::class, 'assignRole']);
@@ -566,7 +561,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // ----------------------------------------------------------------
-    // System & Deploy — manage_settings (super admin in practice)
+    // System & Deploy — manage_settings (super admin only: git, migrate, build)
     // ----------------------------------------------------------------
     Route::middleware('permission:manage_settings')->group(function () {
         Route::get('/system/status', [SystemController::class, 'status']);
@@ -583,9 +578,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/update/upload', [\App\Http\Controllers\Admin\UpdateController::class, 'upload']);
         Route::post('/update/migrate', [\App\Http\Controllers\Admin\UpdateController::class, 'migrate']);
         Route::post('/update/clear-caches', [\App\Http\Controllers\Admin\UpdateController::class, 'clearCaches']);
+    });
 
-        // Enhanced Admin Dashboard
-        Route::prefix('admin')->group(function () {
+    // ----------------------------------------------------------------
+    // Admin Panel — admin.access (regular admin can use these)
+    // ----------------------------------------------------------------
+    Route::middleware('permission:admin.access')->prefix('admin')->group(function () {
             Route::get('/dashboard/analytics', [\App\Http\Controllers\Admin\DashboardController::class, 'analytics']);
             Route::get('/dashboard/activity', [\App\Http\Controllers\Admin\DashboardController::class, 'recentActivity']);
             Route::get('/dashboard/health', [\App\Http\Controllers\Admin\DashboardController::class, 'systemHealth']);
@@ -673,11 +671,10 @@ Route::middleware('auth:sanctum')->group(function () {
                 Route::get('/export', [\App\Http\Controllers\Admin\SettingsController::class, 'export']);
                 Route::post('/import', [\App\Http\Controllers\Admin\SettingsController::class, 'import']);
                 Route::post('/reset', [\App\Http\Controllers\Admin\SettingsController::class, 'reset']);
-                
+
                 // System settings (super admin only)
                 Route::get('/system', [\App\Http\Controllers\Admin\SettingsController::class, 'getSystemSettings']);
                 Route::put('/system', [\App\Http\Controllers\Admin\SettingsController::class, 'updateSystemSettings']);
             });
-        });
-    });
-});
+    });  // end admin.access prefix('admin') group
+});      // end auth:sanctum outer group

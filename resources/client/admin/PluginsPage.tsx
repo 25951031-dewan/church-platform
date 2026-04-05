@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { apiClient } from '@app/common/http/api-client';
 import { Puzzle, Check, X, RefreshCw, Settings, MessageSquare, Users, Calendar, Mic, Heart, MessageCircle, BookOpen, Building, FileText, Video, DollarSign, UserCheck, Target, Film, HeartHandshake, ShoppingBag } from 'lucide-react';
 import { useNotificationStore } from '@app/common/stores';
 
@@ -31,40 +32,16 @@ export function PluginsPage() {
   const { data: plugins, isLoading, isError } = useQuery({
     queryKey: ['admin-plugins'],
     queryFn: async () => {
-      const response = await fetch('/api/admin/plugins', {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
-        },
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch plugins');
-      }
-      
-      const data = await response.json();
+      const { data } = await apiClient.get('admin/plugins');
       return (data.data || []) as Plugin[];
     },
   });
 
   const toggleMutation = useMutation({
     mutationFn: async ({ name, enable }: { name: string; enable: boolean }) => {
-      const endpoint = enable ? '/api/admin/plugins/enable' : '/api/admin/plugins/disable';
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
-        },
-        body: JSON.stringify({ name }),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to toggle plugin');
-      }
-      
-      return response.json();
+      const endpoint = enable ? 'admin/plugins/enable' : 'admin/plugins/disable';
+      const { data } = await apiClient.post(endpoint, { name });
+      return data;
     },
     onSuccess: (_, { name, enable }) => {
       queryClient.invalidateQueries({ queryKey: ['admin-plugins'] });

@@ -45,18 +45,7 @@ function UserRoleModal({ user, onClose }: UserRoleModalProps) {
 
   const updateRolesMutation = useMutation({
     mutationFn: (roleIds: number[]) =>
-      fetch(`/api/admin/users/${user.id}/roles`, {
-        method: 'PUT',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
-        },
-        body: JSON.stringify({ roles: roleIds }),
-      }).then(async (response) => {
-        if (!response.ok) throw new Error('Failed to update roles');
-        return response.json();
-      }),
+      apiClient.put(`admin/users/${user.id}/roles`, { roles: roleIds }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
       success('User roles updated successfully');
@@ -146,27 +135,15 @@ export function UsersPage() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['admin-users', search, page],
     queryFn: async () => {
-      const response = await fetch(`/api/admin/users?${new URLSearchParams({
-        search: search || '',
-        page: String(page),
-        per_page: '15',
-      })}`, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
-        },
+      const { data } = await apiClient.get('admin/users', {
+        params: { search: search || '', page, per_page: 15 },
       });
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch users');
-      }
-      
-      const data = await response.json();
+      const p = data.pagination ?? data;
       return {
-        data: data.pagination?.data || data.data || [],
-        total: data.pagination?.total || data.total || 0,
-        current_page: data.pagination?.current_page || data.current_page || 1,
-        last_page: data.pagination?.last_page || data.last_page || 1,
+        data: p.data ?? [],
+        total: p.total ?? 0,
+        current_page: p.current_page ?? 1,
+        last_page: p.last_page ?? 1,
       };
     },
     placeholderData: (prev) => prev,

@@ -1,32 +1,21 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui/card';
-import { Button } from '@ui/button';
-import { Badge } from '@ui/badge';
-import { Input } from '@ui/input';
-import { Label } from '@ui/label';
-import { Switch } from '@ui/switch';
-import { 
-  Calendar, 
-  MessageSquare, 
-  Bell, 
-  Users, 
-  Heart, 
-  Settings, 
-  Eye,
-  Plus,
-  Grip
+import { useState } from 'react';
+import {
+  Calendar, MessageSquare, Bell, Heart, Settings, Eye, BookOpen,
 } from 'lucide-react';
 import { useFeedWidgets, useFeedWidgetCategories, FeedWidget } from '../hooks/useFeedLayouts';
 
-const WidgetIcons = {
-  daily_verse: Calendar,
-  post_feed: MessageSquare,
-  announcements: Bell,
-  events: Calendar,
+const WidgetIcons: Record<string, React.ElementType> = {
+  daily_verse:     Calendar,
+  post_feed:       MessageSquare,
+  announcements:   Bell,
+  events:          Calendar,
   prayer_requests: Heart,
-  community_stats: Users,
-  default: Settings,
+  sermons:         BookOpen,
 };
+
+function getIcon(key: string): React.ElementType {
+  return WidgetIcons[key] ?? Settings;
+}
 
 export function WidgetLibrary() {
   const { data: widgets = [], isLoading } = useFeedWidgets();
@@ -34,242 +23,127 @@ export function WidgetLibrary() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedWidget, setSelectedWidget] = useState<FeedWidget | null>(null);
 
+  const filtered = selectedCategory === 'all'
+    ? widgets
+    : widgets.filter(w => w.category === selectedCategory);
+
   if (isLoading) return (
-    <div className="flex items-center justify-center p-8">
-      <div className="w-6 h-6 border-2 border-gray-300 dark:border-gray-700 border-t-blue-600 rounded-full animate-spin"></div>
+    <div className="flex items-center justify-center py-16">
+      <div className="w-6 h-6 border-2 border-white/10 border-t-indigo-500 rounded-full animate-spin" />
     </div>
   );
 
-  const filteredWidgets = selectedCategory === 'all' 
-    ? widgets 
-    : widgets.filter(widget => widget.category === selectedCategory);
-
-  const getWidgetIcon = (widget: FeedWidget) => {
-    const IconComponent = WidgetIcons[widget.widget_key as keyof typeof WidgetIcons] || WidgetIcons.default;
-    return <IconComponent className="w-5 h-5" />;
-  };
-
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-          Widget Library
-        </h2>
-        <p className="text-gray-600 dark:text-gray-400">
-          Choose from available widgets to customize your feed layout
-        </p>
-      </div>
-
-      {/* Category Filter */}
+    <div className="space-y-5">
+      {/* Category filter */}
       <div className="flex flex-wrap gap-2">
-        <Button
-          variant={selectedCategory === 'all' ? 'default' : 'outline'}
-          size="sm"
-          onClick={() => setSelectedCategory('all')}
-        >
-          All Widgets
-        </Button>
-        {categories.map((category: any) => (
-          <Button
-            key={category.name}
-            variant={selectedCategory === category.name ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setSelectedCategory(category.name)}
+        {(['all', ...categories.map((c: any) => c.name)] as string[]).map((cat) => (
+          <button
+            key={cat}
+            type="button"
+            onClick={() => setSelectedCategory(cat)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+              selectedCategory === cat
+                ? 'bg-indigo-600 text-white'
+                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+            }`}
           >
-            {category.display_name}
-          </Button>
+            {cat === 'all' ? 'All Widgets' : cat}
+          </button>
         ))}
       </div>
 
-      {/* Widget Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {filteredWidgets.map((widget) => (
-          <Card 
-            key={widget.id}
-            className="relative transition-all hover:shadow-lg cursor-pointer group bg-white dark:bg-[#161920] border border-gray-200 dark:border-gray-700 hover:border-blue-300"
-            onClick={() => setSelectedWidget(widget)}
-          >
-            <CardHeader className="pb-2">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400">
-                    {getWidgetIcon(widget)}
+      {/* Widget grid */}
+      {filtered.length === 0 ? (
+        <div className="text-center py-12 text-gray-500 text-sm">No widgets in this category.</div>
+      ) : (
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {filtered.map((widget) => {
+            const Icon = getIcon(widget.widget_key);
+            return (
+              <button
+                key={widget.id}
+                type="button"
+                onClick={() => setSelectedWidget(widget)}
+                className="text-left bg-[#161920] border border-white/5 hover:border-indigo-500/30 rounded-xl p-4 transition-colors group"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-2 rounded-lg bg-indigo-600/10 text-indigo-400">
+                    <Icon size={16} />
                   </div>
-                  <div>
-                    <CardTitle className="text-sm text-gray-900 dark:text-white">
-                      {widget.display_name}
-                    </CardTitle>
-                    <Badge 
-                      variant="secondary" 
-                      className="text-xs mt-1 bg-gray-100 dark:bg-gray-800"
-                    >
-                      {widget.category}
-                    </Badge>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-white truncate">{widget.display_name}</p>
+                    <p className="text-xs text-gray-500">{widget.category}</p>
                   </div>
                 </div>
-                
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
-                  <Button variant="ghost" size="sm">
-                    <Eye className="w-3 h-3" />
-                  </Button>
-                  <Button variant="ghost" size="sm">
-                    <Plus className="w-3 h-3" />
-                  </Button>
+                {widget.description && (
+                  <p className="text-xs text-gray-500 line-clamp-2">{widget.description}</p>
+                )}
+                <div className="flex gap-1 mt-3">
+                  {widget.is_customizable && (
+                    <span className="text-xs bg-white/5 text-gray-500 px-1.5 py-0.5 rounded">Customizable</span>
+                  )}
                 </div>
-              </div>
-            </CardHeader>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
-            <CardContent className="pt-0">
-              {widget.description && (
-                <CardDescription className="text-xs text-gray-600 dark:text-gray-400 mb-3">
-                  {widget.description}
-                </CardDescription>
-              )}
-
-              {/* Widget Preview */}
-              <div className="bg-gray-50 dark:bg-[#0C0E12] rounded-lg p-3 mb-3">
-                {widget.widget_key === 'daily_verse' && (
-                  <div className="text-center space-y-2">
-                    <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded" />
-                    <div className="w-3/4 h-1 bg-gray-200 dark:bg-gray-700 rounded mx-auto" />
-                    <div className="text-xs text-gray-500 dark:text-gray-400">Daily Verse</div>
-                  </div>
-                )}
-                
-                {widget.widget_key === 'post_feed' && (
-                  <div className="space-y-1">
-                    {[1, 2].map(i => (
-                      <div key={i} className="flex gap-2">
-                        <div className="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded-full" />
-                        <div className="flex-1 space-y-1">
-                          <div className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded" />
-                          <div className="w-2/3 h-1 bg-gray-200 dark:bg-gray-700 rounded" />
-                        </div>
-                      </div>
-                    ))}
-                    <div className="text-xs text-gray-500 dark:text-gray-400 text-center">Posts</div>
-                  </div>
-                )}
-
-                {widget.widget_key === 'announcements' && (
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Bell className="w-3 h-3 text-blue-500" />
-                      <div className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded" />
-                    </div>
-                    <div className="w-3/4 h-1 bg-gray-200 dark:bg-gray-700 rounded" />
-                    <div className="text-xs text-gray-500 dark:text-gray-400">Announcements</div>
-                  </div>
-                )}
-
-                {widget.widget_key === 'events' && (
-                  <div className="space-y-1">
-                    {[1, 2].map(i => (
-                      <div key={i} className="flex gap-2 items-center">
-                        <Calendar className="w-3 h-3 text-green-500" />
-                        <div className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded" />
-                      </div>
-                    ))}
-                    <div className="text-xs text-gray-500 dark:text-gray-400 text-center">Events</div>
-                  </div>
-                )}
-
-                {widget.widget_key === 'prayer_requests' && (
-                  <div className="space-y-1">
-                    {[1, 2].map(i => (
-                      <div key={i} className="flex gap-2 items-center">
-                        <Heart className="w-3 h-3 text-red-500" />
-                        <div className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded" />
-                      </div>
-                    ))}
-                    <div className="text-xs text-gray-500 dark:text-gray-400 text-center">Prayers</div>
-                  </div>
-                )}
-              </div>
-
-              {/* Widget Features */}
-              <div className="flex flex-wrap gap-1">
-                {widget.is_customizable && (
-                  <Badge variant="outline" className="text-xs">
-                    Customizable
-                  </Badge>
-                )}
-                {widget.is_system && (
-                  <Badge variant="outline" className="text-xs">
-                    System
-                  </Badge>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* Widget Detail Modal */}
+      {/* Widget detail modal */}
       {selectedWidget && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <Card className="w-full max-w-2xl max-h-[80vh] overflow-y-auto">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 rounded-lg bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400">
-                    {getWidgetIcon(selectedWidget)}
-                  </div>
-                  <div>
-                    <CardTitle className="text-xl">{selectedWidget.display_name}</CardTitle>
-                    <CardDescription>{selectedWidget.description}</CardDescription>
-                  </div>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#161920] border border-white/10 rounded-xl w-full max-w-md">
+            <div className="flex items-center justify-between p-5 border-b border-white/5">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-indigo-600/10 text-indigo-400">
+                  {(() => { const Icon = getIcon(selectedWidget.widget_key); return <Icon size={18} />; })()}
                 </div>
-                <Button 
-                  variant="ghost"
-                  onClick={() => setSelectedWidget(null)}
-                >
-                  ×
-                </Button>
+                <div>
+                  <h3 className="font-semibold text-white">{selectedWidget.display_name}</h3>
+                  <p className="text-xs text-gray-500">{selectedWidget.category}</p>
+                </div>
               </div>
-            </CardHeader>
-            
-            <CardContent className="space-y-4">
+              <button
+                type="button"
+                onClick={() => setSelectedWidget(null)}
+                className="text-gray-400 hover:text-white transition-colors text-lg leading-none"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-5 space-y-4">
+              {selectedWidget.description && (
+                <p className="text-sm text-gray-400">{selectedWidget.description}</p>
+              )}
               <div>
-                <Label className="text-sm font-medium">Category</Label>
-                <Badge variant="secondary" className="ml-2">
-                  {selectedWidget.category}
-                </Badge>
-              </div>
-
-              <div>
-                <Label className="text-sm font-medium">Component Path</Label>
-                <p className="text-sm text-gray-600 dark:text-gray-400 font-mono">
+                <p className="text-xs text-gray-500 mb-1">Component path</p>
+                <code className="text-xs text-indigo-400 bg-indigo-600/10 px-2 py-1 rounded">
                   {selectedWidget.component_path}
-                </p>
+                </code>
               </div>
-
               {selectedWidget.permissions_required && selectedWidget.permissions_required.length > 0 && (
                 <div>
-                  <Label className="text-sm font-medium">Required Permissions</Label>
-                  <div className="flex flex-wrap gap-1 mt-1">
-                    {selectedWidget.permissions_required.map((permission) => (
-                      <Badge key={permission} variant="outline" className="text-xs">
-                        {permission}
-                      </Badge>
+                  <p className="text-xs text-gray-500 mb-1">Required permissions</p>
+                  <div className="flex flex-wrap gap-1">
+                    {selectedWidget.permissions_required.map((p) => (
+                      <span key={p} className="text-xs bg-white/5 text-gray-400 px-1.5 py-0.5 rounded">{p}</span>
                     ))}
                   </div>
                 </div>
               )}
-
-              <div className="flex gap-2 pt-4">
-                <Button className="flex-1 bg-blue-600 hover:bg-blue-700">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add to Layout
-                </Button>
-                <Button variant="outline">
-                  <Eye className="w-4 h-4 mr-2" />
-                  Preview
-                </Button>
+              <div className="flex items-center gap-2 pt-2">
+                <span className={`flex items-center gap-1 text-xs px-2 py-1 rounded ${
+                  selectedWidget.is_customizable
+                    ? 'bg-green-500/10 text-green-400'
+                    : 'bg-white/5 text-gray-500'
+                }`}>
+                  <Eye size={11} />
+                  {selectedWidget.is_customizable ? 'Customizable' : 'Fixed layout'}
+                </span>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       )}
     </div>
