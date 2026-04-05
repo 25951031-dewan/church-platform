@@ -561,9 +561,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // ----------------------------------------------------------------
-    // System & Deploy — manage_settings (super admin only: git, migrate, build)
+    // System & Deploy — admin.access ('manage_settings' does not exist in DB)
     // ----------------------------------------------------------------
-    Route::middleware('permission:manage_settings')->group(function () {
+    Route::middleware('permission:admin.access')->group(function () {
         Route::get('/system/status', [SystemController::class, 'status']);
         Route::post('/system/git-pull', [SystemController::class, 'gitPull']);
         Route::post('/system/migrate', [SystemController::class, 'migrate']);

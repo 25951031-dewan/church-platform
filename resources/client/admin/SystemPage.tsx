@@ -87,7 +87,7 @@ function ActionButton({
 function StatusTab() {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['system-status'],
-    queryFn: () => apiClient.get<SystemStatus>('/api/v1/system/status').then((r) => r.data),
+    queryFn: () => apiClient.get<SystemStatus>('system/status').then((r) => r.data),
   });
 
   if (isLoading) return <p className="text-gray-500 text-sm">Loading system info…</p>;
@@ -150,38 +150,38 @@ function GitDeployTab() {
 
   const run = (endpoint: string, label: string) =>
     useMutation({
-      mutationFn: () => apiClient.post(`/api/v1/system/${endpoint}`).then((r) => r.data),
+      mutationFn: () => apiClient.post(`system/${endpoint}`).then((r) => r.data),
       onSuccess: (data: any) => setOutput(`✅ ${label}\n\n${data.data?.output ?? data.data?.pull_output ?? JSON.stringify(data.data, null, 2)}`),
       onError: (e: any) => setOutput(`❌ ${label} failed\n\n${e.response?.data?.message ?? e.message}`),
     });
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const pull = useMutation({
-    mutationFn: () => apiClient.post('/api/v1/system/git-pull').then((r) => r.data),
+    mutationFn: () => apiClient.post('system/git-pull').then((r) => r.data),
     onSuccess: (data: any) => setOutput(`✅ Git Pull\n\n${data.data?.pull_output ?? data.message}`),
     onError: (e: any) => setOutput(`❌ Git Pull failed\n\n${e.response?.data?.message ?? e.message}`),
   });
 
   const migrate = useMutation({
-    mutationFn: () => apiClient.post('/api/v1/system/migrate').then((r) => r.data),
+    mutationFn: () => apiClient.post('system/migrate').then((r) => r.data),
     onSuccess: (data: any) => setOutput(`✅ Migrations\n\n${data.data?.output}`),
     onError: (e: any) => setOutput(`❌ Migration failed\n\n${e.response?.data?.message ?? e.message}`),
   });
 
   const clearCache = useMutation({
-    mutationFn: () => apiClient.post('/api/v1/system/clear-cache').then((r) => r.data),
+    mutationFn: () => apiClient.post('system/clear-cache').then((r) => r.data),
     onSuccess: () => setOutput('✅ All caches cleared.'),
     onError: (e: any) => setOutput(`❌ ${e.response?.data?.message ?? e.message}`),
   });
 
   const optimize = useMutation({
-    mutationFn: () => apiClient.post('/api/v1/system/optimize').then((r) => r.data),
+    mutationFn: () => apiClient.post('system/optimize').then((r) => r.data),
     onSuccess: () => setOutput('✅ Application optimized.'),
     onError: (e: any) => setOutput(`❌ ${e.response?.data?.message ?? e.message}`),
   });
 
   const deploy = useMutation({
-    mutationFn: () => apiClient.post('/api/v1/system/deploy').then((r) => r.data),
+    mutationFn: () => apiClient.post('system/deploy').then((r) => r.data),
     onSuccess: (data: any) => {
       const steps = (data.data?.steps ?? [])
         .map((s: any) => `${s.success ? '✅' : '❌'} ${s.step}: ${s.message}`)
@@ -239,7 +239,7 @@ function UploadUpdateTab() {
     mutationFn: (file: File) => {
       const fd = new FormData();
       fd.append('update_package', file);
-      return apiClient.post('/api/v1/update/upload', fd, {
+      return apiClient.post('update/upload', fd, {
         headers: { 'Content-Type': 'multipart/form-data' },
       }).then((r) => r.data);
     },
@@ -251,13 +251,13 @@ function UploadUpdateTab() {
   });
 
   const migrate = useMutation({
-    mutationFn: () => apiClient.post('/api/v1/update/migrate').then((r) => r.data),
+    mutationFn: () => apiClient.post('update/migrate').then((r) => r.data),
     onSuccess: (data: any) => setOutput((prev) => prev + `\n\n✅ Migrations\n${data.data?.output ?? ''}`),
     onError: (e: any) => setOutput((prev) => prev + `\n\n❌ Migration failed\n${e.response?.data?.message ?? e.message}`),
   });
 
   const clearCaches = useMutation({
-    mutationFn: () => apiClient.post('/api/v1/update/clear-caches').then((r) => r.data),
+    mutationFn: () => apiClient.post('update/clear-caches').then((r) => r.data),
     onSuccess: () => {
       setOutput((prev) => prev + '\n\n✅ Caches cleared. Update complete!');
       setStep('done');
