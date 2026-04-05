@@ -78,11 +78,8 @@ step_cache() {
     php artisan route:cache
     php artisan view:cache
 
-    # Ensure storage link exists
-    if [ ! -L "public/storage" ]; then
-        php artisan storage:link
-        echo "  Storage linked."
-    fi
+    # Ensure storage link exists (--force handles existing dir or stale symlink)
+    php artisan storage:link --force || true
 
     echo -e "${GREEN}  ✓ Application optimized${NC}"
     echo ""
