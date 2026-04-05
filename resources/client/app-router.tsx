@@ -91,6 +91,7 @@ const MenuSettingsPage = lazy(() => import('./admin/settings/MenuSettingsPage').
 const ThemeSettingsPage = lazy(() => import('./admin/settings/ThemeSettingsPage').then(m => ({ default: m.ThemeSettingsPage })));
 const FeedCustomizerPage = lazy(() => import('./plugins/timeline/pages/FeedCustomizerPage').then(m => ({ default: m.FeedCustomizerPage })));
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
+const LandingPage = lazy(() => import('./pages/LandingPage').then(m => ({ default: m.LandingPage })));
 const MobileLayout = lazy(() => import('./layouts/MobileLayout').then(m => ({ default: m.MobileLayout })));
 
 function Loading() {
@@ -105,6 +106,7 @@ export function AppRouter() {
         <Route element={<MobileLayout />}>
           {/* Public */}
           <Route path="/" element={<HomePage />} />
+          <Route path="/landing" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
 
           {/* Protected member routes */}
