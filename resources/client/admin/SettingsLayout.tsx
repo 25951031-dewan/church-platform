@@ -1,7 +1,7 @@
 import { NavLink, Outlet } from 'react-router';
 import { useState } from 'react';
 import {
-  Settings, Mail, Bell, Palette, Lock, Video, Server, Upload, Globe, Search, BarChart2, Code2, ShieldCheck, Bot, Menu, X, Layers, List
+  Settings, Mail, Bell, Palette, Lock, Video, Server, Upload, Globe, Search, BarChart2, Code2, ShieldCheck, Bot, Menu, X, Layers, List, Palette as PaletteIcon
 } from 'lucide-react';
 import type { ElementType } from 'react';
 
@@ -14,6 +14,7 @@ interface SettingNav {
 const settingsNav: SettingNav[] = [
   { label: 'General',        path: '/admin/settings/general',       icon: Settings   },
   { label: 'Appearance',     path: '/admin/settings/appearance',    icon: Palette    },
+  { label: 'Themes',         path: '/admin/settings/themes',        icon: PaletteIcon },
   { label: 'Authentication', path: '/admin/settings/auth',          icon: Lock       },
   { label: 'Email',          path: '/admin/settings/email',         icon: Mail       },
   { label: 'Notifications',  path: '/admin/settings/notifications', icon: Bell       },

@@ -88,6 +88,7 @@ const GdprSettingsPage = lazy(() => import('./admin/settings/GdprSettingsPage').
 const CaptchaSettingsPage = lazy(() => import('./admin/settings/CaptchaSettingsPage').then(m => ({ default: m.CaptchaSettingsPage })));
 const LandingPageSettingsPage = lazy(() => import('./admin/settings/LandingPageSettingsPage').then(m => ({ default: m.LandingPageSettingsPage })));
 const MenuSettingsPage = lazy(() => import('./admin/settings/MenuSettingsPage').then(m => ({ default: m.MenuSettingsPage })));
+const ThemeSettingsPage = lazy(() => import('./admin/settings/ThemeSettingsPage').then(m => ({ default: m.ThemeSettingsPage })));
 const FeedCustomizerPage = lazy(() => import('./plugins/timeline/pages/FeedCustomizerPage').then(m => ({ default: m.FeedCustomizerPage })));
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
 const MobileLayout = lazy(() => import('./layouts/MobileLayout').then(m => ({ default: m.MobileLayout })));
@@ -170,6 +171,7 @@ export function AppRouter() {
                 <Route path="email" element={<EmailSettingsPage />} />
                 <Route path="auth" element={<AuthSettingsPage />} />
                 <Route path="appearance" element={<AppearanceSettingsPage />} />
+                <Route path="themes" element={<ThemeSettingsPage />} />
                 <Route path="notifications" element={<NotificationSettingsPage />} />
                 <Route path="uploading" element={<UploadingSettingsPage />} />
                 <Route path="localization" element={<LocalizationSettingsPage />} />
