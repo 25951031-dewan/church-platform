@@ -79,6 +79,13 @@ const GeneralSettingsPage = lazy(() => import('./admin/settings/GeneralSettingsP
 const EmailSettingsPage = lazy(() => import('./admin/settings/EmailSettingsPage').then(m => ({ default: m.EmailSettingsPage })));
 const AuthSettingsPage = lazy(() => import('./admin/settings/AuthSettingsPage').then(m => ({ default: m.AuthSettingsPage })));
 const AppearanceSettingsPage = lazy(() => import('./admin/settings/AppearanceSettingsPage').then(m => ({ default: m.AppearanceSettingsPage })));
+const UploadingSettingsPage = lazy(() => import('./admin/settings/UploadingSettingsPage').then(m => ({ default: m.UploadingSettingsPage })));
+const LocalizationSettingsPage = lazy(() => import('./admin/settings/LocalizationSettingsPage').then(m => ({ default: m.LocalizationSettingsPage })));
+const SeoSettingsPage = lazy(() => import('./admin/settings/SeoSettingsPage').then(m => ({ default: m.SeoSettingsPage })));
+const AnalyticsSettingsPage = lazy(() => import('./admin/settings/AnalyticsSettingsPage').then(m => ({ default: m.AnalyticsSettingsPage })));
+const CustomCodeSettingsPage = lazy(() => import('./admin/settings/CustomCodeSettingsPage').then(m => ({ default: m.CustomCodeSettingsPage })));
+const GdprSettingsPage = lazy(() => import('./admin/settings/GdprSettingsPage').then(m => ({ default: m.GdprSettingsPage })));
+const CaptchaSettingsPage = lazy(() => import('./admin/settings/CaptchaSettingsPage').then(m => ({ default: m.CaptchaSettingsPage })));
 const FeedCustomizerPage = lazy(() => import('./plugins/timeline/pages/FeedCustomizerPage').then(m => ({ default: m.FeedCustomizerPage })));
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
 const MobileLayout = lazy(() => import('./layouts/MobileLayout').then(m => ({ default: m.MobileLayout })));
@@ -162,6 +169,13 @@ export function AppRouter() {
                 <Route path="auth" element={<AuthSettingsPage />} />
                 <Route path="appearance" element={<AppearanceSettingsPage />} />
                 <Route path="notifications" element={<NotificationSettingsPage />} />
+                <Route path="uploading" element={<UploadingSettingsPage />} />
+                <Route path="localization" element={<LocalizationSettingsPage />} />
+                <Route path="seo" element={<SeoSettingsPage />} />
+                <Route path="analytics" element={<AnalyticsSettingsPage />} />
+                <Route path="custom-code" element={<CustomCodeSettingsPage />} />
+                <Route path="gdpr" element={<GdprSettingsPage />} />
+                <Route path="captcha" element={<CaptchaSettingsPage />} />
                 <Route path="live-meetings" element={<LiveMeetingSettingsPage />} />
               </Route>
 
