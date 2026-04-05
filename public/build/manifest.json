@@ -1,339 +1,378 @@
 {
-  "_CommentThread-CCWfbirG.js": {
-    "file": "assets/CommentThread-CCWfbirG.js",
+  "_CommentThread-wIphB-9T.js": {
+    "file": "assets/CommentThread-wIphB-9T.js",
     "name": "CommentThread",
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js"
+      "_useQuery-NMWCX5PB.js"
     ]
   },
-  "_LiveBadge-DIaQ3xrW.js": {
-    "file": "assets/LiveBadge-DIaQ3xrW.js",
+  "_LiveBadge-CpPQ-Wyu.js": {
+    "file": "assets/LiveBadge-CpPQ-Wyu.js",
     "name": "LiveBadge",
     "imports": [
       "resources/client/main.tsx"
     ]
   },
-  "_PostFeed-CU9zHIQg.js": {
-    "file": "assets/PostFeed-CU9zHIQg.js",
+  "_PostFeed-H5R9KkHx.js": {
+    "file": "assets/PostFeed-H5R9KkHx.js",
     "name": "PostFeed",
     "imports": [
       "resources/client/main.tsx",
-      "_useInfiniteQuery-C_vAJzmn.js",
-      "_CommentThread-CCWfbirG.js"
+      "_useInfiniteQuery-Co_J_dlW.js",
+      "_CommentThread-wIphB-9T.js"
     ]
   },
-  "_SermonCard-fqmyKMCI.js": {
-    "file": "assets/SermonCard-fqmyKMCI.js",
+  "_SermonCard-m1_yW2AQ.js": {
+    "file": "assets/SermonCard-m1_yW2AQ.js",
     "name": "SermonCard",
     "imports": [
       "resources/client/main.tsx"
     ]
   },
-  "_circle-alert-DkITetWM.js": {
-    "file": "assets/circle-alert-DkITetWM.js",
+  "_calendar-CYHmEuIk.js": {
+    "file": "assets/calendar-CYHmEuIk.js",
+    "name": "calendar",
+    "imports": [
+      "_createLucideIcon-DaJKMChm.js"
+    ]
+  },
+  "_circle-alert-BRzkShcU.js": {
+    "file": "assets/circle-alert-BRzkShcU.js",
     "name": "circle-alert",
     "imports": [
-      "_createLucideIcon-CeIQex99.js"
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
-  "_circle-check-big-D7M5LAxv.js": {
-    "file": "assets/circle-check-big-D7M5LAxv.js",
+  "_circle-check-big-b1HrvDNf.js": {
+    "file": "assets/circle-check-big-b1HrvDNf.js",
     "name": "circle-check-big",
     "imports": [
-      "_createLucideIcon-CeIQex99.js"
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
-  "_createLucideIcon-CeIQex99.js": {
-    "file": "assets/createLucideIcon-CeIQex99.js",
+  "_clock-BGTtAPsJ.js": {
+    "file": "assets/clock-BGTtAPsJ.js",
+    "name": "clock",
+    "imports": [
+      "_createLucideIcon-DaJKMChm.js"
+    ]
+  },
+  "_createLucideIcon-DaJKMChm.js": {
+    "file": "assets/createLucideIcon-DaJKMChm.js",
     "name": "createLucideIcon",
     "imports": [
       "resources/client/main.tsx"
     ]
   },
-  "_mic-CT41yFlG.js": {
-    "file": "assets/mic-CT41yFlG.js",
+  "_map-pin-CrHmFy50.js": {
+    "file": "assets/map-pin-CrHmFy50.js",
+    "name": "map-pin",
+    "imports": [
+      "_createLucideIcon-DaJKMChm.js"
+    ]
+  },
+  "_mic-DgnFnExG.js": {
+    "file": "assets/mic-DgnFnExG.js",
     "name": "mic",
     "imports": [
-      "_createLucideIcon-CeIQex99.js"
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
-  "_palette-7DdPFhgk.js": {
-    "file": "assets/palette-7DdPFhgk.js",
+  "_palette-E0Ie3ZuB.js": {
+    "file": "assets/palette-E0Ie3ZuB.js",
     "name": "palette",
     "imports": [
-      "_createLucideIcon-CeIQex99.js"
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
-  "_panels-top-left-5SkzJFuv.js": {
-    "file": "assets/panels-top-left-5SkzJFuv.js",
+  "_panels-top-left-DLs2ZfgI.js": {
+    "file": "assets/panels-top-left-DLs2ZfgI.js",
     "name": "panels-top-left",
     "imports": [
-      "_createLucideIcon-CeIQex99.js"
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
-  "_queries-1zOXH4ua.js": {
-    "file": "assets/queries-1zOXH4ua.js",
+  "_queries-B5afusCt.js": {
+    "file": "assets/queries-B5afusCt.js",
     "name": "queries",
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
-  "_queries-BRKC2bG3.js": {
-    "file": "assets/queries-BRKC2bG3.js",
+  "_queries-BklvsHvQ.js": {
+    "file": "assets/queries-BklvsHvQ.js",
     "name": "queries",
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
-  "_queries-BmLpDGsp.js": {
-    "file": "assets/queries-BmLpDGsp.js",
-    "name": "queries",
-    "imports": [
-      "_useQuery-BRcpcEcD.js",
-      "resources/client/main.tsx",
-      "_useInfiniteQuery-C_vAJzmn.js"
-    ]
-  },
-  "_queries-C97mmPHt.js": {
-    "file": "assets/queries-C97mmPHt.js",
+  "_queries-BzHYrDDf.js": {
+    "file": "assets/queries-BzHYrDDf.js",
     "name": "queries",
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
-  "_queries-Co7cO_e5.js": {
-    "file": "assets/queries-Co7cO_e5.js",
+  "_queries-ChKptiI9.js": {
+    "file": "assets/queries-ChKptiI9.js",
     "name": "queries",
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
-  "_queries-Cv6eeHNC.js": {
-    "file": "assets/queries-Cv6eeHNC.js",
+  "_queries-D-a8-pqg.js": {
+    "file": "assets/queries-D-a8-pqg.js",
     "name": "queries",
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
-  "_queries-IwwzCwSZ.js": {
-    "file": "assets/queries-IwwzCwSZ.js",
+  "_queries-D2hSL50q.js": {
+    "file": "assets/queries-D2hSL50q.js",
     "name": "queries",
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
-  "_search-BvVp3OXX.js": {
-    "file": "assets/search-BvVp3OXX.js",
+  "_queries-DeXTaV4Q.js": {
+    "file": "assets/queries-DeXTaV4Q.js",
+    "name": "queries",
+    "imports": [
+      "_useQuery-NMWCX5PB.js",
+      "resources/client/main.tsx",
+      "_useInfiniteQuery-Co_J_dlW.js"
+    ]
+  },
+  "_search-CUIURySB.js": {
+    "file": "assets/search-CUIURySB.js",
     "name": "search",
     "imports": [
-      "_createLucideIcon-CeIQex99.js"
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
-  "_settings-B-r8_xRE.js": {
-    "file": "assets/settings-B-r8_xRE.js",
+  "_settings-CsYgue6Q.js": {
+    "file": "assets/settings-CsYgue6Q.js",
     "name": "settings",
     "imports": [
-      "_createLucideIcon-CeIQex99.js"
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
-  "_shield-CQ13VDXW.js": {
-    "file": "assets/shield-CQ13VDXW.js",
+  "_shield-D7Nqey3Z.js": {
+    "file": "assets/shield-D7Nqey3Z.js",
     "name": "shield",
     "imports": [
-      "_createLucideIcon-CeIQex99.js"
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
-  "_useInfiniteQuery-C_vAJzmn.js": {
-    "file": "assets/useInfiniteQuery-C_vAJzmn.js",
-    "name": "useInfiniteQuery",
+  "_useFeedLayouts-BJvaIfJh.js": {
+    "file": "assets/useFeedLayouts-BJvaIfJh.js",
+    "name": "useFeedLayouts",
     "imports": [
-      "_useQuery-BRcpcEcD.js",
+      "_createLucideIcon-DaJKMChm.js",
+      "_useQuery-NMWCX5PB.js",
       "resources/client/main.tsx"
     ]
   },
-  "_useQuery-BRcpcEcD.js": {
-    "file": "assets/useQuery-BRcpcEcD.js",
+  "_useInfiniteQuery-Co_J_dlW.js": {
+    "file": "assets/useInfiniteQuery-Co_J_dlW.js",
+    "name": "useInfiniteQuery",
+    "imports": [
+      "_useQuery-NMWCX5PB.js",
+      "resources/client/main.tsx"
+    ]
+  },
+  "_useQuery-NMWCX5PB.js": {
+    "file": "assets/useQuery-NMWCX5PB.js",
     "name": "useQuery",
     "imports": [
       "resources/client/main.tsx"
     ]
   },
-  "_users--DbmI7th.js": {
-    "file": "assets/users--DbmI7th.js",
+  "_user-DgrQbvfZ.js": {
+    "file": "assets/user-DgrQbvfZ.js",
+    "name": "user",
+    "imports": [
+      "_createLucideIcon-DaJKMChm.js"
+    ]
+  },
+  "_users-Dv4yO4HE.js": {
+    "file": "assets/users-Dv4yO4HE.js",
     "name": "users",
     "imports": [
-      "_createLucideIcon-CeIQex99.js"
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
-  "_video-D5VOE5jS.js": {
-    "file": "assets/video-D5VOE5jS.js",
+  "_video-BYHd8xC3.js": {
+    "file": "assets/video-BYHd8xC3.js",
     "name": "video",
     "imports": [
-      "_createLucideIcon-CeIQex99.js"
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
-  "_x-OZziM1sG.js": {
-    "file": "assets/x-OZziM1sG.js",
+  "_x-D38DYgCe.js": {
+    "file": "assets/x-D38DYgCe.js",
     "name": "x",
     "imports": [
-      "_createLucideIcon-CeIQex99.js"
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
   "resources/client/admin/AdminLayout.tsx": {
-    "file": "assets/AdminLayout-Dsu0GKU2.js",
+    "file": "assets/AdminLayout-cdZ41khz.js",
     "name": "AdminLayout",
     "src": "resources/client/admin/AdminLayout.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_x-OZziM1sG.js",
-      "_createLucideIcon-CeIQex99.js",
-      "_users--DbmI7th.js",
-      "_shield-CQ13VDXW.js",
-      "_panels-top-left-5SkzJFuv.js",
-      "_mic-CT41yFlG.js",
-      "_video-D5VOE5jS.js",
-      "_settings-B-r8_xRE.js"
+      "_x-D38DYgCe.js",
+      "_createLucideIcon-DaJKMChm.js",
+      "_users-Dv4yO4HE.js",
+      "_shield-D7Nqey3Z.js",
+      "_panels-top-left-DLs2ZfgI.js",
+      "_mic-DgnFnExG.js",
+      "_calendar-CYHmEuIk.js",
+      "_video-BYHd8xC3.js",
+      "_settings-CsYgue6Q.js"
     ]
   },
   "resources/client/admin/DashboardPage.tsx": {
-    "file": "assets/DashboardPage-DSSpIIw7.js",
+    "file": "assets/DashboardPage-Rl9aa3y4.js",
     "name": "DashboardPage",
     "src": "resources/client/admin/DashboardPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js",
-      "_users--DbmI7th.js",
-      "_mic-CT41yFlG.js",
-      "_createLucideIcon-CeIQex99.js",
-      "_circle-alert-DkITetWM.js",
-      "_circle-check-big-D7M5LAxv.js"
+      "_useQuery-NMWCX5PB.js",
+      "_users-Dv4yO4HE.js",
+      "_mic-DgnFnExG.js",
+      "_createLucideIcon-DaJKMChm.js",
+      "_clock-BGTtAPsJ.js",
+      "_circle-alert-BRzkShcU.js",
+      "_circle-check-big-b1HrvDNf.js"
     ]
   },
   "resources/client/admin/PluginsPage.tsx": {
-    "file": "assets/PluginsPage-BgQm405U.js",
+    "file": "assets/PluginsPage-Dfh3xFcR.js",
     "name": "PluginsPage",
     "src": "resources/client/admin/PluginsPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js",
-      "_createLucideIcon-CeIQex99.js",
-      "_x-OZziM1sG.js"
+      "_useQuery-NMWCX5PB.js",
+      "_createLucideIcon-DaJKMChm.js",
+      "_x-D38DYgCe.js"
     ]
   },
   "resources/client/admin/RolesPage.tsx": {
-    "file": "assets/RolesPage-DmuAdxOm.js",
+    "file": "assets/RolesPage-DYrXQ2qs.js",
     "name": "RolesPage",
     "src": "resources/client/admin/RolesPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js",
-      "_shield-CQ13VDXW.js",
-      "_createLucideIcon-CeIQex99.js"
+      "_useQuery-NMWCX5PB.js",
+      "_shield-D7Nqey3Z.js",
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
   "resources/client/admin/SettingsLayout.tsx": {
-    "file": "assets/SettingsLayout-D89tDBeA.js",
+    "file": "assets/SettingsLayout-CGa7QtnP.js",
     "name": "SettingsLayout",
     "src": "resources/client/admin/SettingsLayout.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_settings-B-r8_xRE.js",
-      "_createLucideIcon-CeIQex99.js",
-      "_video-D5VOE5jS.js",
-      "_palette-7DdPFhgk.js"
+      "_settings-CsYgue6Q.js",
+      "_createLucideIcon-DaJKMChm.js",
+      "_video-BYHd8xC3.js",
+      "_palette-E0Ie3ZuB.js"
     ]
   },
   "resources/client/admin/SystemPage.tsx": {
-    "file": "assets/SystemPage-CRy2OfHB.js",
+    "file": "assets/SystemPage-CMnykHDP.js",
     "name": "SystemPage",
     "src": "resources/client/admin/SystemPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js"
+      "_useQuery-NMWCX5PB.js"
     ]
   },
   "resources/client/admin/UsersPage.tsx": {
-    "file": "assets/UsersPage-DSgX8vov.js",
+    "file": "assets/UsersPage-C1-jLaat.js",
     "name": "UsersPage",
     "src": "resources/client/admin/UsersPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js",
-      "_search-BvVp3OXX.js",
-      "_circle-alert-DkITetWM.js",
-      "_createLucideIcon-CeIQex99.js"
+      "_useQuery-NMWCX5PB.js",
+      "_search-CUIURySB.js",
+      "_circle-alert-BRzkShcU.js",
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
   "resources/client/admin/settings/AppearanceSettingsPage.tsx": {
-    "file": "assets/AppearanceSettingsPage-Duexv6Tx.js",
+    "file": "assets/AppearanceSettingsPage-CtMAFeiY.js",
     "name": "AppearanceSettingsPage",
     "src": "resources/client/admin/settings/AppearanceSettingsPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js",
-      "_createLucideIcon-CeIQex99.js",
-      "_palette-7DdPFhgk.js"
+      "_useQuery-NMWCX5PB.js",
+      "_createLucideIcon-DaJKMChm.js",
+      "_palette-E0Ie3ZuB.js"
     ]
   },
   "resources/client/admin/settings/AuthSettingsPage.tsx": {
-    "file": "assets/AuthSettingsPage-DT2iR4a4.js",
+    "file": "assets/AuthSettingsPage-B7Y20UVd.js",
     "name": "AuthSettingsPage",
     "src": "resources/client/admin/settings/AuthSettingsPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js",
-      "_circle-check-big-D7M5LAxv.js",
-      "_createLucideIcon-CeIQex99.js"
+      "_useQuery-NMWCX5PB.js",
+      "_circle-check-big-b1HrvDNf.js",
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
   "resources/client/admin/settings/EmailSettingsPage.tsx": {
-    "file": "assets/EmailSettingsPage-CuN09v5v.js",
+    "file": "assets/EmailSettingsPage-C45zIxr5.js",
     "name": "EmailSettingsPage",
     "src": "resources/client/admin/settings/EmailSettingsPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js",
-      "_circle-check-big-D7M5LAxv.js",
-      "_createLucideIcon-CeIQex99.js"
+      "_useQuery-NMWCX5PB.js",
+      "_circle-check-big-b1HrvDNf.js",
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
   "resources/client/admin/settings/GeneralSettingsPage.tsx": {
-    "file": "assets/GeneralSettingsPage-DSybdLEz.js",
+    "file": "assets/GeneralSettingsPage-CA91t17I.js",
     "name": "GeneralSettingsPage",
     "src": "resources/client/admin/settings/GeneralSettingsPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js",
-      "_circle-check-big-D7M5LAxv.js",
-      "_createLucideIcon-CeIQex99.js"
+      "_useQuery-NMWCX5PB.js",
+      "_circle-check-big-b1HrvDNf.js",
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
   "resources/client/auth/LoginPage.tsx": {
-    "file": "assets/LoginPage-D8ruTQPL.js",
+    "file": "assets/LoginPage-DyA8_X1e.js",
     "name": "LoginPage",
     "src": "resources/client/auth/LoginPage.tsx",
     "isDynamicEntry": true,
@@ -342,18 +381,19 @@
     ]
   },
   "resources/client/layouts/MobileLayout.tsx": {
-    "file": "assets/MobileLayout-Bban2Zld.js",
+    "file": "assets/MobileLayout-BiRhzzU4.js",
     "name": "MobileLayout",
     "src": "resources/client/layouts/MobileLayout.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_createLucideIcon-CeIQex99.js",
-      "_search-BvVp3OXX.js"
+      "_createLucideIcon-DaJKMChm.js",
+      "_search-CUIURySB.js",
+      "_user-DgrQbvfZ.js"
     ]
   },
   "resources/client/main.tsx": {
-    "file": "assets/main-9lw1HJ4i.js",
+    "file": "assets/main-D-I4psTg.js",
     "name": "main",
     "src": "resources/client/main.tsx",
     "isEntry": true,
@@ -402,11 +442,11 @@
       "resources/client/layouts/MobileLayout.tsx"
     ],
     "css": [
-      "assets/main-D_MlKa5g.css"
+      "assets/main-aWKuyV12.css"
     ]
   },
   "resources/client/pages/HomePage.tsx": {
-    "file": "assets/HomePage-BgteCeqz.js",
+    "file": "assets/HomePage-nldiWt7d.js",
     "name": "HomePage",
     "src": "resources/client/pages/HomePage.tsx",
     "isDynamicEntry": true,
@@ -415,338 +455,347 @@
     ]
   },
   "resources/client/plugins/blog/pages/ArticleDetailPage.tsx": {
-    "file": "assets/ArticleDetailPage-CArmSXwQ.js",
+    "file": "assets/ArticleDetailPage-WwzE2PcT.js",
     "name": "ArticleDetailPage",
     "src": "resources/client/plugins/blog/pages/ArticleDetailPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-1zOXH4ua.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-BzHYrDDf.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
   "resources/client/plugins/blog/pages/ArticleEditorPage.tsx": {
-    "file": "assets/ArticleEditorPage-DTbh4-mu.js",
+    "file": "assets/ArticleEditorPage-BJp9m3kR.js",
     "name": "ArticleEditorPage",
     "src": "resources/client/plugins/blog/pages/ArticleEditorPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-1zOXH4ua.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-BzHYrDDf.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
   "resources/client/plugins/blog/pages/BlogListPage.tsx": {
-    "file": "assets/BlogListPage-BiKgILGT.js",
+    "file": "assets/BlogListPage-CfYq6yP4.js",
     "name": "BlogListPage",
     "src": "resources/client/plugins/blog/pages/BlogListPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-1zOXH4ua.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-BzHYrDDf.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
   "resources/client/plugins/chat/pages/ChatPage.tsx": {
-    "file": "assets/ChatPage-BjLHYJxO.js",
+    "file": "assets/ChatPage-DtETzrQU.js",
     "name": "ChatPage",
     "src": "resources/client/plugins/chat/pages/ChatPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js"
+      "_useQuery-NMWCX5PB.js"
     ]
   },
   "resources/client/plugins/church-builder/pages/ChurchDirectoryPage.tsx": {
-    "file": "assets/ChurchDirectoryPage-CCeOW5eE.js",
+    "file": "assets/ChurchDirectoryPage-DTRUQMb3.js",
     "name": "ChurchDirectoryPage",
     "src": "resources/client/plugins/church-builder/pages/ChurchDirectoryPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-BmLpDGsp.js",
-      "_createLucideIcon-CeIQex99.js",
-      "_users--DbmI7th.js",
-      "_search-BvVp3OXX.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-DeXTaV4Q.js",
+      "_map-pin-CrHmFy50.js",
+      "_users-Dv4yO4HE.js",
+      "_search-CUIURySB.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js",
+      "_createLucideIcon-DaJKMChm.js"
     ]
   },
   "resources/client/plugins/church-builder/pages/ChurchProfilePage.tsx": {
-    "file": "assets/ChurchProfilePage-C_UjVWhH.js",
+    "file": "assets/ChurchProfilePage-BKmKkrTR.js",
     "name": "ChurchProfilePage",
     "src": "resources/client/plugins/church-builder/pages/ChurchProfilePage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-BmLpDGsp.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-DeXTaV4Q.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
   "resources/client/plugins/events/pages/EventDetailPage.tsx": {
-    "file": "assets/EventDetailPage-W9J5B1u2.js",
+    "file": "assets/EventDetailPage-D3APffBE.js",
     "name": "EventDetailPage",
     "src": "resources/client/plugins/events/pages/EventDetailPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-C97mmPHt.js",
-      "_CommentThread-CCWfbirG.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-ChKptiI9.js",
+      "_CommentThread-wIphB-9T.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
   "resources/client/plugins/events/pages/EventsPage.tsx": {
-    "file": "assets/EventsPage-CKn29fDz.js",
+    "file": "assets/EventsPage-Cd09SCbn.js",
     "name": "EventsPage",
     "src": "resources/client/plugins/events/pages/EventsPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-C97mmPHt.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-ChKptiI9.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
   "resources/client/plugins/groups/pages/GroupBrowserPage.tsx": {
-    "file": "assets/GroupBrowserPage-ClSgv-jP.js",
+    "file": "assets/GroupBrowserPage-BKuiYkeR.js",
     "name": "GroupBrowserPage",
     "src": "resources/client/plugins/groups/pages/GroupBrowserPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-Cv6eeHNC.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-BklvsHvQ.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
   "resources/client/plugins/groups/pages/GroupDetailPage.tsx": {
-    "file": "assets/GroupDetailPage-CuKl7n7O.js",
+    "file": "assets/GroupDetailPage-Bj1pTrOG.js",
     "name": "GroupDetailPage",
     "src": "resources/client/plugins/groups/pages/GroupDetailPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-Cv6eeHNC.js",
-      "_PostFeed-CU9zHIQg.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js",
-      "_CommentThread-CCWfbirG.js"
+      "_queries-BklvsHvQ.js",
+      "_PostFeed-H5R9KkHx.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js",
+      "_CommentThread-wIphB-9T.js"
     ]
   },
   "resources/client/plugins/library/pages/BookDetailPage.tsx": {
-    "file": "assets/BookDetailPage-2oFnNAPM.js",
+    "file": "assets/BookDetailPage-CgNX727j.js",
     "name": "BookDetailPage",
     "src": "resources/client/plugins/library/pages/BookDetailPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-IwwzCwSZ.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-D2hSL50q.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
   "resources/client/plugins/library/pages/LibraryCatalogPage.tsx": {
-    "file": "assets/LibraryCatalogPage-B59Vou_H.js",
+    "file": "assets/LibraryCatalogPage-BLUw4KFP.js",
     "name": "LibraryCatalogPage",
     "src": "resources/client/plugins/library/pages/LibraryCatalogPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-IwwzCwSZ.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-D2hSL50q.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
   "resources/client/plugins/live-meetings/admin/LiveMeetingSettingsPage.tsx": {
-    "file": "assets/LiveMeetingSettingsPage-BmU14Yn9.js",
+    "file": "assets/LiveMeetingSettingsPage-BIjPl9Cm.js",
     "name": "LiveMeetingSettingsPage",
     "src": "resources/client/plugins/live-meetings/admin/LiveMeetingSettingsPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js"
+      "_useQuery-NMWCX5PB.js"
     ]
   },
   "resources/client/plugins/live-meetings/admin/MeetingManagerPage.tsx": {
-    "file": "assets/MeetingManagerPage-CQaglyXd.js",
+    "file": "assets/MeetingManagerPage-D0je6jVu.js",
     "name": "MeetingManagerPage",
     "src": "resources/client/plugins/live-meetings/admin/MeetingManagerPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js"
+      "_useQuery-NMWCX5PB.js"
     ]
   },
   "resources/client/plugins/live-meetings/pages/MeetingDetailPage.tsx": {
-    "file": "assets/MeetingDetailPage-CUDdkOc-.js",
+    "file": "assets/MeetingDetailPage-cn2uP61H.js",
     "name": "MeetingDetailPage",
     "src": "resources/client/plugins/live-meetings/pages/MeetingDetailPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_LiveBadge-DIaQ3xrW.js",
-      "_useQuery-BRcpcEcD.js"
+      "_LiveBadge-CpPQ-Wyu.js",
+      "_useQuery-NMWCX5PB.js"
     ]
   },
   "resources/client/plugins/live-meetings/pages/MeetingsPage.tsx": {
-    "file": "assets/MeetingsPage-CCCQ7VP4.js",
+    "file": "assets/MeetingsPage-BKRJJiMd.js",
     "name": "MeetingsPage",
     "src": "resources/client/plugins/live-meetings/pages/MeetingsPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_LiveBadge-DIaQ3xrW.js",
-      "_useInfiniteQuery-C_vAJzmn.js",
-      "_useQuery-BRcpcEcD.js"
+      "_LiveBadge-CpPQ-Wyu.js",
+      "_useInfiniteQuery-Co_J_dlW.js",
+      "_useQuery-NMWCX5PB.js"
     ]
   },
   "resources/client/plugins/notifications/admin/NotificationLogsPage.tsx": {
-    "file": "assets/NotificationLogsPage-gf5CA0Vj.js",
+    "file": "assets/NotificationLogsPage-C3UPIk8G.js",
     "name": "NotificationLogsPage",
     "src": "resources/client/plugins/notifications/admin/NotificationLogsPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js"
+      "_useQuery-NMWCX5PB.js"
     ]
   },
   "resources/client/plugins/notifications/admin/NotificationSettingsPage.tsx": {
-    "file": "assets/NotificationSettingsPage-BSdHcKGB.js",
+    "file": "assets/NotificationSettingsPage-Bdv7tVxk.js",
     "name": "NotificationSettingsPage",
     "src": "resources/client/plugins/notifications/admin/NotificationSettingsPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js"
+      "_useQuery-NMWCX5PB.js"
     ]
   },
   "resources/client/plugins/notifications/admin/NotificationTemplatesPage.tsx": {
-    "file": "assets/NotificationTemplatesPage-C2hhUCkp.js",
+    "file": "assets/NotificationTemplatesPage-DHzXSaQn.js",
     "name": "NotificationTemplatesPage",
     "src": "resources/client/plugins/notifications/admin/NotificationTemplatesPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js"
+      "_useQuery-NMWCX5PB.js"
     ]
   },
   "resources/client/plugins/notifications/pages/NotificationsPage.tsx": {
-    "file": "assets/NotificationsPage-BKbXo4Vu.js",
+    "file": "assets/NotificationsPage-CTmaSPkp.js",
     "name": "NotificationsPage",
     "src": "resources/client/plugins/notifications/pages/NotificationsPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useInfiniteQuery-C_vAJzmn.js",
-      "_useQuery-BRcpcEcD.js"
+      "_useInfiniteQuery-Co_J_dlW.js",
+      "_useQuery-NMWCX5PB.js"
     ]
   },
   "resources/client/plugins/prayer/pages/PrayerDetailPage.tsx": {
-    "file": "assets/PrayerDetailPage-ClR4M2uR.js",
+    "file": "assets/PrayerDetailPage-rikOk0hx.js",
     "name": "PrayerDetailPage",
     "src": "resources/client/plugins/prayer/pages/PrayerDetailPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-BRKC2bG3.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-D-a8-pqg.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
   "resources/client/plugins/prayer/pages/PrayerSubmitPage.tsx": {
-    "file": "assets/PrayerSubmitPage-CKZTHBY5.js",
+    "file": "assets/PrayerSubmitPage-NBZns-38.js",
     "name": "PrayerSubmitPage",
     "src": "resources/client/plugins/prayer/pages/PrayerSubmitPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-BRKC2bG3.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-D-a8-pqg.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
   "resources/client/plugins/prayer/pages/PrayerWallPage.tsx": {
-    "file": "assets/PrayerWallPage-BFspRWiB.js",
+    "file": "assets/PrayerWallPage-DFDc0f29.js",
     "name": "PrayerWallPage",
     "src": "resources/client/plugins/prayer/pages/PrayerWallPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-BRKC2bG3.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-D-a8-pqg.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
   "resources/client/plugins/sermons/pages/SermonDetailPage.tsx": {
-    "file": "assets/SermonDetailPage-Cixg1KVl.js",
+    "file": "assets/SermonDetailPage-QmjZ3AGd.js",
     "name": "SermonDetailPage",
     "src": "resources/client/plugins/sermons/pages/SermonDetailPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-Co7cO_e5.js",
-      "_CommentThread-CCWfbirG.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-B5afusCt.js",
+      "_CommentThread-wIphB-9T.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
   "resources/client/plugins/sermons/pages/SermonSeriesPage.tsx": {
-    "file": "assets/SermonSeriesPage-H5N_ztTc.js",
+    "file": "assets/SermonSeriesPage-DY9taAf7.js",
     "name": "SermonSeriesPage",
     "src": "resources/client/plugins/sermons/pages/SermonSeriesPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-Co7cO_e5.js",
-      "_SermonCard-fqmyKMCI.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-B5afusCt.js",
+      "_SermonCard-m1_yW2AQ.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
   "resources/client/plugins/sermons/pages/SermonsPage.tsx": {
-    "file": "assets/SermonsPage-C1Pt60Kv.js",
+    "file": "assets/SermonsPage-BpBAizqI.js",
     "name": "SermonsPage",
     "src": "resources/client/plugins/sermons/pages/SermonsPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_queries-Co7cO_e5.js",
-      "_SermonCard-fqmyKMCI.js",
-      "_useQuery-BRcpcEcD.js",
-      "_useInfiniteQuery-C_vAJzmn.js"
+      "_queries-B5afusCt.js",
+      "_SermonCard-m1_yW2AQ.js",
+      "_useQuery-NMWCX5PB.js",
+      "_useInfiniteQuery-Co_J_dlW.js"
     ]
   },
   "resources/client/plugins/timeline/pages/FeedCustomizerPage.tsx": {
-    "file": "assets/FeedCustomizerPage-mP9FPusR.js",
+    "file": "assets/FeedCustomizerPage-B0rxbGV-.js",
     "name": "FeedCustomizerPage",
     "src": "resources/client/plugins/timeline/pages/FeedCustomizerPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_useQuery-BRcpcEcD.js",
-      "_createLucideIcon-CeIQex99.js",
-      "_settings-B-r8_xRE.js",
-      "_panels-top-left-5SkzJFuv.js",
-      "_users--DbmI7th.js",
-      "_palette-7DdPFhgk.js"
+      "_useFeedLayouts-BJvaIfJh.js",
+      "_createLucideIcon-DaJKMChm.js",
+      "_settings-CsYgue6Q.js",
+      "_calendar-CYHmEuIk.js",
+      "_users-Dv4yO4HE.js",
+      "_panels-top-left-DLs2ZfgI.js",
+      "_palette-E0Ie3ZuB.js",
+      "_useQuery-NMWCX5PB.js"
     ]
   },
   "resources/client/plugins/timeline/pages/NewsfeedPage.tsx": {
-    "file": "assets/NewsfeedPage-D9GeATby.js",
+    "file": "assets/NewsfeedPage-TdhI5EUf.js",
     "name": "NewsfeedPage",
     "src": "resources/client/plugins/timeline/pages/NewsfeedPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/client/main.tsx",
-      "_PostFeed-CU9zHIQg.js",
-      "_useInfiniteQuery-C_vAJzmn.js",
-      "_useQuery-BRcpcEcD.js",
-      "_CommentThread-CCWfbirG.js"
+      "_useFeedLayouts-BJvaIfJh.js",
+      "_PostFeed-H5R9KkHx.js",
+      "_useQuery-NMWCX5PB.js",
+      "_createLucideIcon-DaJKMChm.js",
+      "_clock-BGTtAPsJ.js",
+      "_calendar-CYHmEuIk.js",
+      "_map-pin-CrHmFy50.js",
+      "_user-DgrQbvfZ.js",
+      "_useInfiniteQuery-Co_J_dlW.js",
+      "_CommentThread-wIphB-9T.js"
     ]
   }
 }

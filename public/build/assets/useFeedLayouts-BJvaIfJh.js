@@ -1,0 +1,6 @@
+import{c as s}from"./createLucideIcon-DaJKMChm.js";import{u as a}from"./useQuery-NMWCX5PB.js";import{f as r,g as n,c as t}from"./main-D-I4psTg.js";/**
+ * @license lucide-react v0.460.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const c=s("Heart",[["path",{d:"M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z",key:"c3ymky"}]]);function d(){return a({queryKey:["feed-layouts"],queryFn:async()=>{const{data:e}=await t.get("/feed-layouts");return e.layouts}})}function f(){return a({queryKey:["feed-layout","active"],queryFn:async()=>{const{data:e}=await t.get("/feed-layouts/active");return e.layout}})}function l(){return a({queryKey:["feed-widgets"],queryFn:async()=>{const{data:e}=await t.get("/feed-widgets");return e.widgets}})}function g(){return a({queryKey:["feed-widgets","categories"],queryFn:async()=>{const{data:e}=await t.get("/feed-widgets/categories");return e.categories}})}function q(){const e=r();return n({mutationFn:async u=>{await t.delete(`/feed-layouts/${u}`)},onSuccess:()=>{e.invalidateQueries({queryKey:["feed-layouts"]}),e.invalidateQueries({queryKey:["feed-layout","active"]})}})}export{c as H,d as a,q as b,l as c,g as d,f as u};
